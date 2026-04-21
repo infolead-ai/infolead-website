@@ -119,9 +119,15 @@ const { title = "InfoLead Technology", lang = "en" } = Astro.props;
 	   ========================================================================== */
 	@media (max-width: 768px) {
 		/* 收缩全局边距 */
-		nav { padding: 16px 20px; }
-		main { padding: 100px 20px 0; }
+		nav { padding: 12px 20px; }
+		main { padding: 80px 20px 0; }
 		
+		/* 🚀 核心修复：强制压缩首屏 (Hero Section) 的巨大留白 */
+		main > section:first-of-type {
+			padding-top: 30px !important;
+			padding-bottom: 60px !important;
+		}
+
 		/* 全局自动收缩多余的留白间距 */
 		section { margin-bottom: 80px !important; }
 		.stats { margin-bottom: 80px !important; gap: 30px !important; }
