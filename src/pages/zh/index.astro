@@ -2,24 +2,158 @@
 import Layout from '../../layouts/Layout.astro';
 import { services } from '../../data/services';
 ---
-<Layout lang="zh" title="InfoLead — 领先的 AI 原生解决方案">
-	<section style="padding: 100px 0;">
-		<h1 style="font-size: clamp(3rem, 8vw, 6rem); line-height: 1.1; margin-bottom: 40px;">
-			极速增长<br/><span class="grad">AI 原生</span>解决方案
-		</h1>
-		<p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 600px; margin-bottom: 60px;">
-			专为北美高增长中小企业打造的 AI 智能助理与自动化工作流。
-		</p>
-		<a href="/zh/contact" style="background:#fff; color:#000; padding: 16px 40px; border-radius: 99px; text-decoration:none; font-weight:600;">预约演示 →</a>
-	</section>
 
-	<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 100px;">
-		{services.map(s => (
-			<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 24px;">
-				<div style={`color: ${s.color}; font-family: monospace; margin-bottom: 20px;`}>{s.id}</div>
-				<h3 style="font-size: 24px; margin-bottom: 15px;">{s.zhTitle}</h3>
-				<p style="font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.6;">{s.zhDesc}</p>
-			</div>
-		))}
-	</section>
+<Layout lang="zh" title="InfoLead Technology — 领先的 AI 原生解决方案">
+  
+  <section style="padding: 140px 0 100px; position: relative;">
+    <div class="tag" style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
+      <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
+      AI 原生 · 加拿大多伦多
+    </div>
+    <h1 style="font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 300; line-height: 1.1; margin-bottom: 40px; letter-spacing: -0.02em;">
+      极速增长。<br/>
+      <span class="grad">AI 原生</span> 解决方案。
+    </h1>
+    <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 720px; margin-bottom: 56px; line-height: 1.6; font-weight: 300;">
+      我们将最前沿的 AI 技术转化为真实的商业增长。从 24/7 智能语音前台到全自动获客引擎，我们为您构建推动业务自动运转的系统，让您专注于企业核心愿景。
+    </p>
+    <div class="cta" style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <a href="/zh/contact" class="btn btn-primary" style="padding: 16px 36px; font-size: 15px;">预约战略通话 →</a>
+      <a href="#industry" class="btn btn-ghost" style="padding: 16px 36px; font-size: 15px;">查看解决方案</a>
+    </div>
+  </section>
+
+  <div class="stats" style="display: flex; flex-wrap: wrap; gap: 60px; padding-top: 50px; border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 140px;">
+    <div class="stat">
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">99.8%</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">准确率</div>
+    </div>
+    <div class="stat">
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">&lt;800ms</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">语音延迟</div>
+    </div>
+    <div class="stat">
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">24/7</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">全天候在线</div>
+    </div>
+  </div>
+
+  <section id="process" style="margin-bottom: 140px;">
+    <h2 style="font-family: 'Noto Sans SC', sans-serif; font-size: clamp(2.5rem, 6vw, 3rem); font-weight: 500; margin-bottom: 60px;">极速交付流程</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; position: relative;">
+      
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #00E5FF; color: #00E5FF; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);">01</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">痛点诊断 (AI Audit)</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">深入剖析您的业务瓶颈。我们精准定位 AI 能在何处替代繁琐人工，并为您测算真实的投资回报率 (ROI)。</p>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #7C5CFF; color: #7C5CFF; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(124, 92, 255, 0.2);">02</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">极速原型 (Rapid Prototyping)</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">在 7-14 天内交付可运行的试点项目。我们坚信眼见为实，让您立刻使用真实的业务数据测试 AI 的效果。</p>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #C6FF4A; color: #C6FF4A; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(198, 255, 74, 0.1);">03</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">无缝部署 (Seamless Integration)</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">对您的现有工作流零干扰。我们将定制的 AI 助理直接接入您当前使用的 CRM、 VoIP 电话或排课日历系统中。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="industry" style="margin-bottom: 140px;">
+    <h2 style="font-family: 'Noto Sans SC', sans-serif; font-size: clamp(2.5rem, 6vw, 3rem); font-weight: 500; margin-bottom: 60px;">为您的行业量身定制</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+      
+      <div style="background: rgba(255, 255, 255, 0.01); border-top: 2px solid #7C5CFF; padding: 40px 30px; border-radius: 0 0 20px 20px; transition: 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.03)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.01)'">
+        <div style="color: #7C5CFF; font-family: monospace; font-size: 12px; margin-bottom: 16px; letter-spacing: 0.1em;">LAW & ACCOUNTING</div>
+        <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">律师与会计师事务所</h3>
+        <p style="font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 24px;">
+          痛点在于极其高昂的人力成本与繁琐的合规文件检索。我们通过部署<strong style="color: #F5F7FA; font-weight: 500;">本地化私有大模型 (Local RAG)</strong>，让初级员工能通过自然语言秒级查阅过往判例与税务条例，极大降低“非计费工时 (Non-billable hours)”。
+        </p>
+        <ul style="color: rgba(255,255,255,0.4); font-size: 14px; line-height: 2; list-style: none; padding: 0;">
+          <li>✓ PDF 卷宗自动解析与内部问答</li>
+          <li>✓ 加拿大境内数据合规安全存储</li>
+        </ul>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.01); border-top: 2px solid #00E5FF; padding: 40px 30px; border-radius: 0 0 20px 20px; transition: 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.03)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.01)'">
+        <div style="color: #00E5FF; font-family: monospace; font-size: 12px; margin-bottom: 16px; letter-spacing: 0.1em;">REAL ESTATE BROKERAGES</div>
+        <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">地产经纪与投资公司</h3>
+        <p style="font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 24px;">
+          房产交易是抢时间的生意。我们为您打造 24/7 不掉线的<strong style="color: #F5F7FA; font-weight: 500;">双语 AI 电话助理</strong>，无论您是在带看还是深夜，AI 都能瞬间响应买家询盘。配合<strong style="color: #F5F7FA; font-weight: 500;">自动化引擎</strong>，批量生成社媒矩阵流量内容。
+        </p>
+        <ul style="color: rgba(255,255,255,0.4); font-size: 14px; line-height: 2; list-style: none; padding: 0;">
+          <li>✓ 24/7 楼花询价与客户意向打分</li>
+          <li>✓ 小红书/TikTok 矩阵自动化营销</li>
+        </ul>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.01); border-top: 2px solid #C6FF4A; padding: 40px 30px; border-radius: 0 0 20px 20px; transition: 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.03)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.01)'">
+        <div style="color: #C6FF4A; font-family: monospace; font-size: 12px; margin-bottom: 16px; letter-spacing: 0.1em;">PREMIUM LOCAL SERVICES</div>
+        <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">医美诊所与高端车行</h3>
+        <p style="font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 24px;">
+          您的前台应该专注于接待到店的 VIP 客户，而不是接听无数个问路和比价的电话。我们将通过 AI 打造完美的<strong style="color: #F5F7FA; font-weight: 500;">自动化客户漏斗</strong>，无缝打通 Jane App 或其他线上日历排课系统。
+        </p>
+        <ul style="color: rgba(255,255,255,0.4); font-size: 14px; line-height: 2; list-style: none; padding: 0;">
+          <li>✓ 零等待双语接听与自动排课闭环</li>
+          <li>✓ 跨文化双语重构与售后自动跟进</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="services" class="services" style="margin-bottom: 140px;">
+    <h2 style="font-family: 'Noto Sans SC', sans-serif; font-size: clamp(2.5rem, 6vw, 3rem); font-weight: 500; margin-bottom: 60px;">核心 AI 解决方案</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+      {services.map((s) => (
+        <a href={`/zh/services#${s.id}`} style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 24px; padding: 40px; text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; display: block;" onmouseover="this.style.borderColor='rgba(0, 229, 255, 0.4)'; this.style.transform='translateY(-6px)'; this.style.background='rgba(255, 255, 255, 0.05)'" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.06)'; this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.02)'">
+          <div style="font-family: monospace; font-size: 11px; color: #00E5FF; margin-bottom: 24px; letter-spacing: 0.1em;">SOL-{s.id}</div>
+          <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">{s.zhTitle}</h3>
+          <p style="font-size: 15px; color: rgba(255, 255, 255, 0.55); line-height: 1.8; font-weight: 300;">{s.zhDesc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="pilot" style="margin-bottom: 100px;">
+    <div style="background: linear-gradient(135deg, rgba(10, 15, 31, 0.8) 0%, rgba(5, 7, 20, 0.9) 100%); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 24px; padding: 60px 40px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(0, 229, 255, 0.05);">
+      <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: #7C5CFF; filter: blur(100px); opacity: 0.15; border-radius: 50%;"></div>
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; position: relative; z-index: 1;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-family: monospace; font-size: 12px; color: #00E5FF; margin-bottom: 16px; letter-spacing: 0.1em;">PILOT SHOWCASE</div>
+          <h2 style="font-size: 36px; font-weight: 500; margin-bottom: 20px;">Aplus Sport Club</h2>
+          <p style="font-size: 16px; color: rgba(255, 255, 255, 0.6); line-height: 1.8; margin-bottom: 30px;">
+            在大多伦多地区的高端体育俱乐部中，Aplus 正在率先实施我们的 AI 语音接待系统。通过我们的集成，该俱乐部能够：
+          </p>
+          <ul style="color: rgba(255, 255, 255, 0.6); line-height: 2.2; margin-bottom: 40px; font-size: 15px; list-style: none; padding: 0;">
+            <li>✓ 24/7 接听中英双语预约电话，漏接率为零</li>
+            <li>✓ 自动同步现有的 Mindbody/Jane 排课系统</li>
+            <li>✓ 每年节省约 <strong style="color: #C6FF4A;">$45,000</strong> 的前台人力支出</li>
+          </ul>
+          <a href="/zh/contact" class="btn btn-primary" style="padding: 14px 30px;">为我的业务部署此方案 →</a>
+        </div>
+        
+        <div style="flex: 1; min-width: 300px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 28px; font-family: monospace; font-size: 13px; color: rgba(255, 255, 255, 0.5);">
+          <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #FF5F56;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #FFBD2E;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #27C93F;"></div>
+          </div>
+          <div style="color: #00E5FF; margin-bottom: 12px;">// INF-CORE-01 LOG ACTIVE</div>
+          <div style="color: #888; margin-bottom: 8px;">[14:22:01] Inbound call detected: +1 (647) ***-****</div>
+          <div style="color: #888; margin-bottom: 8px;">[14:22:02] Language ID: Mandarin (CN)</div>
+          <div style="color: #C6FF4A; margin-bottom: 8px;">[14:22:03] AI Receptionist: "您好，这里是 Aplus 体育俱乐部，请问需要帮您预约明天的羽毛球场地吗？"</div>
+          <div style="color: #888; margin-bottom: 8px;">[14:22:15] Customer: "是的，想订下午三点的两号场。"</div>
+          <div style="color: #7C5CFF; margin-bottom: 8px;">[14:22:17] API Hook: Checking calendar availability...</div>
+          <div style="color: #27C93F; margin-bottom: 20px;">[14:22:18] Success: Court 2 booked for 3PM Tomorrow.</div>
+          <div style="color: #00E5FF;">_ SESSION COMPLETE _</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </Layout>
