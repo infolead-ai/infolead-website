@@ -4,49 +4,117 @@ import { services } from '../data/services';
 ---
 
 <Layout title="InfoLead Technology — Leading AI Solutions">
-  <section style="padding: 120px 0 80px;">
-    <div class="tag" style="margin-bottom: 40px;">
-      <span class="dot"></span>
+  <section style="padding: 120px 0 80px; position: relative;">
+    <div class="tag" style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
+      <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
       AI · TORONTO — CANADA
     </div>
-    <h1 style="font-size: clamp(3rem, 8vw, 5.5rem); line-height: 0.95; margin-bottom: 40px;">
-      Leading <span class="grad">AI-Native</span> Solutions. <span class="italic">Simplified.</span>
+    <h1 style="font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 300; line-height: 0.95; margin-bottom: 40px; letter-spacing: -0.04em;">
+      Leading <span class="grad">AI-Native</span> Solutions.<br/>
+      <span class="italic" style="color: rgba(255, 255, 255, 0.45);">Simplified.</span>
     </h1>
-    <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 680px; margin-bottom: 56px;">
+    <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 680px; margin-bottom: 56px; line-height: 1.6; font-weight: 300;">
       An integrated suite of intelligent voice agents, custom web engineering and automated marketing — engineered for high-growth North American SMBs.
     </p>
-    <div class="cta" style="margin-bottom: 100px;">
+    <div class="cta" style="margin-bottom: 100px; display: flex; gap: 20px; flex-wrap: wrap;">
       <a href="/contact" class="btn btn-primary">Book a Demo →</a>
-      <a href="/services" class="btn btn-ghost">Our Services</a>
+      <a href="#services" class="btn btn-ghost">Explore Solutions</a>
     </div>
   </section>
 
-  <div class="stats" style="display: flex; gap: 60px; padding-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 120px;">
+  <div class="stats" style="display: flex; flex-wrap: wrap; gap: 60px; padding-top: 50px; border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 140px;">
     <div class="stat">
-      <div style="font-size: 42px; font-family: serif; font-style: italic;">99.8%</div>
-      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Accuracy</div>
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">99.8%</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Accuracy</div>
     </div>
     <div class="stat">
-      <div style="font-size: 42px; font-family: serif; font-style: italic;">&lt;800ms</div>
-      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Latency</div>
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">&lt;800ms</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Latency</div>
     </div>
     <div class="stat">
-      <div style="font-size: 42px; font-family: serif; font-style: italic;">24/7</div>
-      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Always-On</div>
+      <div style="font-size: 50px; font-family: 'Instrument Serif', serif; color: #F5F7FA; line-height: 1.1;">24/7</div>
+      <div style="font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Always-On</div>
     </div>
   </div>
 
-  <section id="services">
-    <h2 style="font-family: serif; font-style: italic; font-size: 48px; margin-bottom: 60px;">What We Do</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+  <section id="process" style="margin-bottom: 140px;">
+    <h2 style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(2.5rem, 6vw, 3.8rem); font-weight: 400; margin-bottom: 60px;">The Delivery Process</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; position: relative;">
+      <div style="position: absolute; top: 24px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), transparent); z-index: 0; display: none;" class="process-line"></div>
+      
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #00E5FF; color: #00E5FF; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);">01</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">AI Audit</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">Deep dive into your business bottlenecks. We identify exactly where AI can replace manual labor and generate the highest ROI.</p>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #7C5CFF; color: #7C5CFF; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(124, 92, 255, 0.2);">02</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">Rapid Prototyping</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">Deploy a functional pilot within 7-14 days. We believe in showing, not telling. Test the AI with your real business data instantly.</p>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 40px 30px; position: relative; z-index: 1;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #050714; border: 1px solid #C6FF4A; color: #C6FF4A; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 16px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(198, 255, 74, 0.1);">03</div>
+        <h3 style="font-size: 20px; margin-bottom: 12px; font-weight: 500;">Seamless Integration</h3>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.55); line-height: 1.7;">Zero disruption to your current workflow. We integrate the AI agents directly into your existing CRM, VoIP, or scheduling tools.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services" style="margin-bottom: 140px;">
+    <h2 style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(2.5rem, 6vw, 3.8rem); font-weight: 400; margin-bottom: 60px;">What We Do</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
       {services.map((s) => (
-        <a href={`/services#${s.id}`} style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 40px; border-radius: 24px; text-decoration: none; color: inherit; transition: 0.3s;" onmouseover="this.style.borderColor='rgba(0,229,255,0.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
-          <div style="color: #00E5FF; font-family: monospace; font-size: 11px; margin-bottom: 20px;">{s.id}</div>
-          <h3 style="font-size: 24px; margin-bottom: 8px;">{s.title}</h3>
-          <div style="font-size: 13px; color: #00E5FF; opacity: 0.7; margin-bottom: 20px;">{s.zh}</div>
-          <p style="font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7;">{s.desc}</p>
+        <a href={`/services#${s.id}`} style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 24px; padding: 40px; text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; display: block;" onmouseover="this.style.borderColor='rgba(0, 229, 255, 0.4)'; this.style.transform='translateY(-6px)'; this.style.background='rgba(255, 255, 255, 0.05)'" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.06)'; this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.02)'">
+          <div style="font-family: monospace; font-size: 11px; color: #00E5FF; margin-bottom: 24px; letter-spacing: 0.1em;">{s.id}</div>
+          <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 8px;">{s.title}</h3>
+          <div style="font-size: 13px; color: rgba(0, 229, 255, 0.6); margin-bottom: 24px; font-family: 'Noto Sans SC', sans-serif;">{s.zh}</div>
+          <p style="font-size: 15px; color: rgba(255, 255, 255, 0.55); line-height: 1.8; font-weight: 300;">{s.desc}</p>
         </a>
       ))}
     </div>
   </section>
+
+  <section id="pilot" style="margin-bottom: 100px;">
+    <div style="background: linear-gradient(135deg, rgba(10, 15, 31, 0.8) 0%, rgba(5, 7, 20, 0.9) 100%); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 24px; padding: 60px 40px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(0, 229, 255, 0.05);">
+      <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: #7C5CFF; filter: blur(100px); opacity: 0.15; border-radius: 50%;"></div>
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; position: relative; z-index: 1;">
+        <div style="flex: 1; min-width: 300px;">
+          <div style="font-family: monospace; font-size: 12px; color: #00E5FF; margin-bottom: 16px; letter-spacing: 0.1em;">FEATURED PILOT PROJECT</div>
+          <h2 style="font-size: 36px; font-weight: 500; margin-bottom: 20px;">Aplus Sport Club</h2>
+          <p style="font-size: 16px; color: rgba(255, 255, 255, 0.6); line-height: 1.8; margin-bottom: 30px;">
+            We are currently building a tailored AI Voice Receptionist pilot for a premium sports club in Canada. The goal is to deploy a 24/7 bilingual agent capable of zero-wait call answering, automated class scheduling, and lead qualification — completely eliminating missed opportunities during peak hours.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 99px; font-size: 12px; color: rgba(255, 255, 255, 0.8);">Voice AI</span>
+            <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 99px; font-size: 12px; color: rgba(255, 255, 255, 0.8);">Booking Sync</span>
+            <span style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 99px; font-size: 12px; color: rgba(255, 255, 255, 0.8);">Bilingual (EN/ZH)</span>
+          </div>
+        </div>
+        
+        <div style="flex: 1; min-width: 300px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 24px; font-family: monospace; font-size: 13px; color: rgba(255, 255, 255, 0.5);">
+          <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #FF5F56;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #FFBD2E;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #27C93F;"></div>
+          </div>
+          <div style="margin-bottom: 8px; color: #00E5FF;">> System Status: ACTIVE_PILOT</div>
+          <div style="margin-bottom: 8px;">> Loading LLM core... <span style="color: #27C93F;">[OK]</span></div>
+          <div style="margin-bottom: 8px;">> Initiating bilingual synthesis (EN/ZH)... <span style="color: #27C93F;">[OK]</span></div>
+          <div style="margin-bottom: 8px;">> Calibrating latency: <span style="color: #C6FF4A;">~600ms</span></div>
+          <div style="margin-bottom: 20px;">> Connecting to booking calendar webhook... <span style="color: #FFBD2E;">[TESTING]</span></div>
+          <div style="color: #7C5CFF;">_ Awaiting inbound calls _</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </Layout>
+
+<style>
+  @media (min-width: 768px) {
+    .process-line { display: block !important; }
+  }
+</style>
