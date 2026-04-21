@@ -8,45 +8,101 @@ const { title = "InfoLead Technology", lang = "en" } = Astro.props;
 <!doctype html>
 <html lang={lang}>
 	<head>
-		<meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
-		<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:italic@0,1&family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;500&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:italic@0,1&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<div class="nebula-container"><div class="nebula purple"></div><div class="nebula cyan"></div></div>
+		
 		<nav>
 			<div class="nav-content">
-				<a href={lang === 'en' ? '/' : '/zh'} class="logo">INFOLEAD</a>
+				<a href={lang === 'en' ? '/en/' : '/zh/'} class="logo">INFOLEAD</a>
+				
 				<div class="nav-links">
-					<a href={lang === 'en' ? '/services' : '/zh/services'}>{lang === 'en' ? 'Services' : '服务'}</a>
-					<a href={lang === 'en' ? '/about' : '/zh/about'}>{lang === 'en' ? 'About' : '关于'}</a>
-					<a href={lang === 'en' ? '/zh' : '/'} class="lang-btn">{lang === 'en' ? '中文' : 'EN'}</a>
-					<a href={lang === 'en' ? '/contact' : '/zh/contact'} class="btn-mini">{lang === 'en' ? 'Contact' : '联系'}</a>
+					<a href={lang === 'en' ? '/en/services' : '/zh/services'}>{lang === 'en' ? 'Services' : '服务'}</a>
+					<a href={lang === 'en' ? '/en/about' : '/zh/about'}>{lang === 'en' ? 'About' : '关于'}</a>
+					<a href={lang === 'en' ? '/zh/' : '/en/'} class="lang-btn">{lang === 'en' ? '中文' : 'EN'}</a>
+					<a href={lang === 'en' ? '/en/contact' : '/zh/contact'} class="btn-mini">{lang === 'en' ? 'Contact' : '联系'}</a>
 				</div>
 			</div>
 		</nav>
+		
 		<main><slot /></main>
+		
 		<footer>© {new Date().getFullYear()} InfoLead Technology Inc. · Toronto, Canada</footer>
 	</body>
 </html>
 
 <style is:global>
-	:root { --bg: #050505; --cyan: #00E5FF; --purple: #7C5CFF; }
-	html, body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', 'Noto Sans SC', sans-serif; }
-	.nebula-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; opacity: 0.2; }
-	.nebula { position: absolute; width: 50vw; height: 50vw; filter: blur(120px); border-radius: 50%; }
-	.purple { background: var(--purple); top: -10%; right: -10%; }
-	.cyan { background: var(--cyan); bottom: -10%; left: -10%; }
-	nav { padding: 30px 40px; position: fixed; width: 100%; box-sizing: border-box; z-index: 10; backdrop-filter: blur(10px); }
+	/* 定义主题核心变量 */
+	:root { --bg: #050714; --cyan: #00E5FF; --purple: #7C5CFF; --green: #C6FF4A; }
+	
+	/* 基础设定 */
+	html, body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', 'Noto Sans SC', sans-serif; scroll-behavior: smooth; }
+	
+	/* 星云背景特效 */
+	.nebula-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; opacity: 0.3; pointer-events: none; }
+	.nebula { position: absolute; width: 60vw; height: 60vw; filter: blur(120px); border-radius: 50%; }
+	.purple { background: var(--purple); top: -20%; right: -10%; opacity: 0.4; }
+	.cyan { background: var(--cyan); bottom: -20%; left: -10%; opacity: 0.3; }
+	
+	/* 导航栏特效 */
+	nav { padding: 24px 40px; position: fixed; width: 100%; box-sizing: border-box; z-index: 100; backdrop-filter: blur(12px); background: rgba(5,7,20,0.6); border-bottom: 1px solid rgba(255,255,255,0.05); top: 0; }
 	.nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-	.logo { font-weight: 600; letter-spacing: 2px; text-decoration: none; color: #fff; }
-	.nav-links { display: flex; gap: 30px; align-items: center; }
+	.logo { font-weight: 600; letter-spacing: 2px; text-decoration: none; color: #fff; font-size: 1.2rem; }
+	.nav-links { display: flex; gap: 32px; align-items: center; }
 	.nav-links a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 14px; transition: 0.3s; }
 	.nav-links a:hover { color: var(--cyan); }
-	.lang-btn { border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 4px; }
-	.btn-mini { background: #fff; color: #000 !important; padding: 8px 20px; border-radius: 99px; font-weight: 600; }
+	.lang-btn { border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 4px; font-family: monospace; }
+	
+	/* 文本与排版工具类 */
 	main { max-width: 1200px; margin: 0 auto; padding: 120px 40px 0; }
 	.grad { background: linear-gradient(90deg, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 	.italic { font-family: 'Instrument Serif', serif; font-style: italic; }
-	footer { text-align: center; padding: 100px 0 40px; font-size: 12px; color: rgba(255,255,255,0.3); }
+	footer { text-align: center; padding: 100px 0 40px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: monospace; }
+	
+	/* ==========================================================================
+	   修复3: 全局按钮样式回归 (带有高级悬停发光特效)
+	   ========================================================================== */
+	.btn { 
+		display: inline-flex; align-items: center; justify-content: center; 
+		text-decoration: none; border-radius: 99px; 
+		transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); 
+		font-weight: 500; 
+	}
+	
+	/* 核心行动按钮 (电光青) */
+	.btn-primary { 
+		background: var(--cyan); color: #000; 
+		box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); 
+	}
+	.btn-primary:hover { 
+		transform: translateY(-3px); 
+		box-shadow: 0 0 30px rgba(0, 229, 255, 0.5); 
+		background: #33EEFF; 
+	}
+	
+	/* 幽灵按钮 (透明描边) */
+	.btn-ghost { 
+		background: rgba(255, 255, 255, 0.03); color: #fff; 
+		border: 1px solid rgba(255, 255, 255, 0.1); 
+	}
+	.btn-ghost:hover { 
+		background: rgba(255, 255, 255, 0.08); 
+		border-color: rgba(255, 255, 255, 0.3); 
+		transform: translateY(-3px); 
+	}
+
+	/* 导航栏小按钮 */
+	.btn-mini { 
+		background: #fff; color: #000 !important; 
+		padding: 8px 20px; border-radius: 99px; font-weight: 600; transition: 0.3s; 
+	}
+	.btn-mini:hover { 
+		background: var(--cyan); 
+		box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); 
+		transform: translateY(-2px); 
+	}
 </style>
