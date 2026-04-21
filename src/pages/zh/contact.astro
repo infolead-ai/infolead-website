@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout lang="zh" title="联系我们 — InfoLead">
+  <section style="padding: 140px 0 80px; max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
+      业务咨询
+    </div>
+    
+    <h1 style="font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 24px; line-height: 1.1; font-weight: 600;">
+      开启业务增长。
+    </h1>
+    
+    <p style="font-size: 1.25rem; color: rgba(255,255,255,0.6); margin-bottom: 60px; line-height: 1.8;">
+      准备好利用 AI 技术赋能您的企业了吗？发送邮件给我们，我们将在 24 小时内与您联系，安排一对一的系统演示与需求对接。
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+      <a href="mailto:hello@infolead.ca" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 40px; border-radius: 20px; text-decoration: none; color: inherit; transition: 0.3s;" onmouseover="this.style.borderColor='rgba(0,229,255,0.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
+        <div style="color: #00E5FF; font-family: monospace; font-size: 12px; margin-bottom: 16px; letter-spacing: 0.1em;">官方邮箱</div>
+        <div style="font-size: 20px; font-weight: 500;">hello@infolead.ca</div>
+        <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px;">商务合作与系统演示</div>
+      </a>
+      
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 40px; border-radius: 20px;">
+        <div style="color: #00E5FF; font-family: monospace; font-size: 12px; margin-bottom: 16px; letter-spacing: 0.1em;">总部位置</div>
+        <div style="font-size: 20px; font-weight: 500;">多伦多，加拿大</div>
+        <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px;">立足安省，服务全北美</div>
+      </div>
+    </div>
+  </section>
+</Layout>

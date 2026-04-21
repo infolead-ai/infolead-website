@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { services } from '../../data/services';
+---
+<Layout lang="zh" title="InfoLead — 领先的 AI 原生解决方案">
+	<section style="padding: 100px 0;">
+		<h1 style="font-size: clamp(3rem, 8vw, 6rem); line-height: 1.1; margin-bottom: 40px;">
+			极速增长<br/><span class="grad">AI 原生</span>解决方案
+		</h1>
+		<p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 600px; margin-bottom: 60px;">
+			专为北美高增长中小企业打造的 AI 智能助理与自动化工作流。
+		</p>
+		<a href="/zh/contact" style="background:#fff; color:#000; padding: 16px 40px; border-radius: 99px; text-decoration:none; font-weight:600;">预约演示 →</a>
+	</section>
+
+	<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 100px;">
+		{services.map(s => (
+			<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 24px;">
+				<div style={`color: ${s.color}; font-family: monospace; margin-bottom: 20px;`}>{s.id}</div>
+				<h3 style="font-size: 24px; margin-bottom: 15px;">{s.zhTitle}</h3>
+				<p style="font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.6;">{s.zhDesc}</p>
+			</div>
+		))}
+	</section>
+</Layout>

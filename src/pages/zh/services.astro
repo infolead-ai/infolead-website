@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { services } from '../../data/services';
+---
+
+<Layout lang="zh" title="核心服务 — InfoLead">
+  <section style="padding: 140px 0 80px; max-width: 900px; margin: 0 auto;">
+    <div style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
+      核心解决方案
+    </div>
+    
+    <h1 style="font-size: clamp(3rem, 7vw, 4.5rem); margin-bottom: 40px; line-height: 1.1; font-weight: 600;">
+      以<span class="grad">投资回报率</span>为导向的设计。
+    </h1>
+    
+    <p style="font-size: 1.25rem; color: rgba(255,255,255,0.6); margin-bottom: 100px; line-height: 1.8;">
+      我们不卖花哨的技术概念。我们的每一个 AI 解决方案，都直接指向为您削减人工成本，或带来新的高价值客户。让企业级 AI 成为您最可靠的“数字员工”。
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 100px;">
+      {services.map((s) => (
+        <div id={s.id} style="position: relative; padding-left: 40px; border-left: 1px solid rgba(255,255,255,0.1);">
+          <div style={`position: absolute; left: -6px; top: 0; width: 11px; height: 11px; background: ${s.color}; border-radius: 50%; box-shadow: 0 0 15px ${s.color};`}></div>
+          
+          <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px;">
+            <span style="color: rgba(255,255,255,0.3); font-family: 'Instrument Serif', serif; font-size: 3rem; line-height: 1;">{s.id}</span>
+            <h2 style="font-size: 2rem; font-weight: 500;">{s.zhTitle}</h2>
+          </div>
+          
+          <p style="font-size: 1.15rem; color: rgba(255,255,255,0.8); line-height: 1.8; margin-bottom: 30px; max-width: 700px;">
+            {s.zhDesc}
+          </p>
+
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            {s.features.map(f => (
+              <span style={`background: rgba(255, 255, 255, 0.03); border: 1px solid ${s.color}40; padding: 8px 20px; border-radius: 99px; font-size: 13px; color: ${s.color}; font-family: monospace;`}>
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div style="margin-top: 140px; text-align: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 80px 40px; border-radius: 24px;">
+      <h2 style="font-size: 2.5rem; margin-bottom: 24px; font-weight: 600;">准备好拥抱 AI 了吗？</h2>
+      <p style="color: rgba(255,255,255,0.5); font-size: 1.1rem; margin-bottom: 40px;">告诉我们您的行业与痛点，免费获取定制化落地评估方案。</p>
+      <a href="/zh/contact" class="btn-mini" style="padding: 16px 48px; font-size: 16px; display: inline-block;">预约战略通话 →</a>
+    </div>
+  </section>
+</Layout>

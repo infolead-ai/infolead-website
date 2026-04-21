@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { services } from '../../data/services';
+---
+<Layout lang="en" title="InfoLead — AI-Native Solutions">
+	<section style="padding: 100px 0;">
+		<h1 style="font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 40px;">
+			Scale Faster.<br/><span class="grad">AI-Native</span> Solutions.
+		</h1>
+		<p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 600px; margin-bottom: 60px;">
+			Premium AI agents and workflow automation engineered for high-growth North American SMBs.
+		</p>
+		<a href="/en/contact" style="background:#fff; color:#000; padding: 16px 40px; border-radius: 99px; text-decoration:none; font-weight:600;">Book a Demo →</a>
+	</section>
+
+	<section id="services" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 100px;">
+		{services.map(s => (
+			<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 24px;">
+				<div style={`color: ${s.color}; font-family: monospace; margin-bottom: 20px;`}>{s.id}</div>
+				<h3 style="font-size: 24px; margin-bottom: 15px;">{s.title}</h3>
+				<p style="font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.6;">{s.desc}</p>
+			</div>
+		))}
+	</section>
+</Layout>
