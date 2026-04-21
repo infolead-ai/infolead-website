@@ -1,4 +1,4 @@
-// InfoLead 核心业务数据 - 2026-04-20 整合版
+// InfoLead 核心业务数据 - 2026-04-20 最终版
 export const services = [
   {
     id: "01",
@@ -22,6 +22,6 @@ export const services = [
     zh: "定制 AI 开发与业务流自动化",
     desc: "Build your enterprise brain. We engineer bespoke AI applications and zero-touch workflows that automate lead capture directly to your fingertips.",
     zhDesc: "为企业构建专属 AI 大脑。通过极速交付的自动化工作流，将意向客户数据自动流转，实现全链路无人化运作。",
-    features: ["Bespoke Engineering", "Workflow Automation", "Federal Compliance"]
+    features: ["Bespoke Engineering", "Workflow Automation", "Security & Trust"]
   }
 ];
