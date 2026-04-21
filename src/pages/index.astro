@@ -1,11 +1,52 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { services } from '../data/services';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="InfoLead Technology — Leading AI Solutions">
+  <section style="padding: 120px 0 80px;">
+    <div class="tag" style="margin-bottom: 40px;">
+      <span class="dot"></span>
+      FEDERAL CORP · TORONTO — CANADA
+    </div>
+    <h1 style="font-size: clamp(3rem, 8vw, 5.5rem); line-height: 0.95; margin-bottom: 40px;">
+      Leading <span class="grad">AI-Native</span> Solutions. <span class="italic">Simplified.</span>
+    </h1>
+    <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 680px; margin-bottom: 56px;">
+      An integrated suite of intelligent voice agents, custom web engineering and automated marketing — engineered for high-growth Canadian SMBs.
+    </p>
+    <div class="cta" style="margin-bottom: 100px;">
+      <a href="/contact" class="btn btn-primary">Book a Demo →</a>
+      <a href="/services" class="btn btn-ghost">Our Services</a>
+    </div>
+  </section>
+
+  <div class="stats" style="display: flex; gap: 60px; padding-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 120px;">
+    <div class="stat">
+      <div style="font-size: 42px; font-family: serif; font-style: italic;">99.8%</div>
+      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Accuracy</div>
+    </div>
+    <div class="stat">
+      <div style="font-size: 42px; font-family: serif; font-style: italic;">&lt;800ms</div>
+      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Latency</div>
+    </div>
+    <div class="stat">
+      <div style="font-size: 42px; font-family: serif; font-style: italic;">24/7</div>
+      <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px;">Always-On</div>
+    </div>
+  </div>
+
+  <section id="services">
+    <h2 style="font-family: serif; font-style: italic; font-size: 48px; margin-bottom: 60px;">What We Do</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      {services.map((s) => (
+        <a href={`/services#${s.id}`} style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 40px; border-radius: 24px; text-decoration: none; color: inherit; transition: 0.3s;" onmouseover="this.style.borderColor='rgba(0,229,255,0.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
+          <div style="color: #00E5FF; font-family: monospace; font-size: 11px; margin-bottom: 20px;">{s.id}</div>
+          <h3 style="font-size: 24px; margin-bottom: 8px;">{s.title}</h3>
+          <div style="font-size: 13px; color: #00E5FF; opacity: 0.7; margin-bottom: 20px;">{s.zh}</div>
+          <p style="font-size: 15px; color: rgba(255,255,255,0.5);">{s.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 </Layout>

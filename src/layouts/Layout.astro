@@ -1,23 +1,156 @@
+---
+interface Props {
+	title?: string;
+}
+
+const { title = "InfoLead Technology — Leading AI Solutions" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="description" content="InfoLead Technology Inc. - Federal Corporation Canada" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;500&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		<slot />
+		<div class="nebula-container">
+			<div class="nebula nebula-purple"></div>
+			<div class="nebula nebula-cyan"></div>
+		</div>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer>
+			<p>© {new Date().getFullYear()} InfoLead Technology Inc. · Federal Corporation · Canada</p>
+		</footer>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
+<style is:global>
+	:root {
+		--bg-dark: #050505;
+		--text-main: #F5F7FA;
+		--text-dim: rgba(255, 255, 255, 0.6);
+		--accent-cyan: #00E5FF;
+		--accent-purple: #7000FF;
+		--font-main: 'Inter', 'Noto Sans SC', sans-serif;
+	}
+
+	html, body {
 		margin: 0;
+		padding: 0;
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
+		background-color: var(--bg-dark);
+		color: var(--text-main);
+		font-family: var(--font-main);
+		overflow-x: hidden;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	/* --- 全局星云光效 (Nebula) --- */
+	.nebula-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: -1;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.nebula {
+		position: absolute;
+		filter: blur(120px);
+		opacity: 0.15;
+		border-radius: 50%;
+		animation: drift 20s infinite alternate ease-in-out;
+	}
+
+	.nebula-purple {
+		width: 50vw;
+		height: 50vw;
+		background: var(--accent-purple);
+		top: -10%;
+		right: -10%;
+	}
+
+	.nebula-cyan {
+		width: 40vw;
+		height: 40vw;
+		background: var(--accent-cyan);
+		bottom: -5%;
+		left: -5%;
+		animation-delay: -5s;
+	}
+
+	@keyframes drift {
+		from { transform: translate(0, 0) scale(1); }
+		to { transform: translate(10%, 10%) scale(1.1); }
+	}
+
+	/* --- 通用 UI 组件 (按钮、排版等) --- */
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 40px;
+	}
+
+	h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+	.grad { background: linear-gradient(90deg, #FFF, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+	.italic { font-style: italic; font-family: serif; }
+
+	/* 按钮全局样式 */
+	.btn {
+		display: inline-flex;
+		padding: 12px 28px;
+		border-radius: 99px;
+		font-size: 14px;
+		font-weight: 500;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.btn-primary {
+		background: #FFF;
+		color: #000;
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+	}
+
+	.btn-ghost {
+		border: 1px solid rgba(255,255,255,0.1);
+		color: #FFF;
+		margin-left: 15px;
+	}
+
+	.btn-ghost:hover {
+		background: rgba(255,255,255,0.05);
+		border-color: rgba(255,255,255,0.3);
+	}
+
+	/* 页脚 */
+	footer {
+		text-align: center;
+		padding: 100px 0 40px;
+		font-size: 12px;
+		color: var(--text-dim);
+		letter-spacing: 1px;
+	}
+
+	/* 响应式调整 */
+	@media (max-width: 768px) {
+		main { padding: 0 20px; }
 	}
 </style>
