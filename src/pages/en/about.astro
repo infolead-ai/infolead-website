@@ -1,13 +1,77 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout lang="en" title="About — InfoLead Technology">
-	<section style="padding: 100px 0; max-width: 800px;">
-		<h1 class="italic" style="font-size: 4rem; margin-bottom: 40px;">The InfoLead Story</h1>
-		<p style="font-size: 1.25rem; line-height: 1.8; color: rgba(255,255,255,0.8);">
-			InfoLead Technology Inc. is a Federal Corporation based in Toronto, Canada. 
-			We bridge the gap between cutting-edge AI and real-world business results. 
-			Our mission is to help North American SMBs automate the mundane and focus on the vision.
-		</p>
-	</section>
+
+<Layout title="About InfoLead | AI-Native Solutions for Canadian SMBs">
+  <main>
+    <div class="tag">
+      <div class="dot"></div>
+      OUR DNA
+    </div>
+
+    <h1 class="grad">AI-Native. Lean. Impact-Driven.</h1>
+    <p class="lead">
+      We are not a traditional IT agency. We are an AI-native company built to arm Canadian SMBs with unfair technological advantages.
+    </p>
+
+    <div class="content-wrapper">
+      
+      <div class="story-section">
+        <h2>Founding Mission</h2>
+        <p>
+          For over a decade, traditional software development has been a luxury reserved for large enterprises. IT outsourcing agencies operate on a labor-intensive model—billing by the hour, deploying large teams, and taking months to deliver. For local Canadian businesses, the barrier to entry was simply too high.
+        </p>
+      </div>
+
+      <div class="story-section">
+        <h2>The Lean & AI-Powered Leverage</h2>
+        <p>
+          InfoLead was rebooted with a completely different philosophy. Operating as a lean, AI-empowered technology firm, we eliminated the bloat of traditional tech agencies. We don't just write code; we deploy "Productized AI Employees" that solve real business bottlenecks instantly.
+        </p>
+      </div>
+
+      <div class="story-section">
+        <h2>Local Expertise. Global Reach.</h2>
+        <p>
+          As a registered Federal Corporation based in the Greater Toronto Area, we deeply understand the operational challenges of North American businesses. We bridge the gap between cutting-edge global AI and your specific industry needs.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="cta" style="margin-top: 60px;">
+      <a href="/en/contact" class="btn btn-primary">
+        Build Your AI Workforce 
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </main>
 </Layout>
+
+<style>
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+  .content-wrapper {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .story-section h2 {
+    font-family: "Instrument Serif", serif;
+    font-size: 28px;
+    color: #F5F7FA;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    font-weight: normal;
+  }
+  .story-section p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+  }
+</style>

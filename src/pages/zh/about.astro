@@ -1,13 +1,78 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout lang="zh" title="关于我们 — InfoLead">
-	<section style="padding: 100px 0; max-width: 800px;">
-		<h1 class="italic" style="font-size: 4rem; margin-bottom: 40px;">InfoLead 故事</h1>
-		<p style="font-size: 1.25rem; line-height: 1.8; color: rgba(255,255,255,0.8);">
-			InfoLead Technology Inc. 是一家总部位于加拿大多伦多的联邦注册公司。
-			我们致力于将最前沿的 AI 技术转化为真实的商业增长。
-			我们的使命是帮助北美华人中小企业实现流程自动化，从繁杂的琐事中解脱，专注于品牌愿景。
-		</p>
-	</section>
+
+<Layout title="关于 InfoLead | 加拿大中小企业的 AI 原生解决方案">
+  <main>
+    <div class="tag">
+      <div class="dot"></div>
+      品牌基因 · OUR DNA
+    </div>
+
+    <h1 class="grad">AI-Native. Lean. Impact-Driven.</h1>
+    <p class="lead">
+      我们是一家 AI 原生科技公司，致力于为加拿大中小企业打造不对称的商业竞争优势。
+    </p>
+
+    <div class="content-wrapper">
+      
+      <div class="story-section">
+        <h2>创立初衷</h2>
+        <p>
+          在过去，拥抱顶尖技术往往是大型企业的特权。传统的 IT 外包和软件开发公司依然停留在“劳动密集型”的旧模式：按工时计费、冗长的开发周期、高昂的沟通成本。这让许多极具潜力的加拿大本地中小企业望而却步。
+        </p>
+      </div>
+
+      <div class="story-section">
+        <h2>告别重资产，交付真结果</h2>
+        <p>
+          因此，InfoLead 带着全新的基因重启。我们彻底抛弃了传统外包的臃肿，以精益高效的敏捷团队架构，结合全球最顶尖的 AI 生产力工具，提供“轻资产、重交付”的解决方案。我们不仅提供软件，我们交付的是能真正帮您削减人工成本、实现 24/7 获客的“AI 业务大脑”。
+        </p>
+      </div>
+
+      <div class="story-section">
+        <h2>加拿大本土背景，深度懂华人商业</h2>
+        <p>
+          作为在大多伦多地区 (GTA) 运营的加拿大联邦注册公司，我们深知北美华人企业在多语种环境、极高的人力成本以及本土合规（如数据隐私与电信规范）中所面临的挑战。我们是连接前沿 AI 技术与您实际业务需求的最强桥梁。
+        </p>
+      </div>
+
+    </div>
+
+    <div class="cta" style="margin-top: 60px;">
+      <a href="/contact" class="btn btn-primary">
+        构建您的 AI 团队 
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </main>
 </Layout>
+
+<style>
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+  .content-wrapper {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .story-section h2 {
+    font-family: "Instrument Serif", "Noto Serif SC", serif;
+    font-size: 28px;
+    color: #F5F7FA;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    font-weight: normal;
+  }
+  .story-section p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    font-family: "Noto Sans SC", sans-serif;
+  }
+</style>
