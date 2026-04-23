@@ -111,8 +111,8 @@ import { services } from '../../data/services';
       {services.map((s) => (
         <a href={`/zh/services#${s.id}`} style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 24px; padding: 40px; text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; display: block;" onmouseover="this.style.borderColor='rgba(0, 229, 255, 0.4)'; this.style.transform='translateY(-6px)'; this.style.background='rgba(255, 255, 255, 0.05)'" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.06)'; this.style.transform='translateY(0)'; this.style.background='rgba(255, 255, 255, 0.02)'">
           <div style="font-family: monospace; font-size: 11px; color: #00E5FF; margin-bottom: 24px; letter-spacing: 0.1em;">SOL-{s.id}</div>
-          <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">{s.zhTitle}</h3>
-          <p style="font-size: 15px; color: rgba(255, 255, 255, 0.55); line-height: 1.8; font-weight: 300;">{s.zhDesc}</p>
+          <h3 style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">{s.title.zh}</h3>
+          <p style="font-size: 15px; color: rgba(255, 255, 255, 0.55); line-height: 1.8; font-weight: 300;">{s.desc.zh}</p>
         </a>
       ))}
     </div>

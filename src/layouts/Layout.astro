@@ -4,6 +4,11 @@ interface Props {
 	lang?: 'en' | 'zh';
 }
 const { title = "InfoLead Technology", lang = "en" } = Astro.props;
+
+const altLangPath = Astro.url.pathname.replace(
+	lang === 'en' ? /^\/en/ : /^\/zh/,
+	lang === 'en' ? '/zh' : '/en'
+);
 ---
 <!doctype html>
 <html lang={lang}>
@@ -28,7 +33,7 @@ const { title = "InfoLead Technology", lang = "en" } = Astro.props;
 					</div>
 
 					<div class="nav-actions">
-						<a href={lang === 'en' ? '/zh/' : '/en/'} class="lang-btn">{lang === 'en' ? '中文' : 'EN'}</a>
+						<a href={altLangPath} class="lang-btn">{lang === 'en' ? '中文' : 'EN'}</a>
 						<button id="menu-btn" class="menu-btn" aria-label="Toggle Menu">
 							<span></span><span></span><span></span>
 						</button>
