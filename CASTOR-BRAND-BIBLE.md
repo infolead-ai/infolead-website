@@ -1,52 +1,51 @@
-# CASTOR — InfoLead AI Brand Bible
+# CASTOR Brand Bible
 
-> This document defines Castor, InfoLead's official AI Technology Host persona.
-> It is the canonical reference for all content, video, and marketing involving this identity.
+**Version:** 1.1
+**Last Updated:** 2026-04-23
+**Owner:** Glen Tang, InfoLead Technology Inc.
+**Status:** Living document — update with each major campaign
+
+> This is the single source of truth for **Castor**, InfoLead's AI brand persona.
+> Any HeyGen script, LinkedIn post, 小红书 video, pitch deck slide, or client-facing
+> material featuring Castor must conform to this document. If something isn't
+> covered here, ask Glen before shipping.
 
 ---
 
-## Identity
+## 0. How to Use This Document
+
+| If you are... | Read sections... |
+|---|---|
+| Writing a Castor video script | §2, §5, §6, §13 |
+| Drafting a LinkedIn / 小红书 post | §2, §3, §6, §11, §12 |
+| Answering a client question about Castor | §10 |
+| Designing a Castor image or avatar variant | §7 |
+| Planning content or campaigns | §2, §3, §11 |
+| Legal / compliance review | §8, §9, §12 |
+| Naming / organizing Castor media files | §14 |
+
+---
+
+## 1. Identity Card
 
 | Field | Value |
 |---|---|
-| **Name** | Castor |
-| **Full Title** | AI Technology Host @ InfoLead Technology Inc. |
-| **Type** | AI-generated digital persona |
-| **Languages** | English (primary) · Mandarin Chinese (bilingual) |
+| **Name (EN)** | Castor |
+| **Name (ZH)** | Castor · 星语 |
+| **Role (EN)** | AI Technology Host, InfoLead |
+| **Role (ZH)** | InfoLead AI 技术主理人 |
+| **Entity** | Digital persona owned by InfoLead Technology Inc. |
+| **Real-person status** | **NOT a real person.** Always disclosed as AI. |
+| **Gender presentation** | Male, mid-30s |
+| **Ethnicity presentation** | East Asian / mixed Asian |
+| **Primary languages** | English (North American), Mandarin (Standard) |
+| **Voice model** | ElevenLabs (custom clone, locked — see §7.4) |
+| **Visual model** | HeyGen (photorealistic avatar, locked — see §7.1) |
+| **Signature color** | Neon Cyan `#00E5FF` on Deep Space `#0A0E1A` |
 
 ---
 
-## Aesthetic
-
-**Visual Direction:** Deep Space Minimalist
-
-- **Wardrobe:** Dark black turtleneck — clean, no logos, no distractions
-- **Background:** Deep space dark (`#050714`) with subtle neural-signal glow accents
-- **Resolution:** 1080p high-res, cinematic framing
-- **Lighting:** Single soft key light, no harsh fills — professional studio feel
-- **Color accents on-screen:** Electric cyan `#00E5FF` · Neon purple `#7C5CFF`
-- **Reference aesthetic:** Think Jony Ive meets a Bloomberg terminal — authority without noise
-
----
-
-## Voice & Tone
-
-**Character:** Authoritative. Precise. Calm. Never hypes — always substantiates.
-
-| Context | English Tone | Chinese Tone |
-|---|---|---|
-| Product demos | Confident, technical | 专业、清晰，无翻译腔 |
-| Client case studies | Data-driven, outcome-focused | 以结果说话，数字为先 |
-| Educational content | Explanatory, peer-to-peer | 深入浅出，不说外行话 |
-| CTAs | Direct, low-pressure | 简洁有力，尊重决策 |
-
-**Never say:** "revolutionary," "game-changing," "disruptive," "leverage synergies"
-
-**Always say:** concrete outcomes, specific numbers, time-to-value
-
----
-
-## Core Mission Statement
+## 2. Core Mission Statement
 
 > **"The missed call is the most expensive sound in your business."**
 >
@@ -57,17 +56,318 @@
 > how a bilingual AI receptionist answers, qualifies, and books clients
 > before a human even reaches for the phone.
 
+Every piece of Castor content should, directly or indirectly, reinforce this thesis.
+If a script doesn't connect back to "missed calls cost you real money, and we fix that,"
+it's the wrong script.
+
 ---
 
-## Target Audience
+## 3. Target Audience
 
 - **Primary:** GTA Chinese-Canadian SMB owners (real estate brokerages, medical clinics, law firms, sports clubs, auto shops)
 - **Secondary:** English-speaking North American SMBs who serve multicultural markets
 - **Psychographic:** Business owners who trust technology but demand proof before investing
 
+These audiences don't need education on *what AI is* — they need proof that AI
+handles their specific pain point (phone ops) without legal, cultural, or
+operational friction. Castor speaks to skeptics with P&Ls, not enthusiasts with GPUs.
+
 ---
 
-## Content Pillars
+## 4. Origin Story (for internal reference and long-form content)
+
+Castor is named after the brighter of the twin stars in the Gemini constellation.
+In Greek mythology, **Castor and Pollux** are twin brothers — one mortal, one
+immortal — who stood side by side. The name captures InfoLead's core philosophy:
+**AI and humans work best as twins, not replacements.** Glen, the human founder,
+and Castor, the AI host, stand together as the face of the company.
+
+**When to use this story:** LinkedIn company launch post, About page long-form,
+first media interview, investor deck. Don't force it into 30-second videos.
+
+**When NOT to use this story:** Cold outreach, sales scripts, paid ads. Save it
+for earned attention moments.
+
+---
+
+## 5. Biographical Profiles
+
+Use the shortest version that fits the context. Longer versions include more,
+not different, information — never contradict a shorter bio.
+
+### 5.1 Ultra-short (video intro, ~5 sec)
+
+**EN:** "I'm Castor, AI Technology Host at InfoLead."
+**ZH:** "你好，我是 Castor，InfoLead 的 AI 技术主理人。"
+
+### 5.2 Short (LinkedIn bio, pitch deck, ~25 words)
+
+**EN:**
+> Castor is InfoLead's AI Technology Host — a fully disclosed digital persona
+> built to demonstrate what 24/7 bilingual AI voice agents can do for
+> small and mid-sized businesses.
+
+**ZH:**
+> Castor 是 InfoLead 的 AI 技术主理人——一位完全公开披露的数字人形象，
+> 专门展示 24/7 中英双语 AI 语音客服能为中小企业带来什么。
+
+### 5.3 Medium (About page, ~80 words)
+
+**EN:**
+> Castor is the AI Technology Host of InfoLead Technology Inc., a Toronto-based
+> company building bilingual AI voice agents for the Greater Toronto Area's
+> small and mid-sized business community. Castor is a digital persona — not a
+> real person — generated by HeyGen and ElevenLabs, directed by InfoLead's human
+> team. He exists to show, not just tell: every time you see Castor, you are
+> looking at the same technology InfoLead deploys for law firms, clinics, real
+> estate agencies, and CPA offices across the GTA.
+
+**ZH:**
+> Castor 是 InfoLead Technology Inc. 的 AI 技术主理人。InfoLead 是一家位于多伦多的
+> AI 解决方案公司，专注于为大多伦多地区的华人中小企业打造中英双语 AI 语音客服系统。
+> Castor 是一个数字人形象——不是真人——由 HeyGen 和 ElevenLabs 技术生成，
+> 由 InfoLead 团队创作和指导。我们之所以让 Castor 站到台前，是想让您亲眼看到：
+> InfoLead 为律所、诊所、地产经纪、会计师事务所所部署的，就是这样的技术。
+
+### 5.4 Long (media interview, investor memo)
+
+Expand §5.3 with the Origin Story (§4) and a sentence on why AI disclosure
+matters to InfoLead's philosophy. Never exceed 200 words in any public-facing
+bio — bullet sharper is always better than bullet more.
+
+---
+
+## 6. Voice & Tone
+
+### 6.1 Core attributes
+
+Castor speaks like a **calm, senior technology executive**. Think the
+intersection of: Jensen Huang's clarity, Satya Nadella's warmth, and a
+Silicon Valley startup CTO's precision.
+
+| Attribute | Dial setting |
+|---|---|
+| Confidence | High — no hedging, no "maybe", no "I think" |
+| Warmth | Medium-high — speaks *to* the viewer, not *at* them |
+| Humor | Low — occasional dry wit, never jokes |
+| Urgency | Medium — calm conviction, not hard-sell |
+| Jargon | Low — explains tech in business outcomes |
+| Formality | Medium — professional but not stiff |
+
+### 6.2 English style
+
+- **Sentence length:** Short to medium. Rarely over 20 words.
+- **Voice:** Active, present tense. "We build..." not "solutions are built by us..."
+- **Numbers:** Concrete. "Cuts missed calls by 80%", not "dramatically reduces missed calls."
+- **Vocabulary to use:** deploy, build, handle, scale, log, audit, bilingual, 24/7, front desk
+- **Vocabulary to avoid:** revolutionary, game-changing, cutting-edge, disruptive, synergy, leverage, unlock, unleash, next-gen
+- **Contractions:** Yes. "We're", "you'll", "it's" — sounds human, reads faster.
+
+### 6.3 Chinese style (中文风格)
+
+- **句式**：中短句为主。超过 25 字的句子要考虑拆分。
+- **语气**：专业但不端着。对企业主说话，不是对学生说话。
+- **数字**：具体，带单位。"每月节省 3,000 加币人工成本" 而非 "大幅降低成本"。
+- **可用词汇**：部署、全天候、双语、前台、留痕、可追溯、中小企业、获客、转化
+- **避免词汇**：颠覆、赋能、打通、闭环、生态、全栈、一站式、降维打击（内部可以用，对外不用）
+- **避免翻译腔**：不说 "在一天的结束"（at the end of the day），说 "说到底"
+- **技术名词**：保留英文。Twilio、ElevenLabs、CRM、SaaS 不翻译。
+
+### 6.4 The "Castor test"
+
+Before publishing, ask: *Would a 45-year-old law firm partner in North York find
+this credible, or would they roll their eyes?* If there's any doubt, cut.
+
+---
+
+## 7. Visual Standards
+
+### 7.1 Locked Avatar Prompt (HeyGen)
+
+> A photorealistic, professional Asian or mixed-race male in his mid-30s serving
+> as a tech executive. He has a sharp jawline, neat short dark hair, and a
+> confident, intelligent expression looking directly and calmly into the camera,
+> with warm intelligence in his eyes and a subtle slight smile at the corners of
+> his mouth (not showing teeth). He is wearing a minimalist, high-quality dark
+> black turtleneck sweater with no logos. The background is pure pitch black
+> deepening into dark navy blue, with a very subtle, blurred neon cyan ambient
+> light glow in the far background. Cinematic studio lighting, soft key light on
+> the face, subtle rim light separating him from the dark background. 8k
+> resolution, ultra-detailed, corporate but modern Silicon Valley vibe.
+
+**This prompt is locked.** Do not regenerate the base avatar without Glen's
+sign-off. Consistency across every Castor appearance is what turns him into a
+recognizable brand asset.
+
+### 7.2 Wardrobe
+
+| Always | Never |
+|---|---|
+| Black turtleneck (primary) | Suits with ties |
+| Dark charcoal Henley (variant for casual formats) | Bright colors |
+| Simple silver watch (only if shot includes hands) | Visible logos of any kind |
+| | Hoodies (too casual for B2B) |
+| | Glasses (unless we commit to a "glasses variant" — do not mix) |
+
+### 7.3 Backgrounds
+
+| Always | Never |
+|---|---|
+| Pitch black / deep navy | White or bright backgrounds |
+| Subtle cyan rim light or distant glow | Office desks, bookshelves, plants |
+| Clean, minimal, "deep space" feel | Anything that looks like a Zoom background |
+
+### 7.4 Voice (ElevenLabs)
+
+- **English voice:** Locked clone ID — [to be filled in after production]
+- **Chinese voice:** Locked clone ID — [to be filled in after production]
+- **Speed:** EN 95%, ZH 90% of ElevenLabs default
+- **Stability:** 55 / Similarity: 75 (adjust per platform's latest tuning recs)
+
+Both voices are locked. Don't experiment with new voices per video — Castor must
+sound the same every time, the way a real spokesperson would.
+
+### 7.5 Subtitles
+
+- **Font:** Sans-serif, bold. Inter (EN) / PingFang SC (ZH).
+- **Color:** `#00E5FF` (cyan) with 2px black stroke.
+- **Position:** Bottom-center, safe zone for both landscape and 9:16.
+- **Always burn in** — 85%+ of mobile viewers watch muted.
+
+---
+
+## 8. Scope of Speech: What Castor Can and Cannot Say
+
+### 8.1 ✅ Castor CAN claim
+
+- "Operates 24/7 without breaks."
+- "Fluent in English and Mandarin."
+- "Every call is logged and auditable."
+- "Never forgets, never has a bad day."
+- "Answers within one second, every time."
+- "Handles routine inquiries so your team can focus on high-value work."
+- "Reduces missed calls" (general, no specific % unless backed by a real client case study)
+- Specific numbers ONLY when backed by a named, consented case study.
+
+### 8.2 ❌ Castor CANNOT claim
+
+- ❌ **"Zero errors"** / "100% accuracy" / "Never makes mistakes" — this is false and creates legal exposure under Canada's Competition Act (misleading advertising).
+- ❌ **"Replaces your entire staff"** — InfoLead's positioning is augmentation, not replacement. This also scares clients and unions.
+- ❌ **Specific ROI promises** ("guaranteed 3x return", "you'll save $50,000/year") without a signed case study from that specific client.
+- ❌ **Medical, legal, or financial advice** — even in demo contexts. Castor must refer to "a licensed professional" in any scenario touching these domains.
+- ❌ **Claims about what competitors do or don't do.** No naming Twilio competitors negatively. No disparaging other AI companies.
+- ❌ **Any statement pretending Castor is human.** Even as a joke. Especially not as a joke.
+
+### 8.3 Gray zone — ask Glen first
+
+- Price quotes beyond the public SaaS tier
+- Timeline commitments ("ready in 2 weeks")
+- Industry-specific compliance claims (HIPAA, PIPEDA, PCI-DSS)
+- Any statement involving a named real company unless they've signed off in writing
+
+---
+
+## 9. Legal & Ethical Guardrails (Canadian Context)
+
+### 9.1 AI disclosure
+
+Castor is **always disclosed as AI** on first appearance in any piece of content.
+Acceptable disclosure formats:
+
+- On-screen caption: "Castor is an AI persona."
+- Spoken: "I'm Castor, AI Technology Host at InfoLead."
+- Written bio: "AI persona" or "digital avatar" within the first sentence.
+
+**Why this is non-negotiable:** Canada's evolving AI regulation (AIDA under
+Bill C-27), Ontario's consumer protection framework, and LinkedIn's Terms of
+Service all require AI personas to be clearly labeled. Covert AI is a fast path
+to reputational damage and platform bans.
+
+### 9.2 No fake testimonials, no fake credentials
+
+- Castor has no degrees, no prior jobs, no published papers. Do not invent any.
+- Real InfoLead testimonials must come from real clients with written consent.
+- Castor may present case studies — but only factual, client-approved ones.
+
+### 9.3 PIPEDA and demo data
+
+Any phone number, name, or business used in a Castor demo must be either:
+- Fictional (clearly labeled as demo), or
+- Owned by InfoLead (e.g., a Twilio test line), or
+- A real client with signed release.
+
+Never use real customer call recordings in marketing without written consent.
+
+### 9.4 LinkedIn specifically
+
+- **No personal LinkedIn profile for Castor.** LinkedIn ToS prohibits non-human
+  accounts. A "Castor at InfoLead" individual profile will be reported and
+  removed, and may flag the company page.
+- All Castor content on LinkedIn runs from the **InfoLead Technology Inc.
+  company page** or from **Glen Tang's personal profile** (with "my AI co-host
+  Castor" framing).
+
+---
+
+## 10. Canonical FAQ
+
+Use these answers verbatim (or translate faithfully). Don't improvise on these.
+
+### Q1: Is Castor a real person?
+
+**EN:** "No. Castor is a digital persona — an AI avatar created by InfoLead
+using HeyGen and ElevenLabs. Our human founder is Glen Tang."
+
+**ZH:** "不是。Castor 是一个数字人形象，由 InfoLead 使用 HeyGen 和 ElevenLabs
+技术创作。我们的真人创始人是 Glen Tang（唐先生）。"
+
+### Q2: Why did you create an AI persona instead of just using Glen?
+
+**EN:** "Two reasons. First, it's honest product demonstration — when you see
+Castor, you're seeing the same technology we deploy for your business. Second,
+Castor is fully bilingual and available 24/7 for content, just like the AI
+agents we build. We practice what we sell."
+
+**ZH:** "两个原因。第一，这是最直接的产品演示——您看到 Castor，就是在看
+InfoLead 为客户部署的同一套技术。第二，Castor 真正做到全天候中英双语输出，
+和我们为您打造的 AI 语音客服是同一套能力。我们卖什么，自己先用什么。"
+
+### Q3: Can I talk to Castor on the phone?
+
+**EN:** "Castor is our brand host, not a live voice agent. But the technology
+behind Castor's voice is exactly what powers the bilingual AI front desk we
+build for clients. Want to hear a live demo? Book a call at infolead.ca."
+
+**ZH:** "Castor 是我们的品牌代言人，不是直接接听电话的语音客服。但驱动 Castor
+声音的技术，正是我们为客户搭建的中英双语 AI 前台背后的同一套系统。想听真实
+演示？在 infolead.ca 预约即可。"
+
+### Q4: Is this the same as ChatGPT?
+
+**EN:** "No. ChatGPT is a general-purpose chatbot. InfoLead builds specialized
+voice agents for your business — integrated with your phone system, your
+calendar, and your CRM. ChatGPT can't answer your phone. Ours can."
+
+**ZH:** "不是。ChatGPT 是通用聊天机器人。InfoLead 为您的业务打造专属的语音
+客服——接入您的电话系统、日历、CRM。ChatGPT 接不了您的电话，我们的可以。"
+
+### Q5: Who owns the data when I use InfoLead?
+
+**EN:** "You do. InfoLead operates as a processor on your behalf. Call logs,
+customer data, and transcripts belong to your business. We sign standard data
+processing agreements with every client."
+
+**ZH:** "是您自己。InfoLead 作为数据处理方为您提供服务。通话记录、客户数据、
+对话文本，所有权都归您的企业。我们与每一位客户签署标准的数据处理协议。"
+
+---
+
+## 11. Channel Playbook
+
+### 11.1 Content Pillars
+
+Every Castor piece should fit into one of these five pillars. If it doesn't fit,
+question whether it's on-brand.
 
 1. **Live Demo Clips** — Screen-recorded or avatar-hosted AI voice call walkthroughs
 2. **ROI Breakdowns** — "How much is one missed call costing you?" data storytelling
@@ -75,36 +375,162 @@
 4. **AI Education** — Demystifying Twilio, ElevenLabs, RAG, and voice AI for non-technical audiences
 5. **Behind the Build** — Founder-led content about building InfoLead itself (小红书/LinkedIn)
 
+### 11.2 InfoLead Website (infolead.ca)
+
+- **Homepage Hero:** HeyGen 30-sec bilingual intro (fallback: static avatar
+  image with play button on slow connections)
+- **About page:** Section titled "Meet Castor" with medium bio (§5.3)
+- **Services pages:** Castor may appear in explainer videos for each service
+- **Footer:** Small disclosure line: "Castor is InfoLead's AI persona."
+
+### 11.3 LinkedIn (InfoLead company page)
+
+- **Cadence:** 1 Castor-led post per week maximum; mix with Glen's human posts
+- **Format:** 30-60 sec vertical video, burned-in bilingual subtitles
+- **Caption opener:** Always name Castor as AI in first line
+- **Hashtags:** #AIVoiceAgent #BilingualAI #TorontoSMB #InfoLead
+
+### 11.4 小红书 / 抖音 (Chinese social)
+
+- **Tone:** Slightly warmer and more accessible than LinkedIn — these platforms
+  reward personality. Castor can explain concepts; he cannot become a lifestyle
+  influencer.
+- **Format:** 9:16 vertical, 15-45 sec
+- **Disclosure:** 小红书 requires AI-generated content labeling — use the
+  platform's built-in AI content toggle on every post
+- **Topics that work:** "AI 前台帮律所节省了多少成本", "中英双语 AI 客服演示",
+  "为什么华人小企业主都在看 AI 自动化"
+
+### 11.5 Client pitch decks
+
+- One Castor slide max. Usually slide 2 or 3, introducing InfoLead's technology.
+- Never use Castor to replace the "meet the team" slide — clients want to see
+  Glen and the humans they'll actually work with.
+
+### 11.6 Email signatures
+
+Do **not** add Castor to anyone's email signature. Email is a human-to-human
+channel at InfoLead. Castor belongs to broadcast media.
+
 ---
 
-## Distribution Channels
+## 12. Required Disclosures (copy-paste ready)
 
-| Platform | Language | Content Type |
-|---|---|---|
-| 小红书 (RedNote) | Mandarin primary | Short clips, case studies, founder POV |
-| TikTok / Instagram Reels | English primary | Quick demos, ROI hooks |
-| LinkedIn | English | Thought leadership, B2B case studies |
-| YouTube | Bilingual | Long-form demos, tutorials |
-| InfoLead website | Both | Embedded hero demo, about page |
+### Short (for video overlays)
+**EN:** "Castor is an AI persona."
+**ZH:** "Castor 为 AI 数字人形象"
+
+### Medium (for captions, social posts)
+**EN:** "Castor is InfoLead's AI Technology Host — a digital persona, not a real person."
+**ZH:** "Castor 是 InfoLead 的 AI 技术主理人——数字人形象，非真人。"
+
+### Long (for website footers, legal docs)
+**EN:** "Castor is a digital persona created by InfoLead Technology Inc. using
+HeyGen and ElevenLabs technology. Castor is not a real person and does not hold
+any officer position at InfoLead Technology Inc. All statutory officers of the
+company are natural persons as recorded in the Ontario Business Registry."
+
+**ZH:** "Castor 是 InfoLead Technology Inc. 使用 HeyGen 和 ElevenLabs 技术创作的
+数字人形象，不是真实人物，也不担任 InfoLead Technology Inc. 的任何法定高管职位。
+公司所有法定高管均为自然人，以安省企业登记信息为准。"
 
 ---
 
-## Prohibited Uses
+## 13. Script Templates
 
-- Do not portray Castor as a replacement for human judgment in legal, medical, or financial decisions
-- Do not use Castor's likeness to make performance guarantees not backed by real data
-- All statistics cited by Castor must be sourced or clearly labeled as projections
+### 13.1 15-second teaser (EN)
+
+```
+[0-3s]  "I'm Castor, AI Technology Host at InfoLead."
+[3-10s] [ONE concrete problem statement — e.g., "Missed calls cost GTA
+         businesses thousands every month."]
+[10-15s] "We fix that. infolead.ca."
+```
+
+### 13.2 15 秒引流 (ZH)
+
+```
+[0-3s]   "你好，我是 Castor，InfoLead 的 AI 技术主理人。"
+[3-10s]  [一个具体痛点——例如："大多地区企业每月因漏接电话流失上千加币利润。"]
+[10-15s] "我们解决它。infolead.ca。"
+```
+
+### 13.3 30-second intro (EN) — PRIMARY PRODUCTION SCRIPT
+
+```
+Hello. I'm Castor, AI Technology Host at InfoLead.
+
+In the Greater Toronto Area, one missed call can cost a business thousands
+in lost revenue — and labor costs keep rising.
+
+That's why we build 24/7 bilingual AI voice agents: your tireless front desk,
+fluent in English and Mandarin, always on, every call logged.
+
+Let us handle the calls. You focus on growing.
+
+Visit infolead.ca.
+```
+
+### 13.4 30 秒介绍 (ZH) — 主力投放脚本
+
+```
+你好，我是 Castor，InfoLead 的 AI 技术主理人。
+
+在大多伦多地区做生意，漏接一个客户来电，流失的可能就是几千加币的利润——
+而人工客服的成本只会越来越高。
+
+所以我们为华人中小企业打造全天候的中英双语 AI 前台：您的专属 AI 员工永不休息，
+始终在线，每一通电话都有记录。
+
+把接听交给我们，把增长留给您。
+
+立即访问 infolead.ca。
+```
+
+### 13.5 60-second product demo structure
+
+1. [0-5s] Introduction (§5.1)
+2. [5-15s] Problem framing (specific industry: law firm, clinic, real estate)
+3. [15-35s] Solution demonstration — describe what the AI does, in plain terms
+4. [35-50s] Concrete outcome — one number, one benefit
+5. [50-60s] CTA — book a demo at infolead.ca
 
 ---
 
-## File Naming Convention
+## 14. Asset Management & File Naming
 
-All media assets featuring Castor should follow:
+All media assets featuring Castor should follow this naming convention:
+
 ```
 castor_[content-type]_[lang]_[YYYYMMDD].[ext]
 ```
-Examples: `castor_demo_en_20260423.mp4` · `castor_case-aplus_zh_20260501.mp4`
+
+**Examples:**
+- `castor_demo_en_20260423.mp4` — English demo video, Apr 23 2026
+- `castor_case-aplus_zh_20260501.mp4` — Chinese case study, May 1 2026
+- `castor_linkedin_en_20260510.mp4` — LinkedIn post asset
+- `castor_avatar-base_20260418.png` — canonical base avatar still
+
+**Storage location:** All production-ready assets live under
+`public/assets/videos/` (for web) and the shared Drive `Castor/` folder (for
+source files, HeyGen project files, ElevenLabs voice exports).
+
+**Retention:** Keep all raw HeyGen exports and ElevenLabs audio for at least 12
+months — needed for re-edits, platform re-uploads, and avatar consistency audits.
 
 ---
 
-*Last updated: 2026-04-23 · Maintained by: Glen Tang (InfoLead Founder)*
+## 15. Version History
+
+| Version | Date | Changes | Approved by |
+|---|---|---|---|
+| 1.0 | Apr 2026 | Initial Brand Bible | Glen Tang |
+| 1.1 | 2026-04-23 | Merged Core Mission Statement, Target Audience, Content Pillars, and File Naming Convention; renumbered sections; resolved earlier merge conflict | Glen Tang |
+
+**Next review:** After first 10 published Castor pieces (LinkedIn + 小红书 + web),
+assess what worked and revise §6 (Voice), §11 (Channel Playbook), and §13 (Scripts)
+based on engagement data.
+
+---
+
+*End of document. Questions or proposed edits: dev@infolead.ca*
