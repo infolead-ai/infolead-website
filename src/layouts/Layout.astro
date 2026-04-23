@@ -31,7 +31,7 @@ const altLangPath = Astro.url.pathname.replace(
 					<div class="nav-links" id="nav-links">
 						<a href={lang === 'en' ? '/en/services' : '/zh/services'} class="nav-item">{lang === 'en' ? 'Services' : '服务'}</a>
 						<a href={lang === 'en' ? '/en/about' : '/zh/about'} class="nav-item">{lang === 'en' ? 'About' : '关于'}</a>
-						<a href={lang === 'en' ? '/en/contact' : '/zh/contact'} class="btn-mini">{lang === 'en' ? 'Contact' : '联系'}</a>
+						<a href={lang === 'en' ? '/en/contact' : '/zh/contact'} class="nav-cta">{lang === 'en' ? 'Contact' : '联系'}</a>
 					</div>
 
 					<div class="nav-actions">
@@ -100,6 +100,12 @@ const altLangPath = Astro.url.pathname.replace(
 	.nav-links { display: flex; gap: 32px; align-items: center; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
 	.nav-links a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 14px; transition: 0.3s; }
 	.nav-links a:hover { color: var(--cyan); }
+	.nav-links a:focus, .nav-links a:active { outline: none; color: rgba(255,255,255,0.6); }
+
+	/* 导航 Contact 按钮 — 描边风格，与暗色主题一致 */
+	.nav-cta { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--cyan) !important; border: 1px solid var(--cyan); padding: 6px 18px; border-radius: 99px; transition: 0.3s; opacity: 0.85; }
+	.nav-cta:hover { opacity: 1; background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 12px rgba(0, 229, 255, 0.25); transform: translateY(-1px); }
+	.nav-cta:focus, .nav-cta:active { outline: none; }
 	
 	/* 操作按钮组 (语言 + 汉堡) */
 	.nav-actions { display: flex; align-items: center; gap: 16px; position: relative; z-index: 101; }
@@ -161,7 +167,7 @@ const altLangPath = Astro.url.pathname.replace(
 		}
 		.nav-links.active { right: 0; }
 		.nav-links a.nav-item { font-size: 24px; color: #fff; }
-		.nav-links .btn-mini { font-size: 18px; padding: 12px 36px; }
+		.nav-links .nav-cta { font-size: 18px; padding: 12px 36px; }
 
 		/* =========================================
 		   强制修复 Aplus Pilot 终端代码框溢出问题
