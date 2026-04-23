@@ -29,10 +29,24 @@ import { services } from '../../data/services';
 
       <!-- 右侧：Castor 演示视频 -->
       <div class="relative rounded-2xl border border-white/10 shadow-2xl bg-ink overflow-hidden" style="flex: 1; min-width: 300px; max-width: 560px;">
-        <video autoplay muted loop playsinline class="w-full block">
+        <video id="castor-video" autoplay muted loop playsinline class="w-full block">
           <source src="/assets/videos/Castor_v1.mp4" type="video/mp4" />
         </video>
         <div class="absolute inset-x-0 bottom-0 pointer-events-none" style="height: 40%; background: linear-gradient(to top, var(--color-ink) 0%, transparent 100%);"></div>
+
+        <button
+          id="castor-unmute-btn"
+          type="button"
+          aria-label="取消静音 Castor 视频"
+          class="absolute bottom-4 right-4 z-10 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-white/20 transition cursor-pointer text-sm"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <span class="castor-unmute-label">聆听 Castor</span>
+        </button>
       </div>
 
     </div>
@@ -170,5 +184,26 @@ import { services } from '../../data/services';
       </div>
     </div>
   </section>
+
+  <script>
+    const castorVideo = document.getElementById('castor-video') as HTMLVideoElement | null;
+    const castorBtn = document.getElementById('castor-unmute-btn');
+    const castorLabel = castorBtn?.querySelector('.castor-unmute-label');
+
+    castorBtn?.addEventListener('click', () => {
+      if (!castorVideo) return;
+      if (castorVideo.muted) {
+        castorVideo.muted = false;
+        castorVideo.currentTime = 0;
+        castorVideo.play().catch(() => {});
+        if (castorLabel) castorLabel.textContent = '静音';
+        castorBtn.setAttribute('aria-label', '静音 Castor 视频');
+      } else {
+        castorVideo.muted = true;
+        if (castorLabel) castorLabel.textContent = '聆听 Castor';
+        castorBtn.setAttribute('aria-label', '取消静音 Castor 视频');
+      }
+    });
+  </script>
 
 </Layout>
