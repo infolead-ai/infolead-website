@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* ============================================================
+   InfoLead Design Tokens — Deep Space × Neural Signal
+   Tailwind v4: tokens defined here as CSS custom properties.
+   Usage: bg-ink, text-neon, bg-accent, text-green, etc.
+   ============================================================ */
+@theme {
+  --color-ink:   #0A0E1A;
+  --color-abyss: #111827;
+  --color-neon:  #00E5FF;
+  --color-accent: #7C5CFF;
+  --color-green: #C6FF4A;
+  --color-mute:  #94A3B8;
+}

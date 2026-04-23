@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 interface Props {
 	title?: string;
 	lang?: 'en' | 'zh';
@@ -71,14 +73,17 @@ const altLangPath = Astro.url.pathname.replace(
 </html>
 
 <style is:global>
+	@reference "../styles/global.css";
+
 	/* 核心修复：强制所有元素包含 padding 在宽度内，防止撑破屏幕 */
 	*, *::before, *::after { box-sizing: border-box; }
 
-	/* 定义主题核心变量 */
-	:root { --bg: #050714; --cyan: #00E5FF; --purple: #7C5CFF; --green: #C6FF4A; }
-	
+	/* 主题 CSS 变量（与 Tailwind @theme tokens 保持一致） */
+	:root { --bg: var(--color-ink); --cyan: var(--color-neon); --purple: var(--color-accent); --green: var(--color-green); }
+
 	/* 基础设定 */
-	html, body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', 'Noto Sans SC', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+	html, body { margin: 0; color: #fff; font-family: 'Inter', 'Noto Sans SC', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+	body { @apply bg-ink; }
 	
 	/* 星云背景特效 */
 	.nebula-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; opacity: 0.3; pointer-events: none; }
@@ -98,26 +103,26 @@ const altLangPath = Astro.url.pathname.replace(
 	
 	/* 操作按钮组 (语言 + 汉堡) */
 	.nav-actions { display: flex; align-items: center; gap: 16px; position: relative; z-index: 101; }
-	.lang-btn { border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #fff; text-decoration: none; transition: 0.3s; }
-	.lang-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--cyan); color: var(--cyan); }
+	.lang-btn { @apply border border-white/20 text-white no-underline font-mono; padding: 5px 12px; border-radius: 6px; font-size: 12px; transition: 0.3s; }
+	.lang-btn:hover { background: rgba(255,255,255,0.1); @apply border-neon text-neon; }
 	
 	.menu-btn { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
 	.menu-btn span { display: block; width: 22px; height: 2px; background: #fff; transition: 0.3s ease; border-radius: 2px; }
 	
 	/* 文本与排版工具类 */
 	main { max-width: 1200px; margin: 0 auto; padding: 120px 40px 0; }
-	.grad { background: linear-gradient(90deg, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+	.grad { background: linear-gradient(90deg, #fff, var(--color-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 	.italic { font-family: 'Instrument Serif', serif; font-style: italic; }
 	footer { text-align: center; padding: 80px 20px 40px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: monospace; }
 	
 	/* 按钮特效 */
 	.btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; border-radius: 99px; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); font-weight: 500; }
-	.btn-primary { background: var(--cyan); color: #000; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); }
+	.btn-primary { @apply bg-neon text-black; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); }
 	.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(0, 229, 255, 0.5); background: #33EEFF; }
-	.btn-ghost { background: rgba(255, 255, 255, 0.03); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
+	.btn-ghost { @apply bg-white/5 text-white border border-white/10; }
 	.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
-	.btn-mini { background: #fff; color: #000 !important; padding: 8px 20px; border-radius: 99px; font-weight: 600; transition: 0.3s; }
-	.btn-mini:hover { background: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); transform: translateY(-2px); }
+	.btn-mini { @apply bg-white text-black font-semibold; padding: 8px 20px; border-radius: 99px; transition: 0.3s; }
+	.btn-mini:hover { @apply bg-neon; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); transform: translateY(-2px); }
 
 	/* ==========================================================================
 	   移动端响应式强制覆盖 (Mobile Responsive Engine)
