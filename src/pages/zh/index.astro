@@ -6,20 +6,35 @@ import { services } from '../../data/services';
 <Layout lang="zh" title="InfoLead Technology — 领先的 AI 原生解决方案">
   
   <section style="padding: 140px 0 100px; position: relative;">
-    <div class="tag" style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
-      <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
-      AI 原生 · 加拿大多伦多
-    </div>
-    <h1 style="font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 300; line-height: 1.1; margin-bottom: 40px; letter-spacing: -0.02em;">
-      极速增长。<br/>
-      <span class="grad">AI 原生</span> 解决方案。
-    </h1>
-    <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 720px; margin-bottom: 56px; line-height: 1.6; font-weight: 300;">
-      我们将最前沿的 AI 技术转化为真实的商业增长。从 24/7 智能语音前台到全自动获客引擎，我们为您构建推动业务自动运转的系统，让您专注于企业核心愿景。
-    </p>
-    <div class="flex gap-5 flex-wrap">
-      <a href="/zh/contact" class="btn btn-primary" style="padding: 16px 36px; font-size: 15px;">预约战略通话 →</a>
-      <a href="#industry" class="btn btn-ghost" style="padding: 16px 36px; font-size: 15px;">查看解决方案</a>
+    <div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: center;">
+
+      <!-- 左侧：文案 -->
+      <div style="flex: 1; min-width: 320px;">
+        <div class="tag" style="margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06);">
+          <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
+          AI 原生 · 加拿大多伦多
+        </div>
+        <h1 style="font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 300; line-height: 1.1; margin-bottom: 40px; letter-spacing: -0.02em;">
+          极速增长。<br/>
+          <span class="grad">AI 原生</span> 解决方案。
+        </h1>
+        <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 560px; margin-bottom: 56px; line-height: 1.6; font-weight: 300;">
+          我们将最前沿的 AI 技术转化为真实的商业增长。从 24/7 智能语音前台到全自动获客引擎，我们为您构建推动业务自动运转的系统，让您专注于企业核心愿景。
+        </p>
+        <div class="flex gap-5 flex-wrap">
+          <a href="/zh/contact" class="btn btn-primary" style="padding: 16px 36px; font-size: 15px;">预约战略通话 →</a>
+          <a href="#industry" class="btn btn-ghost" style="padding: 16px 36px; font-size: 15px;">查看解决方案</a>
+        </div>
+      </div>
+
+      <!-- 右侧：Castor 演示视频 -->
+      <div class="relative rounded-2xl border border-white/10 shadow-2xl bg-ink overflow-hidden" style="flex: 1; min-width: 300px; max-width: 560px;">
+        <video autoplay muted loop playsinline class="w-full block">
+          <source src="/assets/videos/Castor_v1.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-x-0 bottom-0 pointer-events-none" style="height: 40%; background: linear-gradient(to top, var(--color-ink) 0%, transparent 100%);"></div>
+      </div>
+
     </div>
   </section>
 
