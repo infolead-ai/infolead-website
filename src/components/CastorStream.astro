@@ -3,30 +3,77 @@ interface Props {
   videoId: string;
   title?: string;
   class?: string;
+  thumbnailTime?: string;
 }
 
 const {
   videoId,
   title = "Castor, AI Technology Host",
   class: className = "",
+  thumbnailTime = "2s",
 } = Astro.props;
 
-const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&muted=true&loop=true&preload=auto`;
+const thumbnailUrl = `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg?time=${thumbnailTime}&height=1080`;
+const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&muted=false&loop=true&preload=auto`;
 ---
 
 <div
   class:list={[
-    "relative aspect-video rounded-2xl overflow-hidden",
+    "castor-stream relative aspect-video rounded-2xl overflow-hidden",
     "ring-2 ring-neon/60 shadow-[0_0_40px_-10px_#00E5FF]",
     className,
   ]}
+  data-video-src={iframeSrc}
+  data-video-title={title}
 >
-  <iframe
-    src={iframeSrc}
-    title={title}
+  <img
+    src={thumbnailUrl}
+    alt={title}
     loading="eager"
-    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-    allowfullscreen
-    class="absolute inset-0 w-full h-full border-0"
-  ></iframe>
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+
+  <button
+    type="button"
+    class="castor-play-btn absolute inset-0 flex items-center justify-center group cursor-pointer"
+    aria-label={`Play video: ${title}`}
+  >
+    <span class="absolute inset-0 bg-ink/20 group-hover:bg-ink/10 transition-colors"></span>
+
+    <span
+      class="relative flex items-center justify-center w-20 h-20 rounded-full
+             bg-neon/20 border-2 border-neon backdrop-blur-sm
+             transition-all duration-300
+             group-hover:scale-110 group-hover:bg-neon/30
+             shadow-[0_0_30px_-5px_#00E5FF]
+             group-hover:shadow-[0_0_50px_-5px_#00E5FF]"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </span>
+  </button>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.castor-stream').forEach((container) => {
+    const btn = container.querySelector<HTMLButtonElement>('.castor-play-btn');
+    const src = container.dataset.videoSrc;
+    const title = container.dataset.videoTitle || 'Video';
+    if (!btn || !src) return;
+
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = title;
+      iframe.loading = 'eager';
+      iframe.setAttribute(
+        'allow',
+        'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen'
+      );
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.className = 'absolute inset-0 w-full h-full border-0';
+      container.replaceChildren(iframe);
+    });
+  });
+</script>
