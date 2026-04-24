@@ -30,3 +30,8 @@ pnpm-debug.log*
 
 # Private founder journal — not for public repo
 PROJECT_LOG.md
+
+# Videos — host on Cloudflare Stream or YouTube, never in repo
+public/assets/videos/*.mp4
+public/assets/videos/*.mov
+public/assets/videos/*.webm

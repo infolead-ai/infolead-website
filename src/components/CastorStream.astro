@@ -1,0 +1,32 @@
+---
+interface Props {
+  videoId: string;
+  title?: string;
+  class?: string;
+}
+
+const {
+  videoId,
+  title = "Castor, AI Technology Host",
+  class: className = "",
+} = Astro.props;
+
+const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&muted=true&loop=true&preload=auto`;
+---
+
+<div
+  class:list={[
+    "relative aspect-video rounded-2xl overflow-hidden",
+    "ring-2 ring-neon/60 shadow-[0_0_40px_-10px_#00E5FF]",
+    className,
+  ]}
+>
+  <iframe
+    src={iframeSrc}
+    title={title}
+    loading="eager"
+    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+    allowfullscreen
+    class="absolute inset-0 w-full h-full border-0"
+  ></iframe>
+</div>
