@@ -119,15 +119,15 @@ src/
 
 ## 🚦 Current Status (as of 2026-04-25)
 
-- ✅ Website live on Vercel
-- ✅ Castor video streaming (HLS, cross-platform including WeChat browser)
-- ✅ Bilingual routing /en/ /zh/
-- ✅ Compliance fix: removed "99.8% accuracy" claim
-- ✅ Aplus proposal submitted (PDF + anniversary poster)
-- ⏳ LinkedIn account under review (name mismatch: Glen vs Yun)
-- ⏳ Twilio re-registration (blocked on account, needed for Voice Core)
-- ⏳ Second AI representative Lyra: HeyGen video production pending
-- ⏳ Theme song production: Music Muse AI (musicmuse.ai) — Glen subscribed
+- ✅ 域名 infolead.ca 已绑定 Vercel
+- ✅ Castor 视频全平台兼容（HLS.js + 微信 X5 + Safari）
+- ✅ 双语路由 /en/ /zh/
+- ✅ 合规修复：移除 99.8% accuracy
+- ✅ Aplus 提案已发
+- ✅ Claude Code skills 安装完毕
+- ⏳ AI 客服演示组件（下一步）
+- ⏳ LinkedIn 账号申诉中
+- ⏳ Twilio 重注册
 
 ---
 
