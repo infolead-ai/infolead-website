@@ -1,9 +1,12 @@
 ---
+// customer subdomain code from Cloudflare Stream HLS Manifest URL
+// see: dashboard.cloudflare.com → Stream → [video] → HLS Manifest URL
 interface Props {
   videoId: string;
   title?: string;
   class?: string;
   thumbnailTime?: string;
+  customerCode?: string;
 }
 
 const {
@@ -11,10 +14,11 @@ const {
   title = "Castor, AI Technology Host",
   class: className = "",
   thumbnailTime = "2s",
+  customerCode = "hhr1wqn8uyz98fpo",
 } = Astro.props;
 
 const thumbnailUrl = `https://videodelivery.net/${videoId}/thumbnails/thumbnail.jpg?time=${thumbnailTime}&height=1080`;
-const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&muted=false&loop=true&preload=auto`;
+const manifestUrl = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/manifest/video.m3u8`;
 ---
 
 <div
@@ -23,8 +27,8 @@ const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&mut
     "ring-2 ring-neon/60 shadow-[0_0_40px_-10px_#00E5FF]",
     className,
   ]}
-  data-video-src={iframeSrc}
-  data-video-title={title}
+  data-manifest={manifestUrl}
+  data-title={title}
 >
   <img
     src={thumbnailUrl}
@@ -58,22 +62,62 @@ const iframeSrc = `https://iframe.videodelivery.net/${videoId}?autoplay=true&mut
 <script>
   document.querySelectorAll<HTMLElement>('.castor-stream').forEach((container) => {
     const btn = container.querySelector<HTMLButtonElement>('.castor-play-btn');
-    const src = container.dataset.videoSrc;
-    const title = container.dataset.videoTitle || 'Video';
-    if (!btn || !src) return;
+    const manifestUrl = container.dataset.manifest;
+    const title = container.dataset.title || 'Video';
+    if (!btn || !manifestUrl) return;
 
-    btn.addEventListener('click', () => {
-      const iframe = document.createElement('iframe');
-      iframe.src = src;
-      iframe.title = title;
-      iframe.loading = 'eager';
-      iframe.setAttribute(
-        'allow',
-        'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen'
-      );
-      iframe.setAttribute('allowfullscreen', 'true');
-      iframe.className = 'absolute inset-0 w-full h-full border-0';
-      container.replaceChildren(iframe);
+    btn.addEventListener('click', async () => {
+      // prevent re-entry while hls.js is being fetched
+      btn.disabled = true;
+
+      const video = document.createElement('video');
+      video.controls = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.setAttribute('webkit-playsinline', 'true');
+      video.setAttribute('x5-playsinline', '');
+      video.setAttribute('x5-video-player-type', 'h5-page');
+      video.preload = 'auto';
+      video.title = title;
+      video.className = 'absolute inset-0 w-full h-full object-cover bg-black';
+
+      // Safari / iOS Safari: native HLS — skip hls.js entirely
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = manifestUrl;
+      } else {
+        try {
+          // hls.light: drops subtitles/alt-audio/CMCD/EME/Variable Substitution
+          // — none needed for Cloudflare Stream H.264/AAC playback. ~60 KB gzip
+          // vs ~158 KB gzip full build. Cast to full types since API surface for
+          // core playback is identical.
+          const { default: Hls } = (await import(
+            'hls.js/dist/hls.light.min.js'
+          )) as typeof import('hls.js');
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(manifestUrl);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.ERROR, (_evt, data) => {
+              if (data.fatal) {
+                console.error('[Castor HLS] fatal error', data);
+              }
+            });
+          } else {
+            // MSE not supported (very old browsers) — last-ditch native attempt
+            video.src = manifestUrl;
+          }
+        } catch (err) {
+          console.error('[Castor] hls.js load failed', err);
+          video.src = manifestUrl;
+        }
+      }
+
+      container.replaceChildren(video);
+      video.play().catch((err) => {
+        // iOS low-power or Autoplay policy edge cases — user can still
+        // hit the native controls play button that we rendered.
+        console.warn('[Castor] play() rejected', err);
+      });
     });
   });
 </script>
