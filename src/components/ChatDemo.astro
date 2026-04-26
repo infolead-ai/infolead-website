@@ -324,4 +324,19 @@ const copy = {
     letter-spacing: 0.05em;
   }
   .chat-clear:hover { color: #00E5FF; }
+
+  @media (max-width: 640px) {
+    .chat-demo { border-radius: 16px; }
+    .chat-messages {
+      height: 360px;
+      padding: 16px;
+      gap: 10px;
+    }
+    .chat-bubble { max-width: 92%; }
+    .chat-bubble-content { padding: 10px 14px; font-size: 13.5px; }
+    .chat-input-area { padding: 12px 14px; gap: 8px; }
+    .chat-input { padding: 9px 12px; min-height: 40px; }
+    .chat-send { padding: 9px 18px; font-size: 13px; }
+    .chat-meta-row { padding: 6px 14px 8px; }
+  }
 </style>
