@@ -33,6 +33,10 @@ pnpm-debug.log*
 # Private founder journal — not for public repo
 PROJECT_LOG.md
 
+# Local test scratch files (canonical version lives in .claude/skills/ai-demo-qa/)
+test-prod-demo.*
+demo-test-results.txt
+
 # Videos — host on Cloudflare Stream or YouTube, never in repo
 public/assets/videos/*.mp4
 public/assets/videos/*.mov
