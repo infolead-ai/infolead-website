@@ -53,7 +53,7 @@ function jsonError(error: string, status: number): Response {
   });
 }
 
-const apiKey = import.meta.env.OPENROUTER_API_KEY;
+const apiKey = process.env.OPENROUTER_API_KEY ?? import.meta.env.OPENROUTER_API_KEY;
 
 const client = apiKey
   ? new OpenAI({
