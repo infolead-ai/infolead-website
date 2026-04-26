@@ -53,6 +53,22 @@ function jsonError(error: string, status: number): Response {
   });
 }
 
+// Server-side last-line of defense: strip meta-commentary parentheticals
+// the model occasionally emits despite prompt rules. Operates on the
+// trailing buffer of the streaming response.
+function sanitizeMetaLeak(text: string): string {
+  let out = text;
+  // Trailing italic parenthetical self-audits: "*(Note: ...)*", "*(Per X rule, ...)*"
+  out = out.replace(/\s*\*+\([^)]*\)\*+\s*$/g, '');
+  // "(Note: ...)", "(FYI: ...)", "(For compliance: ...)" etc — trailing
+  out = out.replace(/\s*\((?:Note|NOTE|FYI|Disclaimer|For compliance|For reference|For your reference|Alternatively)[^)]*\)\s*$/gi, '');
+  // Chinese parenthetical asides — trailing
+  out = out.replace(/\s*（(?:注|严格遵循|仅供参考|另外|免责声明|注释)[^）]*）\s*$/g, '');
+  return out.trimEnd();
+}
+
+const SANITIZE_TAIL_BUFFER_CHARS = 250;
+
 const apiKey = process.env.OPENROUTER_API_KEY ?? import.meta.env.OPENROUTER_API_KEY;
 
 const client = apiKey
@@ -125,14 +141,27 @@ export const POST: APIRoute = async ({ request }) => {
   const encoder = new TextEncoder();
   const readable = new ReadableStream({
     async start(controller) {
+      // Hold the trailing N chars in a buffer so we can sanitize meta-leak
+      // patterns at stream end. Everything older than the tail flushes in
+      // real time to preserve the streaming UX.
+      let tail = '';
       try {
         for await (const chunk of upstream) {
           const text = chunk.choices?.[0]?.delta?.content ?? '';
-          if (text) controller.enqueue(encoder.encode(text));
+          if (!text) continue;
+          tail += text;
+          if (tail.length > SANITIZE_TAIL_BUFFER_CHARS) {
+            const flushable = tail.slice(0, tail.length - SANITIZE_TAIL_BUFFER_CHARS);
+            controller.enqueue(encoder.encode(flushable));
+            tail = tail.slice(tail.length - SANITIZE_TAIL_BUFFER_CHARS);
+          }
         }
+        const cleaned = sanitizeMetaLeak(tail);
+        if (cleaned) controller.enqueue(encoder.encode(cleaned));
       } catch {
-        // upstream stream broke mid-flight; close gracefully so the client
-        // sees what was received so far rather than a hung connection.
+        // upstream stream broke mid-flight; flush whatever's safe.
+        const cleaned = sanitizeMetaLeak(tail);
+        if (cleaned) controller.enqueue(encoder.encode(cleaned));
       } finally {
         controller.close();
       }
