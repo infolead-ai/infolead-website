@@ -12,6 +12,8 @@ export const GET: APIRoute = async () => {
     JSON.stringify({
       hasOpenrouter: !!process.env.OPENROUTER_API_KEY,
       openrouterLen: (process.env.OPENROUTER_API_KEY ?? '').length,
+      hasTestVar: !!process.env.INFOLEAD_TEST_VAR,
+      testVarValue: process.env.INFOLEAD_TEST_VAR ?? null,
       totalProcessEnvKeys: allProcessKeys.length,
       userDefinedKeys: userKeys,
       gitSha: process.env.VERCEL_GIT_COMMIT_SHA,
