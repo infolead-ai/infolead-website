@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ChatDemo from '../../components/ChatDemo.astro';
+
+export const prerender = true;
+---
+
+<Layout lang="en" title="InfoLead AI Assistant — Live Demo">
+  <section style="padding: 60px 0 40px;">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <div style="display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06); margin-bottom: 32px;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
+        LIVE DEMO
+      </div>
+      <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 300; line-height: 1; margin-bottom: 24px; letter-spacing: -0.03em;">
+        Talk to <span class="grad">InfoLead AI</span>
+      </h1>
+      <p style="font-size: 18px; color: rgba(255,255,255,0.6); max-width: 560px; margin: 0 auto; line-height: 1.6; font-weight: 300;">
+        Try our bilingual AI assistant. Ask about voice agents, websites, AI video, or how we can help your business.
+      </p>
+    </div>
+
+    <ChatDemo lang="en" />
+
+    <p style="text-align: center; margin-top: 36px; font-size: 11px; color: rgba(255,255,255,0.3); font-family: monospace; letter-spacing: 0.1em;">
+      DEMO ONLY · RESPONSES DO NOT CONSTITUTE FORMAL SERVICE COMMITMENTS
+    </p>
+  </section>
+</Layout>

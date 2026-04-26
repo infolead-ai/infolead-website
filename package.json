@@ -12,9 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/vercel": "^10.0.5",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.8",
     "hls.js": "^1.6.16",
+    "openai": "^6.34.0",
     "tailwindcss": "^4.2.4"
   }
 }

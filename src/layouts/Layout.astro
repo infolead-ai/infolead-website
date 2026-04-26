@@ -30,6 +30,7 @@ const altLangPath = Astro.url.pathname.replace(
 				<div class="nav-right">
 					<div class="nav-links" id="nav-links">
 						<a href={lang === 'en' ? '/en/services' : '/zh/services'} class="nav-item">{lang === 'en' ? 'Services' : '服务'}</a>
+						<a href={lang === 'en' ? '/en/demo' : '/zh/demo'} class="nav-item">{lang === 'en' ? 'Demo' : '演示'}</a>
 						<a href={lang === 'en' ? '/en/about' : '/zh/about'} class="nav-item">{lang === 'en' ? 'About' : '关于'}</a>
 						<a href={lang === 'en' ? '/en/contact' : '/zh/contact'} class="nav-cta">{lang === 'en' ? 'Contact' : '联系'}</a>
 					</div>
