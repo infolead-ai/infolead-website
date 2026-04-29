@@ -1,13 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ChatDemo from '../../components/ChatDemo.astro';
+import VoiceDemo from '../../components/VoiceDemo.astro';
 
 export const prerender = true;
 ---
 
 <Layout lang="zh" title="InfoLead AI 客服 — 在线演示">
   <section style="padding: 60px 0 40px;">
-    <div style="text-align: center; margin-bottom: 48px;">
+    <div style="text-align: center; margin-bottom: 40px;">
       <div style="display: inline-flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.06); margin-bottom: 32px;">
         <span style="width: 6px; height: 6px; border-radius: 50%; background: #00E5FF; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);"></span>
         在线演示 · LIVE DEMO
@@ -20,10 +21,93 @@ export const prerender = true;
       </p>
     </div>
 
-    <ChatDemo lang="zh" />
+    <div class="demo-tabs" role="tablist" aria-label="演示模式">
+      <button class="demo-tab is-text active" data-tab="text" role="tab" aria-selected="true" type="button">
+        <span class="demo-tab-icon">💬</span> 文字对话
+      </button>
+      <button class="demo-tab is-voice" data-tab="voice" role="tab" aria-selected="false" type="button">
+        <span class="demo-tab-icon">🎤</span> 与莱拉对话
+      </button>
+    </div>
+
+    <div class="demo-panel" data-panel="text" role="tabpanel">
+      <ChatDemo lang="zh" />
+    </div>
+    <div class="demo-panel hidden" data-panel="voice" role="tabpanel">
+      <VoiceDemo lang="zh" />
+    </div>
 
     <p style="text-align: center; margin-top: 36px; font-size: 11px; color: rgba(255,255,255,0.3); font-family: monospace; letter-spacing: 0.1em;">
       演示仅供参考 · 对话内容不构成正式服务承诺
     </p>
   </section>
 </Layout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.demo-tab');
+  const panels = document.querySelectorAll<HTMLElement>('.demo-panel');
+  let elevenLabsLoaded = false;
+
+  function loadElevenLabs() {
+    if (elevenLabsLoaded) return;
+    elevenLabsLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+    s.async = true;
+    s.type = 'text/javascript';
+    document.head.appendChild(s);
+  }
+
+  tabs.forEach((t) => {
+    t.addEventListener('click', () => {
+      const target = t.dataset.tab;
+      tabs.forEach((x) => {
+        const on = x === t;
+        x.classList.toggle('active', on);
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== target));
+      if (target === 'voice') loadElevenLabs();
+    });
+  });
+</script>
+
+<style>
+  .demo-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .demo-tab {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 22px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .demo-tab-icon { font-size: 16px; line-height: 1; }
+  .demo-tab:hover { color: rgba(255, 255, 255, 0.85); }
+  .demo-tab.is-text.active { color: #00E5FF; border-bottom-color: #00E5FF; text-shadow: 0 0 14px rgba(0, 229, 255, 0.4); }
+  .demo-tab.is-voice.active { color: #A78BFA; border-bottom-color: #A78BFA; text-shadow: 0 0 14px rgba(167, 139, 250, 0.4); }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    .demo-tab { padding: 12px 14px; font-size: 13.5px; }
+    .demo-tab-icon { font-size: 14px; }
+  }
+</style>

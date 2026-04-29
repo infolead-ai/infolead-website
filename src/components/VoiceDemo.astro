@@ -1,0 +1,126 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+
+const copy = {
+  en: {
+    title: 'LYRA · 星曲 · AI BRAND STORYTELLER',
+    desc: "Talk directly with Lyra about InfoLead's AI solutions. Available in English and Mandarin.",
+    sub: 'Best experienced on Chrome or Edge · Powered by ElevenLabs',
+    wechat: 'Voice chat is not available in WeChat. Please open infolead.ca in Chrome or Safari.',
+  },
+  zh: {
+    title: '莱拉 · LYRA · 品牌叙事官',
+    desc: '直接与莱拉对话，了解 InfoLead 赢领智能的 AI 解决方案。支持中英双语。',
+    sub: '推荐使用 Chrome 或 Edge · 由 ElevenLabs 提供支持',
+    wechat: '语音功能在微信中不可用。请在 Chrome 或 Safari 中打开 infolead.ca',
+  },
+}[lang];
+---
+
+<div class="voice-demo" data-lang={lang}>
+  <div class="voice-meta">
+    <div class="voice-title">{copy.title}</div>
+    <p class="voice-desc">{copy.desc}</p>
+    <p class="voice-sub">{copy.sub}</p>
+  </div>
+
+  <div class="voice-content">
+    <div class="voice-widget-container">
+      <elevenlabs-convai agent-id="agent_9001kq65vc8kf0ra492d5k4wxsmr"></elevenlabs-convai>
+    </div>
+  </div>
+
+  <div class="voice-fallback hidden">
+    <p>{copy.wechat}</p>
+  </div>
+</div>
+
+<script>
+  // WeChat (and other in-app browsers) cannot use the ElevenLabs widget
+  // due to mic permissions / WebRTC constraints. Detect and show fallback.
+  const root = document.querySelector('.voice-demo') as HTMLElement | null;
+  if (root) {
+    const ua = navigator.userAgent || '';
+    const isWeChat = /MicroMessenger/i.test(ua);
+    if (isWeChat) {
+      root.querySelector('.voice-content')?.classList.add('hidden');
+      root.querySelector('.voice-fallback')?.classList.remove('hidden');
+    }
+  }
+</script>
+
+<style>
+  .voice-demo {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .voice-meta {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .voice-title {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: #A78BFA;
+    margin-bottom: 16px;
+  }
+  .voice-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 auto 12px;
+    max-width: 540px;
+    font-weight: 300;
+  }
+  .voice-sub {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    margin: 0;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .voice-widget-container {
+    background: rgba(10, 15, 31, 0.5);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 500px;
+    box-shadow: 0 0 40px rgba(167, 139, 250, 0.06), inset 0 0 30px rgba(167, 139, 250, 0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .voice-fallback {
+    background: rgba(10, 15, 31, 0.5);
+    border: 1px solid rgba(255, 189, 46, 0.25);
+    border-radius: 16px;
+    padding: 60px 32px;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .voice-fallback p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 400px;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    .voice-widget-container { padding: 14px; min-height: 460px; }
+    .voice-meta { margin-bottom: 24px; }
+    .voice-desc { font-size: 14.5px; }
+  }
+</style>
