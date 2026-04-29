@@ -10,12 +10,24 @@ const copy = {
     desc: "Talk directly with Lyra about InfoLead's AI solutions. Available in English and Mandarin.",
     sub: 'Best experienced on Chrome or Edge · Powered by ElevenLabs',
     wechat: 'Voice chat is not available in WeChat. Please open infolead.ca in Chrome or Safari.',
+    quoteLine1: 'Every business has a story.',
+    quoteLine2: "Let's find yours.",
+    quoteSig: '— Lyra · 莱拉',
+    cap1: 'EN / 中文',
+    cap2: '<1s Response',
+    cap3: '24/7 Always On',
   },
   zh: {
     title: '莱拉 · LYRA · 品牌叙事官',
     desc: '直接与莱拉对话，了解 InfoLead 赢领智能的 AI 解决方案。支持中英双语。',
     sub: '推荐使用 Chrome 或 Edge · 由 ElevenLabs 提供支持',
     wechat: '语音功能在微信中不可用。请在 Chrome 或 Safari 中打开 infolead.ca',
+    quoteLine1: '每个业务都有自己的故事。',
+    quoteLine2: '让我帮你找到它。',
+    quoteSig: '— Lyra · 莱拉',
+    cap1: '中英双语',
+    cap2: '秒级响应',
+    cap3: '全天候在线',
   },
 }[lang];
 ---
@@ -23,14 +35,42 @@ const copy = {
 <div class="voice-demo" data-lang={lang}>
   <div class="voice-meta">
     <div class="voice-title">{copy.title}</div>
-    <p class="voice-desc">{copy.desc}</p>
     <p class="voice-sub">{copy.sub}</p>
   </div>
 
   <div class="voice-content">
-    <div class="lyra-widget-wrapper">
-      <elevenlabs-convai agent-id="agent_9001kq65vc8kf0ra492d5k4wxsmr"></elevenlabs-convai>
-    </div>
+    <section class="lyra-stage">
+      <div class="lyra-quote">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">
+          {copy.quoteLine1}
+          <br/>
+          <span class="quote-emphasis">{copy.quoteLine2}</span>
+        </p>
+        <div class="quote-signature">{copy.quoteSig}</div>
+      </div>
+
+      <div class="lyra-widget-wrapper">
+        <elevenlabs-convai agent-id="agent_9001kq65vc8kf0ra492d5k4wxsmr"></elevenlabs-convai>
+      </div>
+
+      <div class="lyra-capabilities">
+        <div class="capability">
+          <span class="cap-icon">🌐</span>
+          <span class="cap-label">{copy.cap1}</span>
+        </div>
+        <div class="cap-divider">·</div>
+        <div class="capability">
+          <span class="cap-icon">⚡</span>
+          <span class="cap-label" set:html={copy.cap2.replace('<', '&lt;')}></span>
+        </div>
+        <div class="cap-divider">·</div>
+        <div class="capability">
+          <span class="cap-icon">🌙</span>
+          <span class="cap-label">{copy.cap3}</span>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="voice-fallback hidden">
@@ -60,22 +100,14 @@ const copy = {
 
   .voice-meta {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
   .voice-title {
     font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
     font-size: 12px;
     letter-spacing: 0.25em;
     color: #A78BFA;
-    margin-bottom: 16px;
-  }
-  .voice-desc {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 16px;
-    line-height: 1.6;
-    margin: 0 auto 12px;
-    max-width: 540px;
-    font-weight: 300;
+    margin-bottom: 8px;
   }
   .voice-sub {
     color: rgba(255, 255, 255, 0.3);
@@ -85,23 +117,102 @@ const copy = {
     letter-spacing: 0.05em;
   }
 
-  /* Lyra widget wrapper — constrains the ElevenLabs convai web component
-     into the document flow. The widget defaults to position:fixed which
-     causes it to escape into the bottom-right of the viewport. */
+  /* Stage — provides the purple aura backdrop for the whole Lyra block */
+  .lyra-stage {
+    position: relative;
+    padding: 60px 0;
+    overflow: hidden;
+  }
+  .lyra-stage::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(
+      circle at center,
+      rgba(167, 139, 250, 0.15) 0%,
+      rgba(255, 215, 0, 0.05) 30%,
+      transparent 70%
+    );
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+    animation: lyra-pulse 8s ease-in-out infinite;
+  }
+  @keyframes lyra-pulse {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.05); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lyra-stage::before { animation: none; opacity: 0.7; }
+  }
+
+  /* Brand quote */
+  .lyra-quote {
+    text-align: center;
+    margin: 0 auto 40px;
+    max-width: 480px;
+    position: relative;
+    z-index: 2;
+  }
+  .quote-mark {
+    font-family: 'DM Serif Display', 'Instrument Serif', serif;
+    font-size: 80px;
+    color: rgba(167, 139, 250, 0.3);
+    line-height: 0;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .quote-text {
+    font-family: 'DM Serif Display', 'Instrument Serif', serif;
+    font-size: 22px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+    margin: 0;
+  }
+  .quote-emphasis {
+    background: linear-gradient(135deg, #A78BFA 0%, #FFD700 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 500;
+  }
+  .quote-signature {
+    margin-top: 16px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: rgba(167, 139, 250, 0.6);
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    text-transform: uppercase;
+  }
+
+  /* Widget wrapper — glass morphism + purple glow */
   .lyra-widget-wrapper {
     width: 100%;
     max-width: 720px;
     min-height: 600px;
     margin: 0 auto;
     position: relative;
+    z-index: 2;
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: rgba(10, 15, 31, 0.5);
+    background: rgba(10, 15, 31, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(167, 139, 250, 0.2);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 0 40px rgba(167, 139, 250, 0.06), inset 0 0 30px rgba(167, 139, 250, 0.02);
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow:
+      0 0 0 1px rgba(167, 139, 250, 0.05),
+      0 20px 60px rgba(167, 139, 250, 0.1),
+      0 8px 30px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
   .lyra-widget-wrapper :global(elevenlabs-convai) {
     position: relative !important;
@@ -115,6 +226,39 @@ const copy = {
     inset: auto !important;
   }
 
+  /* Capability badges */
+  .lyra-capabilities {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    padding: 16px 24px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+  .capability {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+  .cap-icon {
+    font-size: 16px;
+    filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.4));
+  }
+  .cap-label {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  .cap-divider {
+    color: rgba(167, 139, 250, 0.3);
+    font-size: 18px;
+  }
+
+  /* WeChat fallback */
   .voice-fallback {
     background: rgba(10, 15, 31, 0.5);
     border: 1px solid rgba(255, 189, 46, 0.25);
@@ -137,9 +281,19 @@ const copy = {
   .hidden { display: none !important; }
 
   @media (max-width: 640px) {
-    .lyra-widget-wrapper { padding: 14px; min-height: 540px; }
+    .lyra-stage { padding: 32px 0; }
+    .lyra-stage::before { width: 400px; height: 400px; }
+    .quote-text { font-size: 18px; }
+    .quote-mark { font-size: 60px; margin-bottom: 12px; }
+    .lyra-quote { margin-bottom: 24px; padding: 0 20px; }
+    .lyra-widget-wrapper {
+      padding: 20px 16px;
+      border-radius: 16px;
+      min-height: 540px;
+    }
     .lyra-widget-wrapper :global(elevenlabs-convai) { height: 540px !important; }
-    .voice-meta { margin-bottom: 24px; }
-    .voice-desc { font-size: 14.5px; }
+    .lyra-capabilities { gap: 12px; margin-top: 20px; font-size: 12px; padding: 12px 16px; }
+    .cap-divider { display: none; }
+    .voice-meta { margin-bottom: 16px; }
   }
 </style>
