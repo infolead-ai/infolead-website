@@ -28,7 +28,7 @@ const copy = {
   </div>
 
   <div class="voice-content">
-    <div class="voice-widget-container">
+    <div class="lyra-widget-wrapper">
       <elevenlabs-convai agent-id="agent_9001kq65vc8kf0ra492d5k4wxsmr"></elevenlabs-convai>
     </div>
   </div>
@@ -85,16 +85,34 @@ const copy = {
     letter-spacing: 0.05em;
   }
 
-  .voice-widget-container {
+  /* Lyra widget wrapper — constrains the ElevenLabs convai web component
+     into the document flow. The widget defaults to position:fixed which
+     causes it to escape into the bottom-right of the viewport. */
+  .lyra-widget-wrapper {
+    width: 100%;
+    max-width: 720px;
+    min-height: 600px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
     background: rgba(10, 15, 31, 0.5);
     border: 1px solid rgba(167, 139, 250, 0.2);
     border-radius: 16px;
     padding: 20px;
-    min-height: 500px;
     box-shadow: 0 0 40px rgba(167, 139, 250, 0.06), inset 0 0 30px rgba(167, 139, 250, 0.02);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+  .lyra-widget-wrapper :global(elevenlabs-convai) {
+    position: relative !important;
+    width: 100% !important;
+    height: 600px !important;
+    display: block !important;
+    inset: auto !important;
+  }
+  .lyra-widget-wrapper :global(elevenlabs-convai > *) {
+    position: relative !important;
+    inset: auto !important;
   }
 
   .voice-fallback {
@@ -119,7 +137,8 @@ const copy = {
   .hidden { display: none !important; }
 
   @media (max-width: 640px) {
-    .voice-widget-container { padding: 14px; min-height: 460px; }
+    .lyra-widget-wrapper { padding: 14px; min-height: 540px; }
+    .lyra-widget-wrapper :global(elevenlabs-convai) { height: 540px !important; }
     .voice-meta { margin-bottom: 24px; }
     .voice-desc { font-size: 14.5px; }
   }
