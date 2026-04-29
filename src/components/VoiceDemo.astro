@@ -1,4 +1,6 @@
 ---
+import LyraVoiceWidget from './LyraVoiceWidget.tsx';
+
 interface Props {
   lang: 'en' | 'zh';
 }
@@ -7,9 +9,6 @@ const { lang } = Astro.props;
 const copy = {
   en: {
     title: 'LYRA · 星曲 · AI BRAND STORYTELLER',
-    desc: "Talk directly with Lyra about InfoLead's AI solutions. Available in English and Mandarin.",
-    sub: 'Best experienced on Chrome or Edge · Powered by ElevenLabs',
-    wechat: 'Voice chat is not available in WeChat. Please open infolead.ca in Chrome or Safari.',
     quoteLine1: 'Every business has a story.',
     quoteLine2: "Let's find yours.",
     quoteSig: '— Lyra · 莱拉',
@@ -19,9 +18,6 @@ const copy = {
   },
   zh: {
     title: '莱拉 · LYRA · 品牌叙事官',
-    desc: '直接与莱拉对话，了解 InfoLead 赢领智能的 AI 解决方案。支持中英双语。',
-    sub: '推荐使用 Chrome 或 Edge · 由 ElevenLabs 提供支持',
-    wechat: '语音功能在微信中不可用。请在 Chrome 或 Safari 中打开 infolead.ca',
     quoteLine1: '每个业务都有自己的故事。',
     quoteLine2: '让我帮你找到它。',
     quoteSig: '— Lyra · 莱拉',
@@ -50,7 +46,7 @@ const copy = {
       </div>
 
       <div class="lyra-widget-wrapper">
-        <elevenlabs-convai agent-id="agent_9001kq65vc8kf0ra492d5k4wxsmr"></elevenlabs-convai>
+        <LyraVoiceWidget client:idle lang={lang} />
       </div>
 
       <div class="lyra-capabilities">
@@ -71,25 +67,7 @@ const copy = {
       </div>
     </section>
   </div>
-
-  <div class="voice-fallback hidden">
-    <p>{copy.wechat}</p>
-  </div>
 </div>
-
-<script>
-  // WeChat (and other in-app browsers) cannot use the ElevenLabs widget
-  // due to mic permissions / WebRTC constraints. Detect and show fallback.
-  const root = document.querySelector('.voice-demo') as HTMLElement | null;
-  if (root) {
-    const ua = navigator.userAgent || '';
-    const isWeChat = /MicroMessenger/i.test(ua);
-    if (isWeChat) {
-      root.querySelector('.voice-content')?.classList.add('hidden');
-      root.querySelector('.voice-fallback')?.classList.remove('hidden');
-    }
-  }
-</script>
 
 <style>
   .voice-demo {
@@ -183,39 +161,25 @@ const copy = {
     text-transform: uppercase;
   }
 
-  /* Widget wrapper — glass morphism + purple glow */
+  /* Widget wrapper — glass morphism + purple glow.
+     The React island (.lyra-shell) lives directly inside this wrapper. */
   .lyra-widget-wrapper {
     width: 100%;
     max-width: 720px;
-    min-height: 600px;
     margin: 0 auto;
     position: relative;
     z-index: 2;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
     background: rgba(10, 15, 31, 0.4);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(167, 139, 250, 0.2);
     border-radius: 24px;
-    padding: 32px 24px;
+    padding: 24px 22px;
     box-shadow:
       0 0 0 1px rgba(167, 139, 250, 0.05),
       0 20px 60px rgba(167, 139, 250, 0.1),
       0 8px 30px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  }
-  .lyra-widget-wrapper :global(elevenlabs-convai) {
-    position: relative !important;
-    width: 100% !important;
-    height: 600px !important;
-    display: block !important;
-    inset: auto !important;
-  }
-  .lyra-widget-wrapper :global(elevenlabs-convai > *) {
-    position: relative !important;
-    inset: auto !important;
   }
 
   /* Capability badges */
@@ -250,28 +214,6 @@ const copy = {
     font-size: 18px;
   }
 
-  /* WeChat fallback */
-  .voice-fallback {
-    background: rgba(10, 15, 31, 0.5);
-    border: 1px solid rgba(255, 189, 46, 0.25);
-    border-radius: 16px;
-    padding: 60px 32px;
-    text-align: center;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .voice-fallback p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 15px;
-    line-height: 1.7;
-    margin: 0;
-    max-width: 400px;
-  }
-
-  .hidden { display: none !important; }
-
   @media (max-width: 640px) {
     .lyra-stage { padding: 32px 0; }
     .lyra-stage::before { width: 400px; height: 400px; }
@@ -279,13 +221,327 @@ const copy = {
     .quote-mark { font-size: 60px; margin-bottom: 12px; }
     .lyra-quote { margin-bottom: 24px; padding: 0 20px; }
     .lyra-widget-wrapper {
-      padding: 20px 16px;
+      padding: 18px 14px;
       border-radius: 16px;
-      min-height: 540px;
     }
-    .lyra-widget-wrapper :global(elevenlabs-convai) { height: 540px !important; }
     .lyra-capabilities { gap: 12px; margin-top: 20px; font-size: 12px; padding: 12px 16px; }
     .cap-divider { display: none; }
     .voice-meta { margin-bottom: 16px; }
+  }
+</style>
+
+<style is:global>
+  /* ============================================================
+     LyraVoiceWidget (React island) styles.
+     Must be is:global so they reach React-rendered DOM that does
+     not carry Astro's scoped data-astro-cid-* attribute.
+     ============================================================ */
+  .lyra-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.92);
+    font-family: inherit;
+  }
+
+  .lyra-messages {
+    height: 360px;
+    overflow-y: auto;
+    padding: 18px 16px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.4));
+    border: 1px solid rgba(167, 139, 250, 0.14);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .lyra-messages::-webkit-scrollbar { width: 6px; }
+  .lyra-messages::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.25); border-radius: 999px; }
+
+  .lyra-empty {
+    margin: auto;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .lyra-empty-orb {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #FFD700 0%, #A78BFA 55%, rgba(167, 139, 250, 0.1) 100%);
+    box-shadow: 0 0 32px rgba(167, 139, 250, 0.45), inset 0 0 18px rgba(255, 215, 0, 0.25);
+    animation: lyra-orb-breathe 4.5s ease-in-out infinite;
+  }
+  @keyframes lyra-orb-breathe {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%      { transform: scale(1.06); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lyra-empty-orb { animation: none; }
+  }
+  .lyra-empty-text {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .lyra-bubble {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 88%;
+  }
+  .lyra-bubble-lyra { align-self: flex-start; }
+  .lyra-bubble-user { align-self: flex-end; align-items: flex-end; }
+
+  .lyra-bubble-label {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  .lyra-bubble-lyra .lyra-bubble-label { color: rgba(167, 139, 250, 0.8); }
+
+  .lyra-bubble-content {
+    padding: 11px 15px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+  .lyra-bubble-lyra .lyra-bubble-content {
+    background: rgba(167, 139, 250, 0.10);
+    border: 1px solid rgba(167, 139, 250, 0.22);
+    border-left: 2px solid transparent;
+    border-image: linear-gradient(180deg, #A78BFA, #FFD700) 1;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .lyra-bubble-user .lyra-bubble-content {
+    background: rgba(0, 229, 255, 0.06);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    color: #fff;
+  }
+
+  .lyra-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+  }
+  .lyra-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  .lyra-status-idle .lyra-status-dot { background: rgba(255, 255, 255, 0.45); }
+  .lyra-status-connecting .lyra-status-dot {
+    background: #A78BFA;
+    animation: lyra-dot-pulse 1.2s ease-in-out infinite;
+  }
+  .lyra-status-listening { color: #C8B5FF; border-color: rgba(167, 139, 250, 0.35); }
+  .lyra-status-listening .lyra-status-dot {
+    background: #A78BFA;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+    animation: lyra-dot-pulse 1.1s ease-in-out infinite;
+  }
+  .lyra-status-thinking { color: #FFD700; border-color: rgba(255, 215, 0, 0.3); }
+  .lyra-status-thinking .lyra-status-dot {
+    background: #FFD700;
+    animation: lyra-dot-pulse 0.9s ease-in-out infinite;
+  }
+  .lyra-status-speaking { color: #FFD700; border-color: rgba(255, 215, 0, 0.45); }
+  .lyra-status-speaking .lyra-status-dot {
+    background: #FFD700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    animation: lyra-dot-pulse 0.7s ease-in-out infinite;
+  }
+  .lyra-status-error { color: #FFB4B4; border-color: rgba(255, 100, 100, 0.35); }
+  .lyra-status-error .lyra-status-dot { background: #FF8888; }
+  .lyra-status-blocked { color: rgba(255, 255, 255, 0.55); }
+  @keyframes lyra-dot-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.85); }
+    50%      { opacity: 1;   transform: scale(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lyra-status-dot { animation: none !important; }
+  }
+
+  .lyra-notice,
+  .lyra-error {
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+  .lyra-notice {
+    background: rgba(167, 139, 250, 0.08);
+    border: 1px solid rgba(167, 139, 250, 0.22);
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .lyra-error {
+    background: rgba(255, 100, 100, 0.06);
+    border: 1px solid rgba(255, 100, 100, 0.25);
+    color: #FFB4B4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .lyra-error-action {
+    background: rgba(167, 139, 250, 0.18);
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    color: #fff;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .lyra-error-action:hover { background: rgba(167, 139, 250, 0.3); }
+
+  .lyra-input-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding-top: 4px;
+  }
+  .lyra-mic {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    background: linear-gradient(135deg, #A78BFA 0%, #FFD700 130%);
+    color: #0A0E1A;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .lyra-mic:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 32px rgba(255, 215, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  .lyra-mic:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 3px;
+  }
+  .lyra-mic-active {
+    background: linear-gradient(135deg, #FFD700 0%, #A78BFA 130%);
+    animation: lyra-mic-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes lyra-mic-pulse {
+    0%, 100% { box-shadow: 0 0 22px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+    50%      { box-shadow: 0 0 38px rgba(255, 215, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lyra-mic-active { animation: none; }
+  }
+  .lyra-mic-glyph { line-height: 1; }
+
+  .lyra-textarea {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    min-height: 48px;
+    max-height: 120px;
+  }
+  .lyra-textarea:focus {
+    border-color: rgba(167, 139, 250, 0.55);
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+  }
+  .lyra-textarea::placeholder { color: rgba(255, 255, 255, 0.35); }
+
+  .lyra-send {
+    background: rgba(167, 139, 250, 0.18);
+    border: 1px solid rgba(167, 139, 250, 0.5);
+    color: #fff;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.18s ease;
+    white-space: nowrap;
+  }
+  .lyra-send:hover:not(:disabled) {
+    background: rgba(167, 139, 250, 0.32);
+  }
+  .lyra-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .lyra-footer {
+    margin-top: 4px;
+    text-align: center;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.32);
+    text-transform: uppercase;
+  }
+
+  .lyra-shell-skeleton .lyra-messages-skeleton {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px dashed rgba(167, 139, 250, 0.18);
+  }
+
+  .lyra-blocked {
+    padding: 56px 24px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(167, 139, 250, 0.18);
+    border-radius: 16px;
+  }
+  .lyra-blocked-title {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .lyra-blocked-body {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .lyra-messages { height: 320px; padding: 14px 12px; }
+    .lyra-bubble { max-width: 92%; }
+    .lyra-bubble-content { padding: 10px 13px; font-size: 13.5px; }
+    .lyra-mic { width: 48px; height: 48px; font-size: 18px; }
+    .lyra-textarea { padding: 10px 12px; min-height: 44px; }
+    .lyra-send { padding: 9px 14px; font-size: 12.5px; }
+    .lyra-footer { font-size: 9.5px; letter-spacing: 0.14em; }
   }
 </style>

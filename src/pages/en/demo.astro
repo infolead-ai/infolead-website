@@ -46,17 +46,6 @@ export const prerender = true;
 <script>
   const tabs = document.querySelectorAll<HTMLButtonElement>('.demo-tab');
   const panels = document.querySelectorAll<HTMLElement>('.demo-panel');
-  let elevenLabsLoaded = false;
-
-  function loadElevenLabs() {
-    if (elevenLabsLoaded) return;
-    elevenLabsLoaded = true;
-    const s = document.createElement('script');
-    s.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-    s.async = true;
-    s.type = 'text/javascript';
-    document.head.appendChild(s);
-  }
 
   tabs.forEach((t) => {
     t.addEventListener('click', () => {
@@ -67,7 +56,6 @@ export const prerender = true;
         x.setAttribute('aria-selected', on ? 'true' : 'false');
       });
       panels.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== target));
-      if (target === 'voice') loadElevenLabs();
     });
   });
 </script>
