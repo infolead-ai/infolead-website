@@ -82,6 +82,9 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
   // Frozen at mount so the SYSTEM "awaiting input" entry's timestamp is
   // stable across re-renders.
   const [mountTime] = useState<string>(() => new Date().toTimeString().slice(0, 8));
+  // Auto-scroll pause + new-messages indicator state.
+  const [autoScroll, setAutoScroll] = useState(true);
+  const [hasNewMessages, setHasNewMessages] = useState(false);
   const [messages, setMessages] = useState<LyraMessage[]>(() => {
     if (initialAction.kind === 'text') {
       return [
@@ -198,10 +201,71 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
     return 'idle';
   }, [errorText, isConnecting, isConnected, conversation.isSpeaking, conversation.isListening]);
 
+  // Scroll position tracking for auto-scroll pause UX.
   useEffect(() => {
     const el = messagesRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [messages.length, status]);
+    if (!el) return;
+    const onScroll = () => {
+      const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+      const nearBottom = distFromBottom < 50;
+      setAutoScroll(nearBottom);
+      if (nearBottom) setHasNewMessages(false);
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = messagesRef.current;
+    if (!el) return;
+    if (autoScroll) {
+      el.scrollTop = el.scrollHeight;
+      setHasNewMessages(false);
+    } else {
+      setHasNewMessages(true);
+    }
+  }, [messages.length, status, autoScroll]);
+
+  // Truncation: tag long settled entries with .log-content--truncated +
+  // inject the [展开 · Expand] hint. Skip while data-streaming="true"
+  // so Lyra's token-by-token playback isn't interrupted mid-stream.
+  useEffect(() => {
+    const root = messagesRef.current;
+    if (!root) return;
+    const entries = root.querySelectorAll<HTMLElement>('.log-entry');
+    entries.forEach((entry) => {
+      if (entry.dataset.streaming === 'true') return;
+      const contentEl = entry.querySelector<HTMLElement>('.log-content');
+      if (!contentEl || contentEl.dataset.truncationApplied === 'true') return;
+      contentEl.classList.add('log-content--truncated');
+      const overflows = contentEl.scrollHeight > contentEl.clientHeight + 4;
+      if (!overflows) {
+        contentEl.classList.remove('log-content--truncated');
+        return;
+      }
+      contentEl.dataset.truncationApplied = 'true';
+      const hint = document.createElement('span');
+      hint.className = 'log-expand-hint';
+      contentEl.appendChild(hint);
+      contentEl.addEventListener('click', () => {
+        if (contentEl.classList.contains('log-content--expanded')) {
+          contentEl.classList.remove('log-content--expanded');
+          contentEl.classList.add('log-content--truncated');
+        } else {
+          contentEl.classList.remove('log-content--truncated');
+          contentEl.classList.add('log-content--expanded');
+        }
+      });
+    });
+  }, [messages.length, conversation.isSpeaking]);
+
+  const onNewIndicatorClick = useCallback(() => {
+    const el = messagesRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+    setAutoScroll(true);
+    setHasNewMessages(false);
+  }, []);
 
   useEffect(() => {
     if (variant !== 'stage') return;
@@ -303,8 +367,9 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
         </div>
         <button
           type="button"
-          className="transcript-log__new-indicator"
+          className={`transcript-log__new-indicator${hasNewMessages && !autoScroll ? ' is-visible' : ''}`}
           aria-label={t.youLabel === '您' ? '新消息' : 'New messages'}
+          onClick={onNewIndicatorClick}
         >↓ NEW</button>
         <div className="transcript-footer">_ SESSION ACTIVE _</div>
       </div>

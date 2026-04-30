@@ -85,7 +85,73 @@ const greeting = castorGreetings[lang];
     const sendBtn = document.getElementById('castor-send');
     const clearBtn = document.getElementById('castor-clear');
     const counterEl = document.getElementById('castor-counter');
-    if (!transcript || !input || !sendBtn || !clearBtn || !counterEl) return;
+    const newIndicator = document.getElementById('castor-new-indicator');
+    if (!transcript || !input || !sendBtn || !clearBtn || !counterEl || !newIndicator) return;
+
+    // Auto-scroll pause: if user scrolls up >50px from bottom, pause
+    // automatic scroll-to-bottom on new entries and surface the
+    // ↓ NEW MESSAGES indicator. Click the indicator to resume.
+    const NEAR_BOTTOM_PX = 50;
+    let autoScrollEnabled = true;
+
+    function isNearBottom() {
+      return (
+        transcript.scrollHeight - transcript.scrollTop - transcript.clientHeight
+        < NEAR_BOTTOM_PX
+      );
+    }
+
+    transcript.addEventListener(
+      'scroll',
+      () => {
+        autoScrollEnabled = isNearBottom();
+        if (autoScrollEnabled) newIndicator.classList.remove('is-visible');
+      },
+      { passive: true },
+    );
+
+    newIndicator.addEventListener('click', () => {
+      transcript.scrollTop = transcript.scrollHeight;
+      autoScrollEnabled = true;
+      newIndicator.classList.remove('is-visible');
+    });
+
+    function maybeScroll(forceShowNew) {
+      if (autoScrollEnabled) {
+        transcript.scrollTop = transcript.scrollHeight;
+      } else if (forceShowNew) {
+        newIndicator.classList.add('is-visible');
+      }
+    }
+
+    // Truncation: if a settled log entry overflows the line-clamp box,
+    // tag it .log-content--truncated and inject a click-to-expand hint.
+    // Streaming entries (Lyra side via data-streaming) skip this; on the
+    // Castor side we only call applyTruncation after the full response
+    // settles, so no streaming check is needed here.
+    function applyTruncation(contentEl) {
+      if (!contentEl || contentEl.dataset.truncationApplied === 'true') return;
+      contentEl.classList.add('log-content--truncated');
+      // Force layout, then check overflow.
+      const overflows = contentEl.scrollHeight > contentEl.clientHeight + 4;
+      if (!overflows) {
+        contentEl.classList.remove('log-content--truncated');
+        return;
+      }
+      contentEl.dataset.truncationApplied = 'true';
+      const hint = document.createElement('span');
+      hint.className = 'log-expand-hint';
+      contentEl.appendChild(hint);
+      contentEl.addEventListener('click', () => {
+        if (contentEl.classList.contains('log-content--expanded')) {
+          contentEl.classList.remove('log-content--expanded');
+          contentEl.classList.add('log-content--truncated');
+        } else {
+          contentEl.classList.remove('log-content--truncated');
+          contentEl.classList.add('log-content--expanded');
+        }
+      });
+    }
 
     const STORAGE_KEY = `infolead-castor-${lang}`;
     const MAX_USER_MESSAGES = 20;
@@ -123,7 +189,7 @@ const greeting = castorGreetings[lang];
       entry.appendChild(roleEl);
       entry.appendChild(contentEl);
       transcript.appendChild(entry);
-      transcript.scrollTop = transcript.scrollHeight;
+      maybeScroll(true);
       return { entry, contentEl };
     }
 
@@ -147,7 +213,7 @@ const greeting = castorGreetings[lang];
       }
       const contentEl = entry.querySelector('.log-content');
       if (contentEl) contentEl.textContent = ERROR_MESSAGES[type] || ERROR_MESSAGES.parse;
-      transcript.scrollTop = transcript.scrollHeight;
+      maybeScroll(true);
       // Telemetry: surfaces in Vercel Function logs for forensic review.
       console.error('castor_chat_error', {
         type,
@@ -157,7 +223,8 @@ const greeting = castorGreetings[lang];
     }
 
     function renderGreeting() {
-      appendLogEntry('castor', greeting);
+      const { contentEl } = appendLogEntry('castor', greeting);
+      applyTruncation(contentEl);
     }
 
     function load() {
@@ -169,7 +236,11 @@ const greeting = castorGreetings[lang];
       transcript.replaceChildren();
       renderGreeting();
       for (const m of history) {
-        appendLogEntry(m.role === 'assistant' ? 'castor' : 'you', m.content);
+        const { contentEl } = appendLogEntry(
+          m.role === 'assistant' ? 'castor' : 'you',
+          m.content,
+        );
+        applyTruncation(contentEl);
       }
       updateCounter();
     }
@@ -198,7 +269,8 @@ const greeting = castorGreetings[lang];
       if (userCount >= MAX_USER_MESSAGES) { alert(copy.sessionFull); return; }
 
       history.push({ role: 'user', content: text });
-      appendLogEntry('you', text);
+      const userAppend = appendLogEntry('you', text);
+      applyTruncation(userAppend.contentEl);
       input.value = '';
       input.style.height = 'auto';
       updateCounter();
@@ -242,6 +314,8 @@ const greeting = castorGreetings[lang];
         if (acc.trim()) {
           history.push({ role: 'assistant', content: acc });
           save();
+          // Streaming finished — apply truncation to the settled content.
+          applyTruncation(contentEl);
         } else {
           showError(entry, 'empty', text);
           history.pop();
