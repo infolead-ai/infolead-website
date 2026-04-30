@@ -99,10 +99,15 @@ function sanitizeMetaLeak(text: string): string {
   return out.trim();
 }
 
-// 800-char tail buffer gives sanitizeMetaLeak() enough window to catch full
-// draft→critique→rewrite CoT cycles (observed up to ~730 chars in iter-3
-// QA). Trade-off: last ~2-4 seconds of streaming is held until stream end.
-const SANITIZE_TAIL_BUFFER_CHARS = 800;
+// Hold back the last 250 chars for end-of-stream sanitization. The wider
+// 800-char window from iter-4 caused short responses (e.g. the ~100-byte
+// "Are you ChatGPT?" deflection) to sit fully buffered until stream end,
+// stalling iPhone Safari for ~4s with no visible progressive output.
+// Iter-4 prompt rules carry the anti-CoT load independently (32-test QA
+// confirmed zero CoT leaks without buffer support), so the buffer's
+// secondary defense was redundant. See docs/PROMPT_KNOWN_ISSUES.md
+// ISSUE-3 for the lesson.
+const SANITIZE_TAIL_BUFFER_CHARS = 250;
 
 const apiKey = process.env.OPENROUTER_API_KEY ?? import.meta.env.OPENROUTER_API_KEY;
 

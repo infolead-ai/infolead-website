@@ -104,7 +104,35 @@ const greeting = castorGreetings[lang];
       bubble.appendChild(inner);
       transcript.appendChild(bubble);
       transcript.scrollTop = transcript.scrollHeight;
-      return inner;
+      return { bubble, inner };
+    }
+
+    // 4 user-friendly bilingual error messages (ZH first, then EN). Used
+    // when /api/chat fails so silent failures become visible. The terminal
+    // log refactor (commit 3a) will replace the bubble rendering with
+    // .log-entry markup, but the showError helper stays.
+    const ERROR_MESSAGES = {
+      empty:       '回复异常,请重试 · Response empty, please retry',
+      timeout:     '响应超时,请检查网络 · Request timed out',
+      http:        '服务暂时不可用 · Service temporarily unavailable',
+      rateLimited: '请求过于频繁 · Too many requests, please slow down',
+      parse:       '解析错误,请联系支持 · Parse error, please contact support',
+    };
+
+    function showError(bubble, type, userMessagePreview) {
+      const ts = new Date().toTimeString().slice(0, 8);
+      bubble.className = 'stage-bubble stage-bubble--error';
+      const labelEl = bubble.querySelector('.stage-bubble__label');
+      if (labelEl) labelEl.textContent = `[${ts}] ERROR`;
+      const contentEl = bubble.querySelector('.stage-bubble__content');
+      if (contentEl) contentEl.textContent = ERROR_MESSAGES[type] || ERROR_MESSAGES.parse;
+      transcript.scrollTop = transcript.scrollHeight;
+      // Telemetry: surfaces in Vercel Function logs for forensic review.
+      console.error('castor_chat_error', {
+        type,
+        timestamp: new Date().toISOString(),
+        user_message_preview: (userMessagePreview || '').slice(0, 30),
+      });
     }
 
     function load() {
@@ -149,18 +177,24 @@ const greeting = castorGreetings[lang];
       save();
       setBusy(true);
 
-      const inner = appendBubble('assistant', '');
+      const { bubble, inner } = appendBubble('assistant', '');
       let acc = '';
+
+      // 15s hard cap on total response time. AbortController fires when
+      // backend (or network) takes too long — no spinning empty bubble.
+      const ctrl = new AbortController();
+      const timeoutId = setTimeout(() => ctrl.abort(), 15000);
 
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: history, lang }),
+          signal: ctrl.signal,
         });
 
         if (!res.ok || !res.body) {
-          inner.textContent = res.status === 429 ? copy.rateLimited : copy.error;
+          showError(bubble, res.status === 429 ? 'rateLimited' : 'http', text);
           history.pop();
           updateCounter();
           save();
@@ -181,17 +215,19 @@ const greeting = castorGreetings[lang];
           history.push({ role: 'assistant', content: acc });
           save();
         } else {
-          inner.textContent = copy.error;
+          showError(bubble, 'empty', text);
           history.pop();
           updateCounter();
           save();
         }
-      } catch {
-        inner.textContent = copy.error;
+      } catch (e) {
+        const type = e && e.name === 'AbortError' ? 'timeout' : 'parse';
+        showError(bubble, type, text);
         history.pop();
         updateCounter();
         save();
       } finally {
+        clearTimeout(timeoutId);
         setBusy(false);
         input.focus();
       }

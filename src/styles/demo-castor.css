@@ -99,6 +99,21 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #fff;
 }
+/* Error variant — silent failures become visible. The terminal-log
+   refactor (commit 3a) will replace bubble markup with .log-entry, at
+   which point this rule will be removed. */
+.stage-bubble--error { align-self: flex-start; }
+.stage-bubble--error .stage-bubble__label {
+  color: #F87171;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+.stage-bubble--error .stage-bubble__content {
+  background: rgba(248, 113, 113, 0.06);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: rgba(255, 220, 220, 0.95);
+}
 
 /* Composer (input row) */
 .castor-stage__composer {
