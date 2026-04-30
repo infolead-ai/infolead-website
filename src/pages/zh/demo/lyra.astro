@@ -1,0 +1,17 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import AgentStage from '../../../components/demo/AgentStage.astro';
+import LyraVoiceWidget from '../../../components/LyraVoiceWidget.tsx';
+import { getMember } from '../../../data/ai-team';
+import '../../../styles/demo-lyra.css';
+
+export const prerender = true;
+
+const lyra = getMember('lyra');
+---
+
+<Layout lang="zh" title="Lyra · AI 品牌叙事官 — InfoLead AI">
+  <AgentStage agent={lyra} lang="zh">
+    <LyraVoiceWidget client:idle lang="zh" variant="stage" />
+  </AgentStage>
+</Layout>

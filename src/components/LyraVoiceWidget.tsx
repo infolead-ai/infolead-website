@@ -2,9 +2,11 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { isAllowedHost } from '../lib/lyra-allowlist';
 import { LYRA_COPY, detectWeChat } from '../lib/lyra-copy';
 import type { Lang } from '../types/lyra';
+import type { LyraVariant } from './LyraConversationCore';
 
 interface Props {
   lang: Lang;
+  variant?: LyraVariant;
 }
 
 const AGENT_ID = import.meta.env.PUBLIC_LYRA_AGENT_ID as string | undefined;
@@ -13,7 +15,7 @@ const LyraConversationCore = lazy(() => import('./LyraConversationCore'));
 
 export type InitialAction = { kind: 'voice' } | { kind: 'text'; text: string };
 
-export default function LyraVoiceWidget({ lang }: Props) {
+export default function LyraVoiceWidget({ lang, variant = 'standalone' }: Props) {
   const t = LYRA_COPY[lang];
   const [hydrated, setHydrated] = useState(false);
   const [hostAllowed, setHostAllowed] = useState(true);
@@ -21,6 +23,8 @@ export default function LyraVoiceWidget({ lang }: Props) {
   const [forceTextOnly, setForceTextOnly] = useState(false);
   const [active, setActive] = useState<InitialAction | null>(null);
   const [draft, setDraft] = useState('');
+
+  const shellClass = `lyra-shell${variant === 'stage' ? ' lyra-shell--stage' : ''}`;
 
   useEffect(() => {
     setHydrated(true);
@@ -31,7 +35,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
 
   if (!hydrated) {
     return (
-      <div className="lyra-shell lyra-shell-skeleton" aria-busy="true">
+      <div className={`${shellClass} lyra-shell-skeleton`} aria-busy="true">
         <div className="lyra-messages lyra-messages-skeleton" />
         <div className="lyra-status lyra-status-idle">
           <span className="lyra-status-dot" />
@@ -45,6 +49,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
   if (!hostAllowed) {
     return (
       <ShellBlocked
+        shellClass={shellClass}
         title={t.blockedTitle}
         body={t.blockedBody}
         statusLabel={t.statusBlocked}
@@ -56,6 +61,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
   if (!hasConfig) {
     return (
       <ShellBlocked
+        shellClass={shellClass}
         title={t.blockedTitle}
         body={t.missingConfig}
         statusLabel={t.statusBlocked}
@@ -68,7 +74,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
     return (
       <Suspense
         fallback={
-          <div className="lyra-shell" aria-busy="true">
+          <div className={shellClass} aria-busy="true">
             <div className="lyra-messages lyra-messages-skeleton" />
             <div className="lyra-status lyra-status-connecting">
               <span className="lyra-status-dot" />
@@ -83,6 +89,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
           agentId={AGENT_ID as string}
           initialAction={active}
           forceTextOnly={forceTextOnly}
+          variant={variant}
         />
       </Suspense>
     );
@@ -95,7 +102,7 @@ export default function LyraVoiceWidget({ lang }: Props) {
   };
 
   return (
-    <div className="lyra-shell">
+    <div className={shellClass}>
       <div className="lyra-messages" role="log" aria-live="polite">
         <div className="lyra-empty">
           <div className="lyra-empty-orb" aria-hidden="true" />
@@ -153,18 +160,20 @@ export default function LyraVoiceWidget({ lang }: Props) {
 }
 
 function ShellBlocked({
+  shellClass,
   title,
   body,
   statusLabel,
   footer,
 }: {
+  shellClass: string;
   title: string;
   body: string;
   statusLabel: string;
   footer: string;
 }) {
   return (
-    <div className="lyra-shell lyra-shell-blocked">
+    <div className={`${shellClass} lyra-shell-blocked`}>
       <div className="lyra-blocked">
         <div className="lyra-blocked-title">{title}</div>
         <div className="lyra-blocked-body">{body}</div>

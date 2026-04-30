@@ -4,11 +4,14 @@ import { LYRA_COPY } from '../lib/lyra-copy';
 import type { Lang, LyraMessage, LyraStatus } from '../types/lyra';
 import type { InitialAction } from './LyraVoiceWidget';
 
+export type LyraVariant = 'standalone' | 'stage';
+
 interface Props {
   lang: Lang;
   agentId: string;
   initialAction: InitialAction;
   forceTextOnly: boolean;
+  variant?: LyraVariant;
 }
 
 function scrubVendor(text: string): string {
@@ -37,8 +40,9 @@ export default function LyraConversationCore(props: Props) {
   );
 }
 
-function Conversation({ lang, agentId, initialAction, forceTextOnly }: Props) {
+function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = 'standalone' }: Props) {
   const t = LYRA_COPY[lang];
+  const shellRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<LyraMessage[]>(() => {
     if (initialAction.kind === 'text') {
       return [
@@ -160,6 +164,17 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly }: Props) {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages.length, status]);
 
+  useEffect(() => {
+    if (variant !== 'stage') return;
+    const stage = shellRef.current?.closest('.agent-stage') as HTMLElement | null;
+    if (!stage) return;
+    let amp = 0.15;
+    if (conversation.isSpeaking) amp = 0.95;
+    else if (conversation.isListening) amp = 0.55;
+    else if (isConnecting) amp = 0.3;
+    stage.style.setProperty('--lyra-amp', String(amp));
+  }, [variant, conversation.isSpeaking, conversation.isListening, isConnecting]);
+
   const sendText = useCallback(() => {
     const text = draft.trim();
     if (!text) return;
@@ -218,7 +233,10 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly }: Props) {
                 : t.statusBlocked;
 
   return (
-    <div className="lyra-shell">
+    <div
+      className={`lyra-shell${variant === 'stage' ? ' lyra-shell--stage' : ''}`}
+      ref={shellRef}
+    >
       <div className="lyra-messages" ref={messagesRef} role="log" aria-live="polite">
         {messages.length === 0 && (
           <div className="lyra-empty">
