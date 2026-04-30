@@ -87,6 +87,27 @@ const href = status === 'live' ? `/${lang}/demo/${member.id}` : null;
   }
   .team-card--disabled { opacity: 0.55; }
 
+  /* Per-agent opaque backgrounds — without these, transparent portrait PNGs
+     composite against the page nebula and show through as a checkerboard-
+     like artifact on iPhone Safari. Override the base 2%-white. */
+  .team-card--castor {
+    background: linear-gradient(135deg, rgba(0, 30, 40, 0.95) 0%, rgba(0, 10, 26, 0.98) 100%);
+    border-color: rgba(0, 229, 255, 0.15);
+  }
+  .team-card--castor:hover:not(.team-card--disabled) {
+    border-color: rgba(0, 229, 255, 0.4);
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.15), 0 22px 60px rgba(0, 229, 255, 0.1);
+  }
+
+  .team-card--lyra {
+    background: linear-gradient(135deg, rgba(40, 20, 60, 0.95) 0%, rgba(20, 10, 35, 0.98) 100%);
+    border-color: rgba(167, 139, 250, 0.15);
+  }
+  .team-card--lyra:hover:not(.team-card--disabled) {
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 0 40px rgba(167, 139, 250, 0.2), 0 22px 60px rgba(167, 139, 250, 0.12);
+  }
+
   .team-card__link {
     display: flex;
     flex-direction: column;
