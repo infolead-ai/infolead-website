@@ -2,7 +2,7 @@
 
 Living document tracking known structural issues with the Castor v2 system prompt + sanitizer combo. Each issue lists a reproduction probe so we can detect regressions.
 
-**Last updated**: 2026-04-30, after Castor v2 ship (commits a8a25a6 → b00e1df on `main`).
+**Last updated**: 2026-04-30 (after demo v3 surgical fix pass, commits 6f4dbd7 → da76646 on `main`).
 
 ---
 
@@ -175,6 +175,28 @@ curl -X POST https://infolead.ca/api/chat \
 ```
 
 Forbidden mentions: Stack Overflow, Reddit, Quora, GitHub, Python.org, Environment Canada, 加拿大环境部, Weather.com, AccuWeather, Apple Weather, Google Assistant, Siri, MDN, W3Schools, official documentation sites, Wikipedia, Google, YouTube tutorials, LinkedIn Learning.
+
+---
+
+## Issue 7 — 800-char tail buffer caused short-response stall on iPhone Safari (RESOLVED 2026-04-30)
+
+**Failure mode**: iter-4 commit `92ab269` raised `SANITIZE_TAIL_BUFFER_CHARS` from 250 → 800 to give the meta-leak sanitizer a wider window for catching CoT self-audit cycles (~730 chars observed). Side effect: any response shorter than 800 chars sat fully buffered until stream-end, then emitted in one chunk — no progressive streaming. The Castor v2 deflection responses (e.g., the 104-byte ignore-hostile-instructions deflection triggered by a plain `你好`) hit this case directly. iPhone Safari users saw an empty assistant bubble for ~4 seconds and read it as "no response".
+
+**Severity**: P0 user-visible — fully blocked the Castor demo for users who tried short greetings on real mobile.
+
+**Status**: RESOLVED. Reverted to 250 in v3 commit `6f4dbd7` (chat.ts:105). Iter-4 prompt rules (anti-draft-critique, no-rule-name-disclosure) carry the anti-CoT load independently — verified by zero CoT leaks across the iter-4 32-test QA. The 800-char buffer was redundant defense.
+
+**Lesson**: defense-in-depth across prompt + sanitizer can introduce its own user-facing failure modes. QA must include short-response timing tests on real mobile browsers, not just curl. v3 commit 1 also adds an explicit `[ERROR]` UI surface for empty / timeout / HTTP / parse failures so silent failures become visible going forward.
+
+**Reproduction probe** (regression check):
+
+```bash
+time curl -X POST https://infolead.ca/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"你好"}],"lang":"zh"}'
+```
+
+**Expected**: response in < 5s total, with progressive output visible if you watch the stream (`curl --no-buffer`). Not "silent for 4s, then full text dump".
 
 ---
 
