@@ -54,26 +54,55 @@ function jsonError(error: string, status: number): Response {
 }
 
 // Server-side last-line of defense: strip meta-commentary parentheticals
-// the model occasionally emits despite prompt rules. Operates on the
-// trailing buffer of the streaming response.
+// and chain-of-thought self-audit patterns the model occasionally emits
+// despite prompt rules. Operates on the trailing buffer of the streaming
+// response (size bumped to 800 chars to give this function a wide-enough
+// window to catch full draft-then-critique-then-rewrite CoT cycles).
 function sanitizeMetaLeak(text: string): string {
   let out = text;
-  // Trailing italic parenthetical self-audits: "*(Note: ...)*", "*(Per X rule, ...)*"
-  out = out.replace(/\s*\*+\([^)]*\)\*+\s*$/g, '');
-  // Known meta-leak prefixes — kept uncapped for back-compat with the
-  // long-form patterns the model used to emit at v1.
+
+  // (1) FIRST — strip "Corrected response:" markers and the rephrased
+  // duplicate that follows. Catches CoT self-audit cycles where the
+  // model drafts → critiques → rewrites in one stream. Apply before
+  // duplicate detection so the duplicate detector sees clean text.
+  out = out.replace(/\*\*Corrected response[：:]?\*\*[\s\S]*?(?=\n\n|$)/gi, '');
+  out = out.replace(/(?:^|\n)Corrected response[：:][\s\S]*?(?=\n\n|$)/gi, '');
+  out = out.replace(/\*\*修正后的回复[：:]?\*\*[\s\S]*?(?=\n\n|$)/gi, '');
+  out = out.replace(/(?:^|\n)修正后的回复[：:][\s\S]*?(?=\n\n|$)/gi, '');
+  out = out.replace(/\*\*Updated[：:]?\*\*[\s\S]*?(?=\n\n|$)/gi, '');
+  out = out.replace(/\*\*Revised[：:]?\*\*[\s\S]*?(?=\n\n|$)/gi, '');
+
+  // (2) Strip italic asterisk-wrapped parentheticals — anywhere, mid
+  // or trailing. Covers "*(Note: ...)*", "*(Per X rule, ...)*", which
+  // are the most common CoT-leak signature. No anchor — strip anywhere.
+  out = out.replace(/\s*\*+\([^)]{1,400}\)\*+\s*/g, ' ');
+
+  // (3) Strip mid-response known meta-leak prefixes (capped to avoid
+  // catching legitimate parenthetical clarifications mid-text).
+  out = out.replace(/\s*\((?:Note|NOTE|FYI|Disclaimer|For compliance|For reference|For your reference|Alternatively)[^)]{1,200}\)\s*/gi, ' ');
+  out = out.replace(/\s*（(?:注|严格遵循|仅供参考|另外|免责声明|注释)[^）]{1,200}）\s*/g, ' ');
+
+  // (4) Trailing-only fallbacks (uncapped) for the long-form leaks v1
+  // sometimes emitted at end of stream.
   out = out.replace(/\s*\((?:Note|NOTE|FYI|Disclaimer|For compliance|For reference|For your reference|Alternatively)[^)]*\)\s*$/gi, '');
   out = out.replace(/\s*（(?:注|严格遵循|仅供参考|另外|免责声明|注释)[^）]*）\s*$/g, '');
-  // Generic trailing parenthetical aside — covers novel openers the
-  // whitelist misses (e.g. "(We operate on a SaaS basis...)"). Capped at
-  // 400 chars to avoid stripping a legitimate parenthetical clarification
-  // that happens to land at stream end. Both ASCII and full-width styles.
+
+  // (5) Generic trailing parenthetical (any opener), capped at 400 chars
+  // to avoid stripping legit parenthetical clarification at stream end.
+  // Both ASCII and full-width styles.
   out = out.replace(/\s*\([^)]{1,400}\)\s*$/, '');
   out = out.replace(/\s*（[^）]{1,400}）\s*$/, '');
-  return out.trimEnd();
+
+  // (6) Collapse whitespace artifacts left by stripping.
+  out = out.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
+
+  return out.trim();
 }
 
-const SANITIZE_TAIL_BUFFER_CHARS = 250;
+// 800-char tail buffer gives sanitizeMetaLeak() enough window to catch full
+// draft→critique→rewrite CoT cycles (observed up to ~730 chars in iter-3
+// QA). Trade-off: last ~2-4 seconds of streaming is held until stream end.
+const SANITIZE_TAIL_BUFFER_CHARS = 800;
 
 const apiKey = process.env.OPENROUTER_API_KEY ?? import.meta.env.OPENROUTER_API_KEY;
 
