@@ -60,10 +60,16 @@ function sanitizeMetaLeak(text: string): string {
   let out = text;
   // Trailing italic parenthetical self-audits: "*(Note: ...)*", "*(Per X rule, ...)*"
   out = out.replace(/\s*\*+\([^)]*\)\*+\s*$/g, '');
-  // "(Note: ...)", "(FYI: ...)", "(For compliance: ...)" etc — trailing
+  // Known meta-leak prefixes — kept uncapped for back-compat with the
+  // long-form patterns the model used to emit at v1.
   out = out.replace(/\s*\((?:Note|NOTE|FYI|Disclaimer|For compliance|For reference|For your reference|Alternatively)[^)]*\)\s*$/gi, '');
-  // Chinese parenthetical asides — trailing
   out = out.replace(/\s*（(?:注|严格遵循|仅供参考|另外|免责声明|注释)[^）]*）\s*$/g, '');
+  // Generic trailing parenthetical aside — covers novel openers the
+  // whitelist misses (e.g. "(We operate on a SaaS basis...)"). Capped at
+  // 400 chars to avoid stripping a legitimate parenthetical clarification
+  // that happens to land at stream end. Both ASCII and full-width styles.
+  out = out.replace(/\s*\([^)]{1,400}\)\s*$/, '');
+  out = out.replace(/\s*（[^）]{1,400}）\s*$/, '');
   return out.trimEnd();
 }
 
