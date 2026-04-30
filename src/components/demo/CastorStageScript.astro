@@ -40,14 +40,16 @@ const greeting = castorGreetings[lang];
 ---
 
 <div class="castor-stage" data-lang={lang}>
-  <div class="castor-stage__transcript-wrap">
-    <div class="castor-stage__transcript" id="castor-transcript" role="log" aria-live="polite">
-      <article class="stage-bubble stage-bubble--castor stage-bubble--greeting">
-        <div class="stage-bubble__label">{copy.castor}</div>
-        <div class="stage-bubble__content">{greeting}</div>
-      </article>
-    </div>
-    <div class="castor-stage__fade" aria-hidden="true"></div>
+  <div class="transcript-log" data-agent="castor">
+    <div class="transcript-header" data-agent="castor">// CASTOR-CHAT-01 LOG ACTIVE</div>
+    <div class="transcript-log__entries" id="castor-transcript" role="log" aria-live="polite"></div>
+    <button
+      class="transcript-log__new-indicator"
+      id="castor-new-indicator"
+      type="button"
+      aria-label={lang === 'zh' ? '新消息' : 'New messages'}
+    >↓ NEW</button>
+    <div class="transcript-footer">_ SESSION ACTIVE _</div>
   </div>
 
   <div class="castor-stage__composer">
@@ -91,26 +93,42 @@ const greeting = castorGreetings[lang];
     /** @type {{role: 'user'|'assistant', content: string}[]} */
     let history = [];
 
-    function appendBubble(role, content) {
-      const bubble = document.createElement('article');
-      bubble.className = `stage-bubble stage-bubble--${role === 'assistant' ? 'castor' : 'user'}`;
-      const label = document.createElement('div');
-      label.className = 'stage-bubble__label';
-      label.textContent = role === 'assistant' ? copy.castor : copy.you;
-      const inner = document.createElement('div');
-      inner.className = 'stage-bubble__content';
-      inner.textContent = content;
-      bubble.appendChild(label);
-      bubble.appendChild(inner);
-      transcript.appendChild(bubble);
-      transcript.scrollTop = transcript.scrollHeight;
-      return { bubble, inner };
+    // role: 'castor' | 'you' | 'error'
+    function roleLabel(role) {
+      return role === 'castor' ? 'CASTOR:' : role === 'you' ? 'YOU:' : 'ERROR';
     }
 
-    // 4 user-friendly bilingual error messages (ZH first, then EN). Used
-    // when /api/chat fails so silent failures become visible. The terminal
-    // log refactor (commit 3a) will replace the bubble rendering with
-    // .log-entry markup, but the showError helper stays.
+    function timestamp() {
+      return new Date().toTimeString().slice(0, 8);
+    }
+
+    function appendLogEntry(role, content) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+
+      const tsEl = document.createElement('span');
+      tsEl.className = 'log-timestamp';
+      tsEl.textContent = `[${timestamp()}]`;
+
+      const roleEl = document.createElement('span');
+      roleEl.className = 'log-role';
+      roleEl.dataset.role = role;
+      roleEl.textContent = roleLabel(role);
+
+      const contentEl = document.createElement('span');
+      contentEl.className = 'log-content';
+      contentEl.textContent = content;
+
+      entry.appendChild(tsEl);
+      entry.appendChild(roleEl);
+      entry.appendChild(contentEl);
+      transcript.appendChild(entry);
+      transcript.scrollTop = transcript.scrollHeight;
+      return { entry, contentEl };
+    }
+
+    // 5 user-friendly bilingual error messages (ZH · EN). Used when
+    // /api/chat fails so silent failures become visible.
     const ERROR_MESSAGES = {
       empty:       '回复异常,请重试 · Response empty, please retry',
       timeout:     '响应超时,请检查网络 · Request timed out',
@@ -119,12 +137,15 @@ const greeting = castorGreetings[lang];
       parse:       '解析错误,请联系支持 · Parse error, please contact support',
     };
 
-    function showError(bubble, type, userMessagePreview) {
-      const ts = new Date().toTimeString().slice(0, 8);
-      bubble.className = 'stage-bubble stage-bubble--error';
-      const labelEl = bubble.querySelector('.stage-bubble__label');
-      if (labelEl) labelEl.textContent = `[${ts}] ERROR`;
-      const contentEl = bubble.querySelector('.stage-bubble__content');
+    function showError(entry, type, userMessagePreview) {
+      const tsEl = entry.querySelector('.log-timestamp');
+      if (tsEl) tsEl.textContent = `[${timestamp()}]`;
+      const roleEl = entry.querySelector('.log-role');
+      if (roleEl) {
+        roleEl.dataset.role = 'error';
+        roleEl.textContent = roleLabel('error');
+      }
+      const contentEl = entry.querySelector('.log-content');
       if (contentEl) contentEl.textContent = ERROR_MESSAGES[type] || ERROR_MESSAGES.parse;
       transcript.scrollTop = transcript.scrollHeight;
       // Telemetry: surfaces in Vercel Function logs for forensic review.
@@ -135,14 +156,21 @@ const greeting = castorGreetings[lang];
       });
     }
 
+    function renderGreeting() {
+      appendLogEntry('castor', greeting);
+    }
+
     function load() {
       try {
         const raw = sessionStorage.getItem(STORAGE_KEY);
         if (raw) history = JSON.parse(raw);
       } catch {}
-      // Strip greeting bubble and any non-greeting bubbles, then re-render
-      transcript.querySelectorAll('.stage-bubble:not(.stage-bubble--greeting)').forEach((n) => n.remove());
-      for (const m of history) appendBubble(m.role, m.content);
+      // Greeting first (with current timestamp), then replay history.
+      transcript.replaceChildren();
+      renderGreeting();
+      for (const m of history) {
+        appendLogEntry(m.role === 'assistant' ? 'castor' : 'you', m.content);
+      }
       updateCounter();
     }
 
@@ -170,14 +198,14 @@ const greeting = castorGreetings[lang];
       if (userCount >= MAX_USER_MESSAGES) { alert(copy.sessionFull); return; }
 
       history.push({ role: 'user', content: text });
-      appendBubble('user', text);
+      appendLogEntry('you', text);
       input.value = '';
       input.style.height = 'auto';
       updateCounter();
       save();
       setBusy(true);
 
-      const { bubble, inner } = appendBubble('assistant', '');
+      const { entry, contentEl } = appendLogEntry('castor', '');
       let acc = '';
 
       // 15s hard cap on total response time. AbortController fires when
@@ -194,7 +222,7 @@ const greeting = castorGreetings[lang];
         });
 
         if (!res.ok || !res.body) {
-          showError(bubble, res.status === 429 ? 'rateLimited' : 'http', text);
+          showError(entry, res.status === 429 ? 'rateLimited' : 'http', text);
           history.pop();
           updateCounter();
           save();
@@ -207,7 +235,7 @@ const greeting = castorGreetings[lang];
           const { done, value } = await reader.read();
           if (done) break;
           acc += decoder.decode(value, { stream: true });
-          inner.textContent = acc;
+          contentEl.textContent = acc;
           transcript.scrollTop = transcript.scrollHeight;
         }
 
@@ -215,14 +243,14 @@ const greeting = castorGreetings[lang];
           history.push({ role: 'assistant', content: acc });
           save();
         } else {
-          showError(bubble, 'empty', text);
+          showError(entry, 'empty', text);
           history.pop();
           updateCounter();
           save();
         }
       } catch (e) {
         const type = e && e.name === 'AbortError' ? 'timeout' : 'parse';
-        showError(bubble, type, text);
+        showError(entry, type, text);
         history.pop();
         updateCounter();
         save();
@@ -236,7 +264,8 @@ const greeting = castorGreetings[lang];
     function clearChat() {
       history = [];
       try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
-      transcript.querySelectorAll('.stage-bubble:not(.stage-bubble--greeting)').forEach((n) => n.remove());
+      transcript.replaceChildren();
+      renderGreeting();
       updateCounter();
       input.focus();
     }

@@ -3,6 +3,165 @@
    Per-agent theming lives in demo-castor.css and demo-lyra.css.
    ============================================================ */
 
+/* ============================================================
+   Terminal log — shared markup for both Castor and Lyra. The
+   visual reference is the Aplus Pilot Showcase log style:
+   monospace, no bubbles, colored role labels, timestamps.
+   ============================================================ */
+.transcript-log {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.transcript-header {
+  color: rgba(0, 229, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.transcript-header[data-agent="lyra"] {
+  color: rgba(167, 139, 250, 0.6);
+}
+
+.transcript-log__entries {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scroll-behavior: smooth;
+  min-height: 0;
+}
+.transcript-log__entries::-webkit-scrollbar { width: 6px; }
+.transcript-log__entries::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
+.log-entry {
+  display: flex;
+  gap: 10px;
+  padding: 4px 0;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.log-timestamp {
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-role {
+  font-weight: 600;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+.log-role[data-role="castor"] { color: #00E5FF; }
+.log-role[data-role="lyra"]   { color: #A78BFA; }
+.log-role[data-role="you"]    { color: rgba(255, 255, 255, 0.95); }
+.log-role[data-role="system"] { color: #4ADE80; }
+.log-role[data-role="error"]  { color: #F87171; }
+
+.log-content {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.transcript-footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+/* New-messages indicator (auto-scroll pause UX) — used by both Castor
+   and Lyra controllers; shown when user has scrolled up and new entries
+   arrive. Click to resume auto-scroll + scroll-to-bottom. */
+.transcript-log__new-indicator {
+  position: absolute;
+  right: 16px;
+  bottom: 38px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.transcript-log__new-indicator.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.transcript-log[data-agent="castor"] .transcript-log__new-indicator {
+  border-color: rgba(0, 229, 255, 0.4);
+  color: rgba(0, 229, 255, 0.95);
+}
+.transcript-log[data-agent="lyra"] .transcript-log__new-indicator {
+  border-color: rgba(167, 139, 250, 0.4);
+  color: rgba(167, 139, 250, 0.95);
+}
+
+/* Truncation (long log entries) — see commit 5 for the JS that toggles
+   .log-content--truncated and .log-content--expanded states. The
+   indicator and toggle styles ship in commit 5 too; CSS scaffolding is
+   here so the markup is consistent across all log entries. */
+.log-content--truncated {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  .log-content--truncated { -webkit-line-clamp: 6; }
+}
+.log-expand-hint {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  margin-left: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+.log-expand-hint::before { content: '… [展开 · Expand]'; }
+.log-content--expanded .log-expand-hint::before { content: ' [收起 · Collapse]'; }
+
+@media (max-width: 640px) {
+  .transcript-log { padding: 12px; font-size: 12.5px; }
+  .log-entry { gap: 8px; }
+  .transcript-header { font-size: 10px; margin-bottom: 10px; }
+  .transcript-footer { font-size: 9.5px; letter-spacing: 0.18em; }
+}
+
 .agent-stage {
   --agent-primary: #00E5FF;
   --agent-secondary: #00E5FF;
