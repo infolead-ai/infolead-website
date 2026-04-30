@@ -40,9 +40,21 @@ export default function LyraConversationCore(props: Props) {
   );
 }
 
+// Pull a HH:MM:SS timestamp out of a message id. Ids are formatted as
+// either `${Date.now()}-${rand}` or `local-${Date.now()}` — the first
+// 13-digit run is the millisecond stamp.
+function idToTime(id: string): string {
+  const m = id.match(/(\d{13})/);
+  const date = m ? new Date(parseInt(m[1], 10)) : new Date();
+  return date.toTimeString().slice(0, 8);
+}
+
 function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = 'standalone' }: Props) {
   const t = LYRA_COPY[lang];
   const shellRef = useRef<HTMLDivElement | null>(null);
+  // Frozen at mount so the SYSTEM "awaiting input" entry's timestamp is
+  // stable across re-renders.
+  const [mountTime] = useState<string>(() => new Date().toTimeString().slice(0, 8));
   const [messages, setMessages] = useState<LyraMessage[]>(() => {
     if (initialAction.kind === 'text') {
       return [
@@ -237,21 +249,50 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
       className={`lyra-shell${variant === 'stage' ? ' lyra-shell--stage' : ''}`}
       ref={shellRef}
     >
-      <div className="lyra-messages" ref={messagesRef} role="log" aria-live="polite">
-        {messages.length === 0 && (
-          <div className="lyra-empty">
-            <div className="lyra-empty-orb" aria-hidden="true" />
-            <p className="lyra-empty-text">{t.emptyPrompt}</p>
-          </div>
-        )}
-        {messages.map((m) => (
-          <div key={m.id} className={`lyra-bubble lyra-bubble-${m.role}`}>
-            <div className="lyra-bubble-label">
-              {m.role === 'lyra' ? t.lyraLabel : t.youLabel}
+      <div className="transcript-log" data-agent="lyra">
+        <div className="transcript-header" data-agent="lyra">
+          // LYRA-VOICE-01 LOG ACTIVE
+        </div>
+        <div
+          className="transcript-log__entries"
+          ref={messagesRef}
+          role="log"
+          aria-live="polite"
+        >
+          {messages.length === 0 && (
+            <div className="log-entry">
+              <span className="log-timestamp">[{mountTime}]</span>
+              <span className="log-role" data-role="system">SYSTEM:</span>
+              <span className="log-content">{t.emptyPrompt}</span>
             </div>
-            <div className="lyra-bubble-content">{m.content}</div>
-          </div>
-        ))}
+          )}
+          {messages.map((m, i) => {
+            const isLastLyra =
+              i === messages.length - 1 && m.role === 'lyra' && conversation.isSpeaking;
+            return (
+              <div
+                key={m.id}
+                className="log-entry"
+                data-streaming={isLastLyra ? 'true' : undefined}
+              >
+                <span className="log-timestamp">[{idToTime(m.id)}]</span>
+                <span
+                  className="log-role"
+                  data-role={m.role === 'lyra' ? 'lyra' : 'you'}
+                >
+                  {m.role === 'lyra' ? 'LYRA:' : 'YOU:'}
+                </span>
+                <span className="log-content">{m.content}</span>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          className="transcript-log__new-indicator"
+          aria-label={t.youLabel === '您' ? '新消息' : 'New messages'}
+        >↓ NEW</button>
+        <div className="transcript-footer">_ SESSION ACTIVE _</div>
       </div>
 
       <div className={`lyra-status lyra-status-${status}`} aria-live="polite">
