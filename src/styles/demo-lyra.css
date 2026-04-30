@@ -16,55 +16,52 @@
 /* Lyra transcript size — terminal-log markup ships in demo-shared.css. */
 .lyra-shell .transcript-log { height: 360px; }
 
+/* Status indicator (Issue 3A): minimal text, no pill chrome. The dot
+   gets all the chromatic weight; the label is a subtle uppercase mono
+   row above the mic button. */
 .lyra-status {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  align-self: flex-start;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-self: center;
+  padding: 0;
+  background: transparent;
+  border: none;
   font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
   font-size: 11px;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
 }
 .lyra-status-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
 }
-.lyra-status-idle .lyra-status-dot { background: rgba(255, 255, 255, 0.45); }
 .lyra-status-connecting .lyra-status-dot {
-  background: #A78BFA;
+  background: rgba(167, 139, 250, 0.6);
   animation: lyra-dot-pulse 1.2s ease-in-out infinite;
 }
-.lyra-status-listening { color: #C8B5FF; border-color: rgba(167, 139, 250, 0.35); }
 .lyra-status-listening .lyra-status-dot {
-  background: #A78BFA;
-  box-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+  background: #5EEAD4;
+  box-shadow: 0 0 10px rgba(94, 234, 212, 0.6);
   animation: lyra-dot-pulse 1.1s ease-in-out infinite;
 }
-.lyra-status-thinking { color: #FFD700; border-color: rgba(255, 215, 0, 0.3); }
 .lyra-status-thinking .lyra-status-dot {
   background: #FFD700;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
   animation: lyra-dot-pulse 0.9s ease-in-out infinite;
 }
-.lyra-status-speaking { color: #FFD700; border-color: rgba(255, 215, 0, 0.45); }
 .lyra-status-speaking .lyra-status-dot {
-  background: #FFD700;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  background: #A78BFA;
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.65);
   animation: lyra-dot-pulse 0.7s ease-in-out infinite;
 }
-.lyra-status-error { color: #FFB4B4; border-color: rgba(255, 100, 100, 0.35); }
-.lyra-status-error .lyra-status-dot { background: #FF8888; }
-.lyra-status-blocked { color: rgba(255, 255, 255, 0.55); }
+.lyra-status-error .lyra-status-dot { background: #F87171; }
 @keyframes lyra-dot-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(0.85); }
-  50%      { opacity: 1;   transform: scale(1.1); }
+  0%, 100% { opacity: 0.55; transform: scale(0.9); }
+  50%      { opacity: 1;    transform: scale(1.15); }
 }
 @media (prefers-reduced-motion: reduce) {
   .lyra-status-dot { animation: none !important; }
@@ -104,81 +101,113 @@
 }
 .lyra-error-action:hover { background: rgba(167, 139, 250, 0.3); }
 
-.lyra-input-row {
+/* Mic button group (Issue 3B): primary action — mic gets the visual
+   weight, hint text below it ("Click to talk · 点击开始说话"). The
+   group stacks vertically and centers in the parent flex column. */
+.lyra-mic-group {
   display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   padding-top: 4px;
 }
 .lyra-mic {
-  flex: 0 0 auto;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 215, 0, 0.35);
-  background: linear-gradient(135deg, #A78BFA 0%, #FFD700 130%);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #A78BFA 0%, #FFD700 100%);
   color: #0A0E1A;
-  font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 0 24px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 22px rgba(167, 139, 250, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   transition: transform 0.15s ease, box-shadow 0.2s ease;
+  animation: lyra-mic-breathe 3s ease-in-out infinite;
+}
+@media (min-width: 768px) {
+  .lyra-mic { width: 72px; height: 72px; }
 }
 .lyra-mic:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 32px rgba(255, 215, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 0 32px rgba(167, 139, 250, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 .lyra-mic:focus-visible { outline: 2px solid #FFD700; outline-offset: 3px; }
 .lyra-mic-active {
   background: linear-gradient(135deg, #FFD700 0%, #A78BFA 130%);
   animation: lyra-mic-pulse 1.4s ease-in-out infinite;
 }
+@keyframes lyra-mic-breathe {
+  0%, 100% { box-shadow: 0 0 18px rgba(167, 139, 250, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+  50%      { box-shadow: 0 0 28px rgba(167, 139, 250, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45); }
+}
 @keyframes lyra-mic-pulse {
   0%, 100% { box-shadow: 0 0 22px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
   50%      { box-shadow: 0 0 38px rgba(255, 215, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lyra-mic-active { animation: none; }
+  .lyra-mic, .lyra-mic-active { animation: none; }
 }
-.lyra-mic-glyph { line-height: 1; }
+.lyra-mic-hint {
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+}
 
+/* Text input row (Issue 3C): demoted — narrower width, transparent bg,
+   ghost send button. Below the mic+hint cluster with explicit margin. */
+.lyra-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+}
 .lyra-textarea {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex: 0 0 60%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #fff;
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   font-size: 14px;
   font-family: inherit;
   line-height: 1.5;
   resize: none;
   outline: none;
-  min-height: 48px;
+  min-height: 44px;
   max-height: 120px;
+  font-style: italic;
 }
 .lyra-textarea:focus {
-  border-color: rgba(167, 139, 250, 0.55);
-  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.08);
 }
-.lyra-textarea::placeholder { color: rgba(255, 255, 255, 0.35); }
+.lyra-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+}
 
 .lyra-send {
-  background: rgba(167, 139, 250, 0.18);
-  border: 1px solid rgba(167, 139, 250, 0.5);
-  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  color: rgba(167, 139, 250, 0.9);
   border-radius: 999px;
   padding: 10px 18px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   white-space: nowrap;
 }
-.lyra-send:hover:not(:disabled) { background: rgba(167, 139, 250, 0.32); }
+.lyra-send:hover:not(:disabled) {
+  background: rgba(167, 139, 250, 0.15);
+  color: #fff;
+  border-color: rgba(167, 139, 250, 0.7);
+}
 .lyra-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .lyra-footer {
@@ -217,8 +246,7 @@
 
 @media (max-width: 640px) {
   .lyra-shell .transcript-log { height: 320px; }
-  .lyra-mic { width: 48px; height: 48px; font-size: 18px; }
-  .lyra-textarea { padding: 10px 12px; min-height: 44px; }
+  .lyra-textarea { padding: 10px 12px; min-height: 44px; flex: 0 0 65%; }
   .lyra-send { padding: 9px 14px; font-size: 12.5px; }
   .lyra-footer { font-size: 9.5px; letter-spacing: 0.14em; }
 }
@@ -256,47 +284,8 @@
   height: 280px;
 }
 
-/* Status pill: align center, less visual weight (LIVE chrome already exists) */
-.lyra-shell--stage .lyra-status {
-  align-self: center;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Composer: lift to floating pill matching Castor's */
-.lyra-shell--stage .lyra-input-row {
-  padding: 10px 12px 10px 16px;
-  border-radius: 999px;
-  background: rgba(20, 14, 32, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(167, 139, 250, 0.28);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(167, 139, 250, 0.06);
-}
-.lyra-shell--stage .lyra-input-row:focus-within {
-  border-color: rgba(167, 139, 250, 0.55);
-  box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2), 0 0 0 1px rgba(167, 139, 250, 0.45);
-}
-.lyra-shell--stage .lyra-textarea {
-  background: transparent;
-  border: none;
-  min-height: 28px;
-  padding: 4px 0;
-}
-.lyra-shell--stage .lyra-textarea:focus { box-shadow: none; }
-
-.lyra-shell--stage .lyra-mic {
-  width: 44px;
-  height: 44px;
-  font-size: 18px;
-}
-.lyra-shell--stage .lyra-send {
-  padding: 9px 16px;
-  font-size: 12.5px;
-}
-
-/* Footer is provided by AgentStage; suppress the inner one */
+/* Footer is provided by AgentStage; suppress the inner one. Status,
+   mic, and input use the base rules above (Issue 3 A+B+C redesign). */
 .lyra-shell--stage .lyra-footer { display: none; }
 
 /* Skeleton + blocked variants in stage mode also get glass treatment */
@@ -311,5 +300,4 @@
 
 @media (max-width: 640px) {
   .lyra-shell--stage .transcript-log { height: 240px; }
-  .lyra-shell--stage .lyra-mic { width: 40px; height: 40px; font-size: 16px; }
 }

@@ -49,6 +49,33 @@ function idToTime(id: string): string {
   return date.toTimeString().slice(0, 8);
 }
 
+// Bilingual stacked status labels (always both languages in stage).
+const STATUS_BILINGUAL: Record<LyraStatus, string> = {
+  idle: 'IDLE · 待机',
+  connecting: 'CONNECTING · 连接中',
+  listening: 'LISTENING · 聆听中',
+  thinking: 'THINKING · 思考中',
+  speaking: 'SPEAKING · 朗读中',
+  error: 'ERROR · 异常',
+  blocked: 'BLOCKED · 不可用',
+};
+
+// Inline SVG mic glyphs — replace the toy 🎤 emoji with abstract icons
+// that use currentColor so the gradient bg shines through cleanly.
+const MicIdleIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="9" y="2" width="6" height="11" rx="3" />
+    <path d="M5 11v1a7 7 0 0 0 14 0v-1" />
+    <line x1="12" y1="19" x2="12" y2="22" />
+    <line x1="8" y1="22" x2="16" y2="22" />
+  </svg>
+);
+const MicActiveIcon = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+    <rect x="4" y="4" width="16" height="16" rx="2" />
+  </svg>
+);
+
 function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = 'standalone' }: Props) {
   const t = LYRA_COPY[lang];
   const shellRef = useRef<HTMLDivElement | null>(null);
@@ -229,20 +256,7 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
   }, [agentId, conversation, handleError, lang]);
 
   const showMic = !textMode;
-  const statusLabel =
-    status === 'idle'
-      ? t.statusIdle
-      : status === 'connecting'
-        ? t.statusConnecting
-        : status === 'listening'
-          ? t.statusListening
-          : status === 'thinking'
-            ? t.statusThinking
-            : status === 'speaking'
-              ? t.statusSpeaking
-              : status === 'error'
-                ? t.statusError
-                : t.statusBlocked;
+  const statusLabel = STATUS_BILINGUAL[status] ?? STATUS_BILINGUAL.idle;
 
   return (
     <div
@@ -317,19 +331,21 @@ function Conversation({ lang, agentId, initialAction, forceTextOnly, variant = '
         </div>
       )}
 
-      <div className="lyra-input-row">
-        {showMic && (
+      {showMic && (
+        <div className="lyra-mic-group">
           <button
             type="button"
             className={`lyra-mic ${isConnected || isConnecting ? 'lyra-mic-active' : ''}`}
             onClick={isConnected || isConnecting ? stop : restartVoice}
             aria-label={isConnected || isConnecting ? t.micStop : t.micStart}
           >
-            <span className="lyra-mic-glyph" aria-hidden="true">
-              {isConnected || isConnecting ? '■' : '🎤'}
-            </span>
+            {isConnected || isConnecting ? <MicActiveIcon /> : <MicIdleIcon />}
           </button>
-        )}
+          <span className="lyra-mic-hint">{t.micHint}</span>
+        </div>
+      )}
+
+      <div className="lyra-input-row">
         <textarea
           className="lyra-textarea"
           placeholder={t.inputPlaceholder}
