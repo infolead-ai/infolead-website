@@ -1,0 +1,17 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import AgentStage from '../../../components/demo/AgentStage.astro';
+import CastorStageScript from '../../../components/demo/CastorStageScript.astro';
+import { getMember } from '../../../data/ai-team';
+import '../../../styles/demo-castor.css';
+
+export const prerender = true;
+
+const castor = getMember('castor');
+---
+
+<Layout lang="zh" title="Castor · AI 技术主理人 — InfoLead AI">
+  <AgentStage agent={castor} lang="zh">
+    <CastorStageScript lang="zh" />
+  </AgentStage>
+</Layout>

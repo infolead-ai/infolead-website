@@ -1,0 +1,209 @@
+/* ============================================================
+   Castor stage — cyan theming for /demo/castor.
+   Composes on top of demo-shared.css.
+   ============================================================ */
+
+.agent-stage--castor {
+  --castor-cyan: #00E5FF;
+  --castor-glow: rgba(0, 229, 255, 0.4);
+}
+
+/* Stronger overlay over the moving HLS background to keep transcript legible */
+.agent-stage--castor .agent-stage__overlay {
+  background:
+    radial-gradient(ellipse at 50% 22%, transparent 0%, rgba(5, 8, 16, 0.6) 60%, rgba(5, 8, 16, 0.95) 100%),
+    linear-gradient(180deg, rgba(5, 8, 16, 0.4) 0%, transparent 30%, transparent 50%, rgba(5, 8, 16, 0.92) 100%);
+}
+
+/* Castor stage layout */
+.castor-stage {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Transcript */
+.castor-stage__transcript-wrap {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(10, 14, 26, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.06),
+    0 18px 50px rgba(0, 229, 255, 0.08),
+    0 6px 24px rgba(0, 0, 0, 0.4);
+}
+.castor-stage__transcript {
+  height: 360px;
+  overflow-y: auto;
+  padding: 22px 22px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+.castor-stage__transcript::-webkit-scrollbar { width: 6px; }
+.castor-stage__transcript::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.25);
+  border-radius: 999px;
+}
+.castor-stage__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(10, 14, 26, 0.85));
+}
+
+/* Bubbles */
+.stage-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 88%;
+}
+.stage-bubble--castor { align-self: flex-start; }
+.stage-bubble--user { align-self: flex-end; align-items: flex-end; }
+.stage-bubble__label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+.stage-bubble--castor .stage-bubble__label { color: rgba(0, 229, 255, 0.78); }
+.stage-bubble__content {
+  padding: 11px 15px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.stage-bubble--castor .stage-bubble__content {
+  background: rgba(0, 229, 255, 0.07);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+}
+.stage-bubble--user .stage-bubble__content {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* Composer (input row) */
+.castor-stage__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 12px 14px 12px 18px;
+  border-radius: 999px;
+  background: rgba(10, 14, 26, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 229, 255, 0.05);
+}
+.castor-stage__composer:focus-within {
+  border-color: rgba(0, 229, 255, 0.55);
+  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.4);
+}
+
+.castor-stage__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14.5px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  min-height: 28px;
+  max-height: 140px;
+  padding: 4px 0;
+}
+.castor-stage__input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.castor-stage__send {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  background: var(--castor-cyan);
+  color: #0a0e1a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s;
+  box-shadow: 0 0 22px rgba(0, 229, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.castor-stage__send:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.castor-stage__send:disabled {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.castor-stage__send.is-busy {
+  animation: castor-send-pulse 1.2s ease-in-out infinite;
+}
+@keyframes castor-send-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(0, 229, 255, 0.35); }
+  50%      { box-shadow: 0 0 32px rgba(0, 229, 255, 0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .castor-stage__send.is-busy { animation: none; }
+}
+
+/* Meta row */
+.castor-stage__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.35);
+}
+.castor-stage__clear {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-transform: uppercase;
+}
+.castor-stage__clear:hover { color: var(--castor-cyan); }
+.castor-stage__counter { font-variant-numeric: tabular-nums; text-transform: uppercase; }
+
+@media (max-width: 640px) {
+  .castor-stage__transcript { height: 320px; padding: 16px 16px 22px; gap: 10px; }
+  .castor-stage__composer { padding: 10px 10px 10px 14px; }
+  .castor-stage__send { width: 38px; height: 38px; }
+  .stage-bubble { max-width: 92%; }
+  .stage-bubble__content { padding: 10px 13px; font-size: 14px; }
+  .castor-stage__meta { padding: 0 4px; font-size: 9.5px; }
+}

@@ -1,0 +1,225 @@
+---
+import { castorGreetings } from '../../content/demo/castor-greetings';
+
+interface Props {
+  lang: 'en' | 'zh';
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+  en: {
+    placeholder: 'Ask Castor anything…',
+    send: 'Send',
+    sending: '…',
+    clear: 'Clear conversation',
+    counterFormat: (n: number) => `${n} / 20`,
+    you: 'You',
+    castor: 'Castor',
+    error: 'Connection error. Try again?',
+    rateLimited: 'Too many requests. Please wait a moment and try again.',
+    tooLong: 'Message is too long (max 1000 characters).',
+    sessionFull: 'Session limit reached. Clear the conversation to start over.',
+  },
+  zh: {
+    placeholder: '问 Castor 任何问题…',
+    send: '发送',
+    sending: '…',
+    clear: '清空对话',
+    counterFormat: (n: number) => `${n} / 20`,
+    you: '您',
+    castor: 'Castor',
+    error: '连接出错，请重试。',
+    rateLimited: '请求太频繁了，稍等一下再试。',
+    tooLong: '消息太长了（上限 1000 字符）。',
+    sessionFull: '本次会话已达上限，请清空后重新开始。',
+  },
+}[lang];
+
+const greeting = castorGreetings[lang];
+---
+
+<div class="castor-stage" data-lang={lang}>
+  <div class="castor-stage__transcript-wrap">
+    <div class="castor-stage__transcript" id="castor-transcript" role="log" aria-live="polite">
+      <article class="stage-bubble stage-bubble--castor stage-bubble--greeting">
+        <div class="stage-bubble__label">{copy.castor}</div>
+        <div class="stage-bubble__content">{greeting}</div>
+      </article>
+    </div>
+    <div class="castor-stage__fade" aria-hidden="true"></div>
+  </div>
+
+  <div class="castor-stage__composer">
+    <textarea
+      id="castor-input"
+      class="castor-stage__input"
+      placeholder={copy.placeholder}
+      rows="1"
+      maxlength="1000"
+      autocomplete="off"
+    ></textarea>
+    <button id="castor-send" class="castor-stage__send" type="button" aria-label={copy.send}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+
+  <div class="castor-stage__meta">
+    <button id="castor-clear" class="castor-stage__clear" type="button">{copy.clear}</button>
+    <span id="castor-counter" class="castor-stage__counter">{copy.counterFormat(0)}</span>
+  </div>
+</div>
+
+<script is:inline define:vars={{ lang, copy, greeting }}>
+  (() => {
+    const root = document.querySelector('.castor-stage');
+    if (!root) return;
+
+    const transcript = document.getElementById('castor-transcript');
+    const input = document.getElementById('castor-input');
+    const sendBtn = document.getElementById('castor-send');
+    const clearBtn = document.getElementById('castor-clear');
+    const counterEl = document.getElementById('castor-counter');
+    if (!transcript || !input || !sendBtn || !clearBtn || !counterEl) return;
+
+    const STORAGE_KEY = `infolead-castor-${lang}`;
+    const MAX_USER_MESSAGES = 20;
+
+    /** @type {{role: 'user'|'assistant', content: string}[]} */
+    let history = [];
+
+    function appendBubble(role, content) {
+      const bubble = document.createElement('article');
+      bubble.className = `stage-bubble stage-bubble--${role === 'assistant' ? 'castor' : 'user'}`;
+      const label = document.createElement('div');
+      label.className = 'stage-bubble__label';
+      label.textContent = role === 'assistant' ? copy.castor : copy.you;
+      const inner = document.createElement('div');
+      inner.className = 'stage-bubble__content';
+      inner.textContent = content;
+      bubble.appendChild(label);
+      bubble.appendChild(inner);
+      transcript.appendChild(bubble);
+      transcript.scrollTop = transcript.scrollHeight;
+      return inner;
+    }
+
+    function load() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (raw) history = JSON.parse(raw);
+      } catch {}
+      // Strip greeting bubble and any non-greeting bubbles, then re-render
+      transcript.querySelectorAll('.stage-bubble:not(.stage-bubble--greeting)').forEach((n) => n.remove());
+      for (const m of history) appendBubble(m.role, m.content);
+      updateCounter();
+    }
+
+    function save() {
+      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history)); } catch {}
+    }
+
+    function updateCounter() {
+      const n = history.filter((m) => m.role === 'user').length;
+      counterEl.textContent = copy.counterFormat(n);
+    }
+
+    function setBusy(busy) {
+      sendBtn.disabled = busy;
+      input.disabled = busy;
+      sendBtn.classList.toggle('is-busy', busy);
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      if (text.length > 1000) { alert(copy.tooLong); return; }
+
+      const userCount = history.filter((m) => m.role === 'user').length;
+      if (userCount >= MAX_USER_MESSAGES) { alert(copy.sessionFull); return; }
+
+      history.push({ role: 'user', content: text });
+      appendBubble('user', text);
+      input.value = '';
+      input.style.height = 'auto';
+      updateCounter();
+      save();
+      setBusy(true);
+
+      const inner = appendBubble('assistant', '');
+      let acc = '';
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history, lang }),
+        });
+
+        if (!res.ok || !res.body) {
+          inner.textContent = res.status === 429 ? copy.rateLimited : copy.error;
+          history.pop();
+          updateCounter();
+          save();
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          acc += decoder.decode(value, { stream: true });
+          inner.textContent = acc;
+          transcript.scrollTop = transcript.scrollHeight;
+        }
+
+        if (acc.trim()) {
+          history.push({ role: 'assistant', content: acc });
+          save();
+        } else {
+          inner.textContent = copy.error;
+          history.pop();
+          updateCounter();
+          save();
+        }
+      } catch {
+        inner.textContent = copy.error;
+        history.pop();
+        updateCounter();
+        save();
+      } finally {
+        setBusy(false);
+        input.focus();
+      }
+    }
+
+    function clearChat() {
+      history = [];
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
+      transcript.querySelectorAll('.stage-bubble:not(.stage-bubble--greeting)').forEach((n) => n.remove());
+      updateCounter();
+      input.focus();
+    }
+
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    });
+
+    sendBtn.addEventListener('click', send);
+    clearBtn.addEventListener('click', clearChat);
+
+    load();
+  })();
+</script>
