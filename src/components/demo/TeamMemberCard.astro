@@ -1,0 +1,243 @@
+---
+import type { TeamMember } from '../../data/ai-team';
+
+interface Props {
+  member: TeamMember;
+  lang: 'en' | 'zh';
+}
+
+const { member, lang } = Astro.props;
+
+const status = member.status;
+const ctaLabel = lang === 'zh'
+  ? (status === 'live' ? '开始对话 →' : '即将上线')
+  : (status === 'live' ? 'Talk now →' : 'Coming soon');
+
+const liveLabel = lang === 'zh' ? '在线' : 'LIVE';
+const comingLabel = lang === 'zh' ? '即将上线' : 'SOON';
+
+const href = status === 'live' ? `/${lang}/demo/${member.id}` : null;
+---
+
+<article
+  class:list={['team-card', `team-card--${member.id}`, status !== 'live' && 'team-card--disabled']}
+  style={`--card-primary: ${member.primaryColor}; --card-secondary: ${member.secondaryColor ?? member.primaryColor}; --card-glow: ${member.glowColor};`}
+>
+  {href ? (
+    <a class="team-card__link" href={href} aria-label={`${member.nameEn} · ${member.nameZh} — ${member.role[lang]}`}>
+      <div class="team-card__portrait-wrap">
+        <img class="team-card__portrait" src={member.portraitSrc} alt="" loading="lazy" />
+        <div class="team-card__portrait-glow" aria-hidden="true"></div>
+      </div>
+      <div class="team-card__body">
+        <span class={`team-card__pill team-card__pill--${status}`}>
+          <span class="team-card__pill-dot" aria-hidden="true"></span>
+          {status === 'live' ? liveLabel : comingLabel}
+        </span>
+        <h3 class="team-card__name">
+          <span class="team-card__name-en">{member.nameEn}</span>
+          <span class="team-card__name-dot" aria-hidden="true">·</span>
+          <span class="team-card__name-zh">{member.nameZh}</span>
+        </h3>
+        <p class="team-card__role">{member.role[lang]}</p>
+        <p class="team-card__tagline">{member.tagline[lang]}</p>
+        <span class="team-card__cta">{ctaLabel}</span>
+      </div>
+    </a>
+  ) : (
+    <div class="team-card__link team-card__link--disabled" aria-disabled="true">
+      <div class="team-card__portrait-wrap">
+        <img class="team-card__portrait" src={member.portraitSrc} alt="" loading="lazy" />
+        <div class="team-card__portrait-glow" aria-hidden="true"></div>
+      </div>
+      <div class="team-card__body">
+        <span class={`team-card__pill team-card__pill--${status}`}>
+          <span class="team-card__pill-dot" aria-hidden="true"></span>
+          {comingLabel}
+        </span>
+        <h3 class="team-card__name">
+          <span class="team-card__name-en">{member.nameEn}</span>
+          <span class="team-card__name-dot" aria-hidden="true">·</span>
+          <span class="team-card__name-zh">{member.nameZh}</span>
+        </h3>
+        <p class="team-card__role">{member.role[lang]}</p>
+        <p class="team-card__tagline">{member.tagline[lang]}</p>
+        <span class="team-card__cta">{ctaLabel}</span>
+      </div>
+    </div>
+  )}
+</article>
+
+<style>
+  .team-card {
+    --card-primary: #00E5FF;
+    --card-secondary: #00E5FF;
+    --card-glow: rgba(0, 229, 255, 0.4);
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  .team-card:hover:not(.team-card--disabled) {
+    transform: translateY(-4px);
+    border-color: var(--card-primary);
+    box-shadow: 0 22px 60px var(--card-glow), 0 0 0 1px var(--card-primary);
+  }
+  .team-card--disabled { opacity: 0.55; }
+
+  .team-card__link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+  .team-card__link--disabled { cursor: not-allowed; }
+
+  .team-card__portrait-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 30%, var(--card-glow), transparent 70%),
+      #0a0e1a;
+  }
+  .team-card__portrait {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    filter: brightness(0.78) saturate(1.05);
+    transition: transform 0.6s ease, filter 0.35s ease;
+  }
+  .team-card:hover:not(.team-card--disabled) .team-card__portrait {
+    transform: scale(1.04);
+    filter: brightness(0.9) saturate(1.1);
+  }
+  .team-card__portrait-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, var(--card-glow) 0%, transparent 55%);
+    mix-blend-mode: screen;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .team-card__body {
+    padding: 22px 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .team-card__pill {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .team-card__pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--card-primary);
+    box-shadow: 0 0 8px var(--card-glow);
+  }
+  .team-card__pill--live .team-card__pill-dot { animation: card-pulse 2s ease-in-out infinite; }
+  .team-card__pill--coming-soon .team-card__pill-dot {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+  }
+  @keyframes card-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.9); }
+    50%      { opacity: 1;    transform: scale(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .team-card__pill-dot { animation: none; }
+  }
+
+  .team-card__name {
+    margin: 4px 0 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  .team-card__name-en {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: linear-gradient(135deg, #fff 0%, var(--card-primary) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 500;
+  }
+  .team-card__name-dot { color: var(--card-primary); opacity: 0.55; font-weight: 200; }
+  .team-card__name-zh {
+    font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .team-card__role {
+    margin: 0;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--card-primary);
+    opacity: 0.85;
+  }
+  .team-card__tagline {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.7);
+    flex: 1;
+  }
+  .team-card__cta {
+    margin-top: 14px;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .team-card:hover:not(.team-card--disabled) .team-card__cta {
+    background: var(--card-primary);
+    border-color: var(--card-primary);
+    color: #0a0e1a;
+  }
+
+  @media (max-width: 640px) {
+    .team-card__body { padding: 18px 18px 22px; }
+    .team-card__name { font-size: 19px; }
+    .team-card__tagline { font-size: 13.5px; }
+  }
+</style>
