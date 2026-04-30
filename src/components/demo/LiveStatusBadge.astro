@@ -1,0 +1,45 @@
+---
+interface Props {
+  label: string;
+  variant: 'live' | 'active';
+}
+const { label, variant } = Astro.props;
+---
+
+<div class={`live-badge live-badge--${variant}`} role="status" aria-live="polite">
+  <span class="live-badge__dot" aria-hidden="true"></span>
+  <span class="live-badge__label">{label}</span>
+  <span class="live-badge__clock" data-live-clock>--:--:--</span>
+</div>
+
+<script>
+  function pad(n: number) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const now = new Date();
+    const text = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    document.querySelectorAll<HTMLElement>('[data-live-clock]').forEach((el) => {
+      el.textContent = text;
+    });
+  }
+
+  let intervalId: number | null = null;
+
+  function start() {
+    if (intervalId !== null) return;
+    tick();
+    intervalId = window.setInterval(tick, 1000);
+  }
+
+  function stop() {
+    if (intervalId === null) return;
+    window.clearInterval(intervalId);
+    intervalId = null;
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  start();
+</script>

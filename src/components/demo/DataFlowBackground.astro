@@ -1,0 +1,18 @@
+---
+import type { TeamMember } from '../../data/ai-team';
+
+interface Props {
+  agent: TeamMember;
+}
+const { agent } = Astro.props;
+---
+
+<div class="dataflow" aria-hidden="true" data-color={agent.primaryColor}>
+  <div class="dataflow__layer dataflow__layer--scan"></div>
+  <div class="dataflow__layer dataflow__layer--grid"></div>
+  <div class="dataflow__layer dataflow__layer--particles">
+    {Array.from({ length: 12 }).map((_, i) => (
+      <span class="dataflow__particle" style={`--i: ${i}`}></span>
+    ))}
+  </div>
+</div>

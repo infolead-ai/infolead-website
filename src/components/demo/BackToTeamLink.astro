@@ -1,0 +1,13 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+
+const label = lang === 'zh' ? '← 返回团队' : '← Team';
+const href = `/${lang}/demo`;
+---
+
+<a class="agent-stage__back" href={href} aria-label={lang === 'zh' ? '返回 AI 专家团队' : 'Back to AI Specialist Team'}>
+  {label}
+</a>

@@ -1,0 +1,156 @@
+---
+import type { TeamMember } from '../../data/ai-team';
+import LiveStatusBadge from './LiveStatusBadge.astro';
+import BackToTeamLink from './BackToTeamLink.astro';
+import DataFlowBackground from './DataFlowBackground.astro';
+import SpectrumVisualizer from './SpectrumVisualizer.astro';
+import '../../styles/demo-shared.css';
+
+interface Props {
+  agent: TeamMember;
+  lang: 'en' | 'zh';
+}
+
+const { agent, lang } = Astro.props;
+
+const liveLabel = agent.hasSpectrum
+  ? lang === 'zh' ? '语音演示中' : 'LIVE'
+  : lang === 'zh' ? '在线演示中' : 'ACTIVE';
+
+const variant: 'live' | 'active' = agent.hasSpectrum ? 'live' : 'active';
+const customerCode = 'hhr1wqn8uyz98fpo';
+---
+
+<section
+  class:list={['agent-stage', `agent-stage--${agent.id}`]}
+  data-agent={agent.id}
+  data-lang={lang}
+  style={`--agent-primary: ${agent.primaryColor}; --agent-secondary: ${agent.secondaryColor ?? agent.primaryColor}; --agent-glow: ${agent.glowColor};`}
+>
+  <div class="agent-stage__bg" aria-hidden="true">
+    <img class="agent-stage__bg-poster" src={agent.posterImageSrc} alt="" loading="eager" />
+    {agent.videoStreamUid && (
+      <video
+        class="agent-stage__bg-video"
+        data-stream-uid={agent.videoStreamUid}
+        data-customer-code={customerCode}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+      ></video>
+    )}
+    <div class="agent-stage__overlay"></div>
+  </div>
+
+  {agent.hasSpectrum
+    ? <SpectrumVisualizer agent={agent} />
+    : <DataFlowBackground agent={agent} />
+  }
+
+  <div class="agent-stage__chrome">
+    <div class="agent-stage__chrome-row">
+      <BackToTeamLink lang={lang} />
+      <LiveStatusBadge label={liveLabel} variant={variant} />
+    </div>
+
+    <div class="agent-stage__title">
+      <h1 class="agent-stage__name">
+        <span class="agent-stage__name-en">{agent.nameEn}</span>
+        <span class="agent-stage__name-dot" aria-hidden="true">·</span>
+        <span class="agent-stage__name-zh">{agent.nameZh}</span>
+      </h1>
+      <p class="agent-stage__role">{agent.role[lang]}</p>
+    </div>
+
+    <div class="agent-stage__content">
+      <slot />
+    </div>
+
+    <footer class="agent-stage__footer">infolead.ca · Toronto · Canada</footer>
+  </div>
+</section>
+
+<script>
+  // Lazy-upgrade Cloudflare Stream HLS background video. Mobile + slow
+  // connections stay on poster. Desktop autoplay loops without controls.
+  function isMobileViewport(): boolean {
+    return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  function isSlowConnection(): boolean {
+    const c = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    if (!c) return false;
+    if (c.saveData) return true;
+    if (c.effectiveType && /(^|\W)(2g|slow-2g|3g)(\W|$)/i.test(c.effectiveType)) return true;
+    return false;
+  }
+
+  async function attachStream(video: HTMLVideoElement, manifestUrl: string) {
+    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = manifestUrl;
+      return;
+    }
+    try {
+      const { default: Hls } = (await import(
+        'hls.js/dist/hls.light.min.js'
+      )) as typeof import('hls.js');
+      if (Hls.isSupported()) {
+        const hls = new Hls({ lowLatencyMode: false });
+        hls.loadSource(manifestUrl);
+        hls.attachMedia(video);
+      } else {
+        video.src = manifestUrl;
+      }
+    } catch (err) {
+      console.warn('[AgentStage] hls load failed', err);
+      video.src = manifestUrl;
+    }
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLVideoElement>('video[data-stream-uid]').forEach((video) => {
+      const uid = video.dataset.streamUid;
+      const customerCode = video.dataset.customerCode || 'hhr1wqn8uyz98fpo';
+      if (!uid) return;
+
+      // Skip auto-promotion on mobile + slow connections (poster stays).
+      if (isMobileViewport() || isSlowConnection()) return;
+
+      const manifestUrl = `https://customer-${customerCode}.cloudflarestream.com/${uid}/manifest/video.m3u8`;
+
+      const promote = () => {
+        attachStream(video, manifestUrl).then(() => {
+          video.play().catch((err) => {
+            console.warn('[AgentStage] play() rejected', err);
+          });
+          video.addEventListener('playing', () => {
+            video.classList.add('is-ready');
+          }, { once: true });
+        });
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              io.disconnect();
+              promote();
+              break;
+            }
+          }
+        }, { rootMargin: '100px' });
+        io.observe(video);
+      } else {
+        promote();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
