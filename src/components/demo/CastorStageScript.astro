@@ -277,8 +277,25 @@ const greeting = castorGreetings[lang];
       save();
       setBusy(true);
 
-      const { entry, contentEl } = appendLogEntry('castor', '');
+      // Lazy-create the Castor entry on the FIRST chunk arrival. Creating
+      // an empty <div class="log-entry"> with a zero-width content span
+      // up front and then mutating .textContent on each chunk caused
+      // iPhone Safari to skip layout updates on the streaming text — the
+      // user would see "[HH:MM:SS] CASTOR:" with no content even though
+      // bytes were arriving. Creating the entry with the first chunk
+      // already populated avoids the empty-span layout edge case
+      // entirely. (Lyra side does this naturally because React rebuilds
+      // the entry when messages state changes.)
+      let castorEntry = null;
+      let castorContentEl = null;
       let acc = '';
+
+      function ensureCastorEntry() {
+        if (castorEntry) return;
+        const created = appendLogEntry('castor', acc);
+        castorEntry = created.entry;
+        castorContentEl = created.contentEl;
+      }
 
       // 15s hard cap on total response time. AbortController fires when
       // backend (or network) takes too long — no spinning empty bubble.
@@ -294,7 +311,8 @@ const greeting = castorGreetings[lang];
         });
 
         if (!res.ok || !res.body) {
-          showError(entry, res.status === 429 ? 'rateLimited' : 'http', text);
+          ensureCastorEntry();
+          showError(castorEntry, res.status === 429 ? 'rateLimited' : 'http', text);
           history.pop();
           updateCounter();
           save();
@@ -307,24 +325,31 @@ const greeting = castorGreetings[lang];
           const { done, value } = await reader.read();
           if (done) break;
           acc += decoder.decode(value, { stream: true });
-          contentEl.textContent = acc;
-          transcript.scrollTop = transcript.scrollHeight;
+          if (!castorEntry) {
+            // First chunk — create the entry with content already in it.
+            ensureCastorEntry();
+          } else {
+            castorContentEl.textContent = acc;
+            transcript.scrollTop = transcript.scrollHeight;
+          }
         }
 
-        if (acc.trim()) {
+        if (acc.trim() && castorContentEl) {
           history.push({ role: 'assistant', content: acc });
           save();
           // Streaming finished — apply truncation to the settled content.
-          applyTruncation(contentEl);
+          applyTruncation(castorContentEl);
         } else {
-          showError(entry, 'empty', text);
+          ensureCastorEntry();
+          showError(castorEntry, 'empty', text);
           history.pop();
           updateCounter();
           save();
         }
       } catch (e) {
         const type = e && e.name === 'AbortError' ? 'timeout' : 'parse';
-        showError(entry, type, text);
+        ensureCastorEntry();
+        showError(castorEntry, type, text);
         history.pop();
         updateCounter();
         save();
