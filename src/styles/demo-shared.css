@@ -366,14 +366,17 @@
   .live-badge__dot { animation: none; }
 }
 
-/* Castor data-flow background overlay */
+/* Castor data-flow background overlay. mix-blend-mode:screen was
+   removed because screen blending makes dark pixels transparent —
+   it interacted badly with deep-space portrait backgrounds and
+   risks regressing the same way if assets change. Plain opacity
+   carries the visual weight just fine. */
 .dataflow {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.45;
-  mix-blend-mode: screen;
+  opacity: 0.35;
 }
 .dataflow__layer { position: absolute; inset: 0; }
 .dataflow__layer--scan {
