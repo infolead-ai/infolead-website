@@ -13,7 +13,7 @@ const copy = {
     send: 'Send',
     sending: '…',
     clear: 'Clear conversation',
-    counterFormat: (n: number) => `${n} / 20`,
+    counterFormat: '{n} / 20',
     you: 'You',
     castor: 'Castor',
     error: 'Connection error. Try again?',
@@ -26,7 +26,7 @@ const copy = {
     send: '发送',
     sending: '…',
     clear: '清空对话',
-    counterFormat: (n: number) => `${n} / 20`,
+    counterFormat: '{n} / 20',
     you: '您',
     castor: 'Castor',
     error: '连接出错，请重试。',
@@ -71,7 +71,7 @@ const greeting = castorGreetings[lang];
 
   <div class="castor-stage__meta">
     <button id="castor-clear" class="castor-stage__clear" type="button">{copy.clear}</button>
-    <span id="castor-counter" class="castor-stage__counter">{copy.counterFormat(0)}</span>
+    <span id="castor-counter" class="castor-stage__counter">{copy.counterFormat.replace('{n}', '0')}</span>
   </div>
 </div>
 
@@ -251,7 +251,7 @@ const greeting = castorGreetings[lang];
 
     function updateCounter() {
       const n = history.filter((m) => m.role === 'user').length;
-      counterEl.textContent = copy.counterFormat(n);
+      counterEl.textContent = copy.counterFormat.replace('{n}', String(n));
     }
 
     function setBusy(busy) {
