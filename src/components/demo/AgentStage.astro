@@ -44,10 +44,11 @@ const customerCode = 'hhr1wqn8uyz98fpo';
     <div class="agent-stage__overlay"></div>
   </div>
 
-  {agent.hasSpectrum
-    ? <SpectrumVisualizer agent={agent} />
-    : <DataFlowBackground agent={agent} />
-  }
+  {/* Castor: data-flow particles as a full-stage atmospheric overlay
+      (sibling of chrome, absolute-positioned, z-index 1).
+      Lyra: spectrum lives INSIDE the chrome between title and content
+      so it can't overlap the transcript log or footer. */}
+  {!agent.hasSpectrum && <DataFlowBackground agent={agent} />}
 
   <div class="agent-stage__chrome">
     <div class="agent-stage__chrome-row">
@@ -63,6 +64,8 @@ const customerCode = 'hhr1wqn8uyz98fpo';
       </h1>
       <p class="agent-stage__role">{agent.role[lang]}</p>
     </div>
+
+    {agent.hasSpectrum && <SpectrumVisualizer agent={agent} />}
 
     <div class="agent-stage__content">
       <slot />
